@@ -1,133 +1,210 @@
 <script setup>
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import * as d3 from 'd3';
+import { ARTIFACTS, SOURCES, CLASS_COLORS, worstClass } from '../data/guqinSeed.js';
 
 const props = defineProps({
-  variant: {
-    type: String,
-    default: 'global',
-  },
+  variant: { type: String, default: 'global' },
+  selectedArtifactId: { type: String, default: null },
+  selectedSlotId: { type: String, default: null },
 });
+
+const emit = defineEmits(['select-artifact', 'select-slot']);
 
 const rootEl = ref(null);
 let resizeObserver;
 
-const labels = {
-  global: ['GPT-4o', 'LLM-Agent', 'Task Planning', 'OpenAI', 'Query Expansion', 'RAG', 'Human-AI Collaboration'],
-  derived: ['GPT-4o', 'Citation-aware', 'ScholarQA', 'RAPTOR', 'Adaptive Retriever', 'Map Manager', 'Evaluation'],
-};
-
-function seededRandom(seed) {
-  let value = seed;
-  return () => {
-    value = (value * 16807) % 2147483647;
-    return (value - 1) / 2147483646;
-  };
+function ringArc(radius, startFrac, endFrac, pad = 0.03) {
+  return d3.arc()
+    .innerRadius(radius - 3)
+    .outerRadius(radius + 3)
+    .startAngle((startFrac + pad) * 2 * Math.PI)
+    .endAngle((endFrac - pad) * 2 * Math.PI)();
 }
 
-function makeGraph(variant) {
-  const rng = seededRandom(variant === 'global' ? 31 : 71);
-  const count = variant === 'global' ? 72 : 42;
-  const names = labels[variant];
-  const nodes = d3.range(count).map((index) => ({
-    id: `n-${index}`,
-    label: index < names.length ? names[index] : `Entity ${index}`,
-    group: Math.floor(rng() * 4),
-    r: index === 0 ? 12 : 4 + rng() * 7,
-  }));
+function drawContentionGlyph(g, artifact, r) {
+  const cls = worstClass(artifact);
+  const n = artifact.sources.length;
+  artifact.sources.forEach((sid, i) => {
+    const involved = artifact.slots.some((s) =>
+      s.assertions.some((a) => a.source === sid && a.raw));
+    g.append('path')
+      .attr('d', ringArc(r + 5, i / n, (i + 1) / n))
+      .attr('fill', artifact.slots.length === 0 ? CLASS_COLORS.consensus
+        : involved ? CLASS_COLORS[cls] : CLASS_COLORS.missing)
+      .append('title')
+      .text(SOURCES[sid]?.title || sid);
+  });
+  g.append('circle')
+    .attr('r', r)
+    .attr('fill', '#faf7f1')
+    .attr('stroke', CLASS_COLORS[cls])
+    .attr('stroke-width', 1.4)
+    .attr('stroke-dasharray', cls === 'A' ? '4 2.5' : null);
+  if (artifact.slots.length) {
+    g.append('text')
+      .text(artifact.slots.length)
+      .attr('text-anchor', 'middle')
+      .attr('dy', 4)
+      .attr('font-size', 11)
+      .attr('font-weight', 700)
+      .attr('fill', CLASS_COLORS[cls]);
+  }
+}
 
-  const links = [];
-  for (let i = 1; i < count; i += 1) {
-    links.push({ source: nodes[i].id, target: nodes[Math.floor(rng() * i)].id });
-    if (rng() > 0.58) links.push({ source: nodes[i].id, target: nodes[Math.floor(rng() * count)].id });
+function renderGlobal(container, width, height) {
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', [0, 0, width, height])
+    .attr('role', 'img')
+    .attr('aria-label', 'Global contested knowledge graph');
+
+  const entityNames = [...new Set(ARTIFACTS.flatMap((a) => a.entities))];
+  const nodes = [
+    ...ARTIFACTS.map((a) => ({ id: a.id, kind: 'artifact', artifact: a, r: 15 })),
+    ...entityNames.map((e) => ({ id: `e-${e}`, kind: 'entity', label: e, r: 6 })),
+  ];
+  const links = ARTIFACTS.flatMap((a) =>
+    a.entities.map((e) => ({ source: a.id, target: `e-${e}` })));
+
+  const graph = svg.append('g');
+  const link = graph.append('g').selectAll('line').data(links).join('line')
+    .attr('stroke', '#d3cbbd').attr('stroke-opacity', 0.55).attr('stroke-width', 0.9);
+
+  const node = graph.append('g').selectAll('g').data(nodes).join('g')
+    .attr('cursor', (d) => (d.kind === 'artifact' ? 'pointer' : 'default'))
+    .on('click', (event, d) => {
+      if (d.kind === 'artifact') emit('select-artifact', d.artifact.id);
+    });
+
+  node.filter((d) => d.kind === 'entity')
+    .append('circle')
+    .attr('r', (d) => d.r)
+    .attr('fill', '#b4b2a9')
+    .attr('fill-opacity', 0.85);
+
+  node.filter((d) => d.kind === 'entity')
+    .append('text').text((d) => d.label)
+    .attr('x', 9).attr('y', 4)
+    .attr('fill', '#7c7466').attr('font-size', 10.5)
+    .attr('paint-order', 'stroke').attr('stroke', '#ffffff').attr('stroke-width', 3);
+
+  node.filter((d) => d.kind === 'artifact').each(function drawEach(d) {
+    drawContentionGlyph(d3.select(this), d.artifact, d.r);
+  });
+
+  node.filter((d) => d.kind === 'artifact')
+    .append('text').text((d) => d.artifact.name)
+    .attr('x', 24).attr('y', 4)
+    .attr('fill', '#4a4438').attr('font-size', 11).attr('font-weight', 600)
+    .attr('paint-order', 'stroke').attr('stroke', '#ffffff').attr('stroke-width', 3);
+
+  node.filter((d) => d.kind === 'artifact')
+    .append('circle')
+    .attr('r', (d) => d.r + 9)
+    .attr('fill', 'none')
+    .attr('stroke', '#6e5335')
+    .attr('stroke-width', (d) => (d.id === props.selectedArtifactId ? 1.6 : 0))
+    .attr('stroke-dasharray', '2 3');
+
+  const simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id((d) => d.id).distance(70))
+    .force('charge', d3.forceManyBody().strength(-160))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collision', d3.forceCollide().radius((d) => d.r + 16));
+
+  simulation.on('tick', () => {
+    link.attr('x1', (d) => d.source.x).attr('y1', (d) => d.source.y)
+      .attr('x2', (d) => d.target.x).attr('y2', (d) => d.target.y);
+    node.attr('transform', (d) => {
+      d.x = Math.max(26, Math.min(width - 96, d.x));
+      d.y = Math.max(26, Math.min(height - 26, d.y));
+      return `translate(${d.x},${d.y})`;
+    });
+  });
+  setTimeout(() => simulation.stop(), 1800);
+}
+
+function renderComparison(container, width, height) {
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', [0, 0, width, height])
+    .attr('role', 'img')
+    .attr('aria-label', 'Contested slots of selected artifact');
+
+  const artifact = ARTIFACTS.find((a) => a.id === props.selectedArtifactId);
+  if (!artifact) {
+    svg.append('text')
+      .text('Click an artifact glyph in the global view to compare its sources.')
+      .attr('x', width / 2).attr('y', height / 2)
+      .attr('text-anchor', 'middle').attr('fill', '#9a9284').attr('font-size', 12.5);
+    return;
   }
 
-  return { nodes, links };
+  const cx = width / 2;
+  const cy = height / 2;
+  const g = svg.append('g');
+
+  const center = g.append('g').attr('transform', `translate(${cx},${cy})`);
+  drawContentionGlyph(center, artifact, 20);
+  center.append('text').text(artifact.name)
+    .attr('text-anchor', 'middle').attr('y', 42)
+    .attr('font-size', 12).attr('font-weight', 700).attr('fill', '#4a4438');
+
+  const slots = artifact.slots;
+  if (!slots.length) {
+    svg.append('text').text('全部属性两书记载一致,无争议槽位。')
+      .attr('x', cx).attr('y', cy + 70)
+      .attr('text-anchor', 'middle').attr('fill', '#1d9e75').attr('font-size', 12);
+    return;
+  }
+
+  const orbit = Math.min(width, height) * 0.32;
+  slots.forEach((slot, i) => {
+    const angle = (i / slots.length) * 2 * Math.PI - Math.PI / 2;
+    const sx = cx + orbit * Math.cos(angle);
+    const sy = cy + orbit * Math.sin(angle);
+
+    g.append('line')
+      .attr('x1', cx).attr('y1', cy).attr('x2', sx).attr('y2', sy)
+      .attr('stroke', CLASS_COLORS[slot.cls]).attr('stroke-width', 1.1)
+      .attr('stroke-dasharray', slot.cls === 'A' ? '5 3' : null)
+      .attr('stroke-opacity', 0.7);
+
+    const sg = g.append('g')
+      .attr('transform', `translate(${sx},${sy})`)
+      .attr('cursor', 'pointer')
+      .on('click', () => emit('select-slot', slot.id));
+
+    const n = artifact.sources.length;
+    artifact.sources.forEach((sid, k) => {
+      const assertion = slot.assertions.find((a) => a.source === sid);
+      sg.append('path')
+        .attr('d', ringArc(17, k / n, (k + 1) / n))
+        .attr('fill', assertion && assertion.raw ? CLASS_COLORS[slot.cls] : CLASS_COLORS.missing)
+        .append('title').text(SOURCES[sid]?.title || sid);
+    });
+    sg.append('circle').attr('r', 12)
+      .attr('fill', props.selectedSlotId === slot.id ? '#f5efe4' : '#ffffff')
+      .attr('stroke', CLASS_COLORS[slot.cls])
+      .attr('stroke-width', props.selectedSlotId === slot.id ? 2.2 : 1.2);
+    sg.append('text').text(slot.cls)
+      .attr('text-anchor', 'middle').attr('dy', 4)
+      .attr('font-size', 10.5).attr('font-weight', 700)
+      .attr('fill', CLASS_COLORS[slot.cls]);
+    sg.append('text').text(slot.label)
+      .attr('text-anchor', 'middle').attr('y', 32)
+      .attr('font-size', 11).attr('fill', '#4a4438').attr('font-weight', 600)
+      .attr('paint-order', 'stroke').attr('stroke', '#ffffff').attr('stroke-width', 3);
+  });
 }
 
 function render() {
   const container = rootEl.value;
   if (!container) return;
-
   const { width, height } = container.getBoundingClientRect();
+  if (!width || !height) return;
   d3.select(container).selectAll('*').remove();
-
-  const svg = d3
-    .select(container)
-    .append('svg')
-    .attr('viewBox', [0, 0, width, height])
-    .attr('role', 'img')
-    .attr('aria-label', `${props.variant} knowledge graph`);
-
-  const { nodes, links } = makeGraph(props.variant);
-  const color = d3.scaleOrdinal(['#5078b5', '#f47b73', '#f6a04d', '#8bc5bf']);
-
-  const graph = svg.append('g');
-
-  graph
-    .append('g')
-    .selectAll('line')
-    .data(links)
-    .join('line')
-    .attr('stroke', '#c8cdd6')
-    .attr('stroke-opacity', props.variant === 'global' ? 0.32 : 0.42)
-    .attr('stroke-width', 0.9);
-
-  const node = graph
-    .append('g')
-    .selectAll('g')
-    .data(nodes)
-    .join('g');
-
-  node
-    .append('circle')
-    .attr('r', (d) => d.r)
-    .attr('fill', (d) => color(d.group))
-    .attr('fill-opacity', 0.9)
-    .attr('stroke', '#ffffff')
-    .attr('stroke-width', 1.2);
-
-  node
-    .filter((d, index) => index < 10)
-    .append('text')
-    .text((d) => d.label)
-    .attr('x', 9)
-    .attr('y', 4)
-    .attr('fill', '#59616d')
-    .attr('font-size', 11)
-    .attr('paint-order', 'stroke')
-    .attr('stroke', '#ffffff')
-    .attr('stroke-width', 3);
-
-  const simulation = d3
-    .forceSimulation(nodes)
-    .force(
-      'link',
-      d3
-        .forceLink(links)
-        .id((d) => d.id)
-        .distance(props.variant === 'global' ? 46 : 60),
-    )
-    .force('charge', d3.forceManyBody().strength(props.variant === 'global' ? -75 : -105))
-    .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius((d) => d.r + 10));
-
-  simulation.on('tick', () => {
-    graph
-      .selectAll('line')
-      .attr('x1', (d) => d.source.x)
-      .attr('y1', (d) => d.source.y)
-      .attr('x2', (d) => d.target.x)
-      .attr('y2', (d) => d.target.y);
-
-    node.attr('transform', (d) => {
-      d.x = Math.max(18, Math.min(width - 80, d.x));
-      d.y = Math.max(18, Math.min(height - 22, d.y));
-      return `translate(${d.x},${d.y})`;
-    });
-  });
-
-  setTimeout(() => simulation.stop(), 1800);
+  if (props.variant === 'global') renderGlobal(container, width, height);
+  else renderComparison(container, width, height);
 }
 
 onMounted(async () => {
@@ -137,7 +214,7 @@ onMounted(async () => {
   resizeObserver.observe(rootEl.value);
 });
 
-watch(() => props.variant, render);
+watch(() => [props.variant, props.selectedArtifactId, props.selectedSlotId], render);
 
 onUnmounted(() => {
   resizeObserver?.disconnect();

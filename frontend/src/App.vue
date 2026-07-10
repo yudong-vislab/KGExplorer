@@ -1,6 +1,19 @@
 <script setup>
 import { ref } from 'vue';
 import KnowledgeGraphView from './components/KnowledgeGraphView.vue';
+import AdjudicationPanel from './components/AdjudicationPanel.vue';
+
+const selectedArtifactId = ref(null);
+const selectedSlotId = ref(null);
+
+function onSelectArtifact(id) {
+  selectedArtifactId.value = id;
+  selectedSlotId.value = null;
+}
+
+function onSelectSlot(id) {
+  selectedSlotId.value = id;
+}
 
 const globalTabs = ref([
   { id: 'global', title: 'Global KG', active: true },
@@ -8,14 +21,30 @@ const globalTabs = ref([
 ]);
 
 const derivedTabs = ref([
-  { id: 'derived', title: 'Derived KG', active: true },
-  { id: 'evidence', title: 'Result KG', active: false },
+  { id: 'compare', title: 'Comparison', active: true },
+  { id: 'edit', title: 'Editing', active: false },
 ]);
 
 const messages = ref([
   { role: 'assistant', text: 'Select a folder or graph node to inspect related entities.' },
 ]);
 const draft = ref('');
+
+const uploadedName = ref('');
+
+async function handleUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  uploadedName.value = file.name;
+  const form = new FormData();
+  form.append('archive', file);
+  try {
+    await fetch('/api/ingest', { method: 'POST', body: form });
+  } catch {
+    /* backend not wired yet */
+  }
+  event.target.value = '';
+}
 
 function activateTab(tabs, id) {
   tabs.value = tabs.value.map((tab) => ({ ...tab, active: tab.id === id }));
@@ -48,8 +77,17 @@ function sendMessage() {
         <header class="panel-title">KG Workspace</header>
 
         <div class="left-content">
+          <section class="control-card upload-card" aria-label="Corpus upload">
+            <h2>Corpus Upload</h2>
+            <label class="upload-drop">
+              <input type="file" accept=".zip,.rar,.7z" @change="handleUpload" hidden />
+              <span v-if="!uploadedName">Drop or choose a scanned-book archive (.zip)</span>
+              <span v-else>{{ uploadedName }}</span>
+            </label>
+          </section>
+
           <section class="control-card folder-card" aria-label="Folder hierarchy">
-            <h2>Knowledge Folders</h2>
+            <h2>Knowledge Hierarchies</h2>
             <div class="folder-toolbar">
               <button type="button">Open</button>
               <button type="button">Sync</button>
@@ -93,7 +131,7 @@ function sendMessage() {
               </article>
             </div>
             <form class="chat-input" @submit.prevent="sendMessage">
-              <input v-model="draft" placeholder="Ask a question about the knowledge graph..." />
+              <input v-model="draft" placeholder="Ask a question for KGExplorer..." />
               <button type="submit">Send</button>
             </form>
           </section>
@@ -103,11 +141,6 @@ function sendMessage() {
       <section class="panel center-panel" aria-label="Main visualization view">
         <header class="panel-toolbar">
           <h2>KG Exploration View</h2>
-          <div class="mode-switch">
-            <button type="button">Single Select</button>
-            <button type="button">Multiple Select</button>
-            <button type="button">Area Select</button>
-          </div>
           <button class="save-button" type="button">Save</button>
         </header>
         <div class="graph-workbench">
@@ -125,7 +158,11 @@ function sendMessage() {
               </button>
               <button class="new-tab" type="button">＋</button>
             </div>
-            <KnowledgeGraphView variant="global" />
+            <KnowledgeGraphView
+              variant="global"
+              :selected-artifact-id="selectedArtifactId"
+              @select-artifact="onSelectArtifact"
+            />
           </section>
 
           <section class="graph-pane" aria-label="Interaction-derived knowledge graph">
@@ -142,14 +179,23 @@ function sendMessage() {
               </button>
               <button class="new-tab" type="button">＋</button>
             </div>
-            <KnowledgeGraphView variant="derived" />
+            <KnowledgeGraphView
+              variant="derived"
+              :selected-artifact-id="selectedArtifactId"
+              :selected-slot-id="selectedSlotId"
+              @select-slot="onSelectSlot"
+            />
           </section>
         </div>
       </section>
 
-      <aside class="panel right-panel blank-panel" aria-label="Blank placeholder">
-        <header class="panel-title">Reserved Panel</header>
-        <div class="blank-placeholder"></div>
+      <aside class="panel right-panel" aria-label="Evidence and adjudication">
+        <header class="panel-title">Evidence &amp; Adjudication</header>
+        <AdjudicationPanel
+          :selected-artifact-id="selectedArtifactId"
+          :selected-slot-id="selectedSlotId"
+          @select-slot="onSelectSlot"
+        />
       </aside>
     </section>
   </main>
