@@ -2,6 +2,12 @@
 import { ref } from 'vue';
 import KnowledgeGraphView from './components/KnowledgeGraphView.vue';
 import AdjudicationPanel from './components/AdjudicationPanel.vue';
+import { ARTIFACTS, SOURCES } from './data/guqinSeed.js';
+
+const sourceList = Object.values(SOURCES).map((s) => ({
+  ...s,
+  artifacts: ARTIFACTS.filter((a) => a.sources.includes(s.id)),
+}));
 
 const selectedArtifactId = ref(null);
 const selectedSlotId = ref(null);
@@ -94,30 +100,22 @@ function sendMessage() {
             </div>
             <ul class="folder-tree">
               <li class="open">
-                <span class="folder-name">wiki</span>
+                <span class="folder-name">corpus · {{ sourceList.length }} sources</span>
                 <ul>
-                  <li class="open">
-                    <span class="folder-name">concepts</span>
+                  <li v-for="src in sourceList" :key="src.id" class="open">
+                    <span class="folder-name">《{{ src.title }}》· {{ src.artifacts.length }}</span>
                     <ul>
-                      <li><span>field</span></li>
-                      <li><span>method</span></li>
-                      <li><span>phenomenon</span></li>
-                      <li><span>theory</span></li>
+                      <li
+                        v-for="a in src.artifacts"
+                        :key="a.id"
+                        :class="{ 'tree-active': a.id === selectedArtifactId }"
+                        @click="onSelectArtifact(a.id)"
+                      >
+                        <span class="tree-artifact">{{ a.name }}</span>
+                        <em v-if="a.slots.length" class="tree-badge">{{ a.slots.length }}</em>
+                      </li>
                     </ul>
                   </li>
-                  <li class="open">
-                    <span class="folder-name">entities</span>
-                    <ul>
-                      <li><span>event</span></li>
-                      <li><span>organization</span></li>
-                      <li><span>person</span></li>
-                      <li><span>product</span></li>
-                      <li><span>project</span></li>
-                    </ul>
-                  </li>
-                  <li><span>raw</span></li>
-                  <li><span>schema</span></li>
-                  <li><span>sources</span></li>
                 </ul>
               </li>
             </ul>

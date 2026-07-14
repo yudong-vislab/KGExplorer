@@ -63,6 +63,10 @@ function renderGlobal(container, width, height) {
     ...ARTIFACTS.map((a) => ({ id: a.id, kind: 'artifact', artifact: a, r: 15 })),
     ...entityNames.map((e) => ({ id: `e-${e}`, kind: 'entity', label: e, r: 6 })),
   ];
+  nodes.forEach((n, i) => {
+    n.x = width / 2 + ((i % 7) - 3) * 36;
+    n.y = height / 2 + (Math.floor(i / 7) - 2) * 36;
+  });
   const links = ARTIFACTS.flatMap((a) =>
     a.entities.map((e) => ({ source: a.id, target: `e-${e}` })));
 
@@ -100,6 +104,7 @@ function renderGlobal(container, width, height) {
 
   node.filter((d) => d.kind === 'artifact')
     .append('circle')
+    .attr('class', 'sel-ring')
     .attr('r', (d) => d.r + 9)
     .attr('fill', 'none')
     .attr('stroke', '#6e5335')
@@ -107,10 +112,12 @@ function renderGlobal(container, width, height) {
     .attr('stroke-dasharray', '2 3');
 
   const simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id((d) => d.id).distance(70))
-    .force('charge', d3.forceManyBody().strength(-160))
+    .force('link', d3.forceLink(links).id((d) => d.id).distance(95))
+    .force('charge', d3.forceManyBody().strength(-300))
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius((d) => d.r + 16));
+    .force('x', d3.forceX(width / 2).strength(0.05))
+    .force('y', d3.forceY(height / 2).strength(0.07))
+    .force('collision', d3.forceCollide().radius((d) => (d.kind === 'artifact' ? 58 : d.r + 18)));
 
   simulation.on('tick', () => {
     link.attr('x1', (d) => d.source.x).attr('y1', (d) => d.source.y)
@@ -214,7 +221,21 @@ onMounted(async () => {
   resizeObserver.observe(rootEl.value);
 });
 
-watch(() => [props.variant, props.selectedArtifactId, props.selectedSlotId], render);
+function updateSelectionRing() {
+  if (!rootEl.value) return;
+  d3.select(rootEl.value)
+    .selectAll('.sel-ring')
+    .attr('stroke-width', (d) => (d.id === props.selectedArtifactId ? 1.6 : 0));
+}
+
+watch(() => props.variant, render);
+watch(
+  () => [props.selectedArtifactId, props.selectedSlotId],
+  () => {
+    if (props.variant === 'global') updateSelectionRing();
+    else render();
+  },
+);
 
 onUnmounted(() => {
   resizeObserver?.disconnect();
