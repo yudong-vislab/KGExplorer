@@ -1,0 +1,17 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, irregularly shaped object with textured surface and a small protrusion at the base (no visible text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+王氏
+抱
+</details>
+<details>
+<summary>natural_image</summary>
+Ancient wooden carving with a central oval, showing detailed texture and wear (no visible text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, textured surface with faint white and gold patterns, possibly stone or mineral (no text or symbols visible)
+</details>

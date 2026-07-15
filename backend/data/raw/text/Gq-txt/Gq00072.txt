@@ -1,0 +1,17 @@
+<details>
+<summary>text_image</summary>
+鳴室
+</details>
+额部琴名
+<details>
+<summary>text_image</summary>
+誠養
+誠
+</details>
+琴底铭文（一）
+<details>
+<summary>text_image</summary>
+星梁記
+寶
+</details>
+琴底铭文（二）

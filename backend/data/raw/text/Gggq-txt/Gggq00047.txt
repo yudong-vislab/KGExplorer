@@ -1,0 +1,104 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Total Length | 1107 |
+| Total Height | 118 |
+| Total Width | 118 |
+| Total Height (Top) | 28 |
+| Total Height (Bottom) | 235 |
+| Total Height (Bottom) | 218 |
+| Total Height (Bottom) | 197 |
+| Total Height (Bottom) | 1216 |
+| Total Height (Bottom) | 28 |
+| Total Height (Top) | 201 |
+| Total Height (Top) | 178 |
+| Total Height (Top) | 146 |
+| Total Height (Top) | 185 |
+| Total Height (Top) | 32 |
+| Total Height (Top) | 31 |
+| Total Height (Top) | 158 |
+| Total Height (Top) | 151 |
+| Total Height (Top) | 153 |
+| Total Height (Top) | 184 |
+| Total Height (Top) | 78 |
+| Total Height (Top) | 11 |
+| Total Height (Top) | 4 |
+Φ4.5
+</details>
+郭头
+<details>
+<summary>other</summary>
+| Section | Value |
+| ------- | ----- |
+| Top Section | 1203 |
+| Bottom Section | 205 |
+| Total Height | 1216 |
+| Total Width | 1203 |
+| Top Section (Left) | 22 |
+| Top Section (Right) | 26 |
+| Bottom Section (Left) | 30 |
+| Bottom Section (Right) | 39 |
+| Bottom Section (Center) | 28 |
+| Bottom Section (Center) | 38 |
+| Bottom Section (Center) | 28 |
+| Bottom Section (Center) | 32 |
+| Bottom Section (Center) | 17 |
+| Bottom Section (Center) | 19 |
+| Bottom Section (Center) | 13 |
+| Bottom Section (Center) | 54 |
+| Bottom Section (Center) | 74 |
+| Bottom Section (Center) | 16 |
+| Bottom Section (Center) | 29 |
+| Bottom Section (Center) | 31 |
+| Bottom Section (Center) | 30 |
+| Bottom Section (Center) | 55 |
+| Bottom Section (Center) | 15 |
+| Bottom Section (Center) | 21 |
+| Bottom Section (Center) | 22 |
+| Bottom Section (Center) | 24 |
+| Bottom Section (Center) | 22 |
+| Bottom Section (Center) | 29 |
+| Bottom Section (Center) | 44 |
+| Bottom Section (Center) | 16 |
+| Bottom Section (Center) | 205 |
+9/4 Reference Line: 94.0
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+13
+1203
+1203
+61
+252
+402
+222
+402
+25
+28
+144
+90
+23
+15
+24
+73
+20
+142
+189
+</details>
+背面
+<details>
+<summary>text_image</summary>
+22
+142
+28
+39
+54
+201
+</details>
+鄧尾
+<details>
+<summary>natural_image</summary>
+Top-down view of a long, elongated wooden object with internal structural details and no visible text or symbols.
+</details>

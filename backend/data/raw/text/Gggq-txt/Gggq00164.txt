@@ -1,0 +1,12 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden musical instrument with visible wood and small holes, showing no text or symbols.
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, elongated cylindrical object with visible surface corrosion and wear, showing signs of wear and corrosion (no text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+Ancient Chinese bronze artifact with inscribed characters and decorative marks
+</details>

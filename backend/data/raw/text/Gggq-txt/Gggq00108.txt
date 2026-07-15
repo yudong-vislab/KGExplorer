@@ -1,0 +1,65 @@
+<details>
+<summary>text_image</summary>
+23
+23
+202
+139
+30
+40
+143
+50
+13
+195
+119
+337
+76
+108
+105
+496
+73
+30
+30
+23
+94
+73
+202
+165
+140
+145
+20
+58
+</details>
+鄖尾
+<details>
+<summary>natural_image</summary>
+Top-down view of an ancient wooden artifact with circular holes and decorative patterns (no visible text or symbols)
+</details>
+琴头顶点位置
+88 距
+.5 琴头毫米顶点
+314.5毫米
+30厘米
+20毫米
+10毫米
+0毫米
+0点距
+529.5毫米
+距头顶点
+308毫米
+距
+尾
+顶
+点
+距尾顶点
+175.5毫米
+95 距
+毫尾
+笔尾
+点
+44.5毫米
+尾点
+4
+<details>
+<summary>natural_image</summary>
+Five grayscale 3D-rendered mechanical parts with cutouts, shown in different angles (no text or symbols)
+</details>

@@ -1,0 +1,27 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, irregularly shaped object with a glossy surface and visible cracks (no text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+洛麗希夫古
+詩梦齊欣藏
+超巡蒼雨遺途
+太極庭隆
+蕭新遊新
+蒼海老龍玲
+無貳記
+鶴春風
+琅琊珮垂
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Ancient Chinese guqin with carved wooden body and dragon motifs, no visible text or symbols
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Ancient Chinese guqin with intricate red and brown wood patterns, no visible text or symbols
+</details>
+正面

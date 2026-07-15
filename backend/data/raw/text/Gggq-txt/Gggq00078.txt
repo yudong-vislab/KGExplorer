@@ -1,0 +1,13 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, elongated wooden object with evenly spaced small white dots on its surface (no text or symbols visible)
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, elongated object with a small protrusion and a small base, possibly a tool or instrument (no visible text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+第30015號
+所文
+</details>

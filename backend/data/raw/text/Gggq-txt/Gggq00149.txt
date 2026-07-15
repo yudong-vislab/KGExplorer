@@ -1,0 +1,86 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Length    | 179   |
+| Height     | 114   |
+| Width     | 132   |
+| Top Margin | 135   |
+| Bottom Margin | 30   |
+| Total Length | 198   |
+| Total Height | 1207  |
+| Total Width | 236   |
+| Total Height | 206   |
+| Total Height | 9    |
+| Total Height | 3    |
+| Total Height | 79    |
+| Total Height | 9     |
+| Total Height | 1121  |
+| Total Height | 1121  |
+| Total Height | 164   |
+| Total Height | 180   |
+| Total Height | 145   |
+| Total Height | 142   |
+| Total Height | 135   |
+| Total Height | 142   |
+| Total Height | 30    |
+| Total Height | 430   |
+</details>
+无法识别
+<details>
+<summary>text_image</summary>
+1207
+1189
+18
+23
+16
+21
+17
+23
+18
+50
+23
+47
+24
+29
+30
+24
+29
+31
+24
+12
+70
+83
+147
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+18
+1189
+400
+205
+251
+78
+106
+129
+20
+1132
+30
+26
+67
+97
+24
+35
+129
+130
+19
+171
+</details>
+面背
+尾
+鄂
+<details>
+<summary>natural_image</summary>
+Cross-sectional view of a traditional Chinese bamboo or jade artifact with decorative patterns and no visible text or symbols
+</details>

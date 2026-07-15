@@ -1,0 +1,98 @@
+[
+  {
+    "id": "QNQY",
+    "title": "千年清音",
+    "triplet_prefix": "QNQY",
+    "text_prefix": "QNQY",
+    "image_prefix": "QNQY",
+    "status": {
+      "triplet": true,
+      "text": true,
+      "image": true
+    }
+  },
+  {
+    "id": "Yjzq",
+    "title": "一见钟琴",
+    "triplet_prefix": "Yjzq",
+    "text_prefix": "Yjzq",
+    "image_prefix": "Yjzq",
+    "status": {
+      "triplet": true,
+      "text": true,
+      "image": true
+    }
+  },
+  {
+    "id": "CQL",
+    "title": "藏琴录",
+    "triplet_prefix": "CQL",
+    "text_prefix": "CQL",
+    "image_prefix": "CQL",
+    "status": {
+      "triplet": true,
+      "text": true,
+      "image": true
+    }
+  },
+  {
+    "id": "Gq",
+    "title": "古琴",
+    "triplet_prefix": "Gq",
+    "text_prefix": "Gq",
+    "image_prefix": "Gq",
+    "status": {
+      "triplet": true,
+      "text": true,
+      "image": true
+    }
+  },
+  {
+    "id": "Gggq",
+    "title": "故宫古琴图典",
+    "triplet_prefix": null,
+    "text_prefix": "Gggq",
+    "image_prefix": null,
+    "status": {
+      "triplet": false,
+      "text": true,
+      "image": false
+    }
+  },
+  {
+    "id": "GCGQ",
+    "title": "馆藏古琴整理与研究",
+    "triplet_prefix": null,
+    "text_prefix": "GCGQ",
+    "image_prefix": null,
+    "status": {
+      "triplet": false,
+      "text": true,
+      "image": false
+    }
+  },
+  {
+    "id": "WXAC",
+    "title": "吾心安处",
+    "triplet_prefix": null,
+    "text_prefix": "WXAC",
+    "image_prefix": null,
+    "status": {
+      "triplet": false,
+      "text": true,
+      "image": false
+    }
+  },
+  {
+    "id": "Zggq",
+    "title": "中国古琴珍萃",
+    "triplet_prefix": null,
+    "text_prefix": null,
+    "image_prefix": null,
+    "status": {
+      "triplet": false,
+      "text": false,
+      "image": false
+    }
+  }
+]

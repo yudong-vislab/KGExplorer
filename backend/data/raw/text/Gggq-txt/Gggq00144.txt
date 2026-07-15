@@ -1,0 +1,9 @@
+<details>
+<summary>natural_image</summary>
+Ancient manuscript with weathered stone carvings and circular artifacts, no visible text or symbols
+</details>
+<details>
+<summary>text_image</summary>
+高居自民
+惟居
+</details>

@@ -1,0 +1,26 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden object with tassels and a translucent white pendant, no visible text or symbols.
+</details>
+<details>
+<summary>natural_image</summary>
+Plain gray gradient background with no visible text, symbols, or objects
+</details>
+<details>
+<summary>text_image</summary>
+徐龍王
+雲鳴相雲鳴之林
+滇古殿
+香鳴精月 韓舞瑞畫
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Black long-sleeve sword with visible blade and handle, no text or symbols present
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Ancient Chinese guqin with golden string and gold dots, no visible text or symbols
+</details>
+正面

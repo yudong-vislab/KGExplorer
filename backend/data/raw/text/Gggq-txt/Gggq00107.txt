@@ -1,0 +1,98 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Length    | 1208  |
+| Height     | 467   |
+| Width     | 155   |
+| Top Margin | 33    |
+| Bottom Margin | 210  |
+| Inner Diameter | 169  |
+| Outer Diameter | 165  |
+| Inner Diameter | 81   |
+| Outer Diameter | 5     |
+| Total Width | 1105  |
+| Total Height | 283  |
+| Total Height | 40    |
+| Total Height | 143   |
+| Total Height | 30    |
+| Total Height | 156   |
+| Total Height | 136   |
+| Total Height | 151   |
+| Total Height | 140   |
+| Total Height | 166   |
+</details>
+<details>
+<summary>text_image</summary>
+210
+132
+54
+169
+头
+</details>
+<details>
+<summary>text_image</summary>
+1208
+1155
+40
+60
+85
+13
+13
+23
+21
+23
+25
+20
+28
+21
+23
+27
+29
+28
+26
+32
+25
+32
+36
+13
+94
+160
+</details>
+面 侧
+<details>
+<summary>text_image</summary>
+13
+195
+337
+108
+76
+496
+496
+202
+165
+140
+145
+139
+30
+30
+23
+58
+20
+</details>
+<details>
+<summary>text_image</summary>
+23
+23
+143
+40
+30
+139
+202
+50
+</details>
+鄴尾
+<details>
+<summary>natural_image</summary>
+Cross-sectional view of a traditional Chinese wooden instrument with circular holes and inscribed components (no visible text or symbols)
+</details>

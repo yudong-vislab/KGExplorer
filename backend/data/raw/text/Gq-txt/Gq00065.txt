@@ -1,0 +1,33 @@
+<details>
+<summary>text_image</summary>
+松堂
+青音樂樂
+王寶
+</details>
+琴底
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden comb with braided tassels and an orange decorative object on top (no text or symbols visible)
+</details>
+琴头
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden object with two feet, tied with white string (no visible text or symbols)
+</details>
+琴尾
+<details>
+<summary>natural_image</summary>
+Close-up of a traditional Chinese guqin with a carved wooden object embedded in its body (no text or symbols visible)
+</details>
+琴额饰
+<details>
+<summary>text_image</summary>
+松景
+</details>
+琴名
+<details>
+<summary>text_image</summary>
+楚中
+国界
+</details>
+琴底印款

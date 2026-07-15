@@ -1,0 +1,12 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, textured wooden object with small circular indentations and a vertical line (no visible text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, weathered wooden sword with visible wear and a small protrusion (no text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, textured wooden object with a circular hole and small inscribed square (no visible text or symbols)
+</details>

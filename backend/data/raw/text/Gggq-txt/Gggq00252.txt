@@ -1,0 +1,17 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a traditional Chinese wooden panel with decorative patterns and geometric motifs (no visible text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+Ancient Chinese wooden box with intricate dragon and scroll carvings, featuring a small seal with inscriptions.
+</details>
+<details>
+<summary>text_image</summary>
+重書
+金徽王翰琴二張
+</details>
+<details>
+<summary>natural_image</summary>
+Ancient wooden box with intricate dragon and cloud patterns, no visible text or symbols
+</details>

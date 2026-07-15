@@ -1,0 +1,25 @@
+<details>
+<summary>text_image</summary>
+中和
+</details>
+琴名
+<details>
+<summary>natural_image</summary>
+Close-up of an ornate wooden comb with braided handles and a curved handle, no visible text or symbols.
+</details>
+琴头
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, curved object with two metallic pins and a coiled wire wrapped around it (no text or symbols visible)
+</details>
+琴尾
+<details>
+<summary>text_image</summary>
+月印長江水
+風微滴露清
+會到無聲處
+方知太古情
+敬一主人
+世博國
+</details>
+琴底款识

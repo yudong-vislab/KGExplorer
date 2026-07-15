@@ -9,7 +9,7 @@ const props = defineProps({
   selectedSlotId: { type: String, default: null },
 });
 
-const emit = defineEmits(['select-artifact', 'select-slot']);
+const emit = defineEmits(['select-artifact', 'select-slot', 'pin-artifact']);
 
 const rootEl = ref(null);
 let resizeObserver;
@@ -60,24 +60,69 @@ function renderGlobal(container, width, height) {
 
   const entityNames = [...new Set(ARTIFACTS.flatMap((a) => a.entities))];
   const nodes = [
-    ...ARTIFACTS.map((a) => ({ id: a.id, kind: 'artifact', artifact: a, r: 15 })),
-    ...entityNames.map((e) => ({ id: `e-${e}`, kind: 'entity', label: e, r: 6 })),
+    ...ARTIFACTS.map((a) => ({
+      id: `artifact:${a.id}`,
+      kind: 'artifact',
+      artifact: a,
+      r: 15 + Math.min(6, a.slots.length * 2),
+    })),
+    ...ARTIFACTS.flatMap((artifact) =>
+      artifact.slots.map((slot) => ({
+        id: `issue:${artifact.id}:${slot.id}`,
+        kind: 'issue',
+        artifact,
+        slot,
+        label: slot.label,
+        r: 7,
+      }))),
+    ...entityNames.map((e) => ({ id: `entity:${e}`, kind: 'entity', label: e, r: 5 })),
   ];
-  nodes.forEach((n, i) => {
-    n.x = width / 2 + ((i % 7) - 3) * 36;
-    n.y = height / 2 + (Math.floor(i / 7) - 2) * 36;
+  nodes.forEach((n) => {
+    if (n.kind === 'artifact') {
+      n.x = width * 0.45;
+      n.y = height * 0.5;
+    } else if (n.kind === 'issue') {
+      n.x = width * 0.28;
+      n.y = height * 0.5;
+    } else {
+      n.x = width * 0.72;
+      n.y = height * 0.5;
+    }
   });
-  const links = ARTIFACTS.flatMap((a) =>
-    a.entities.map((e) => ({ source: a.id, target: `e-${e}` })));
+  const links = [
+    ...ARTIFACTS.flatMap((artifact) =>
+      artifact.entities.map((entity) => ({
+        source: `artifact:${artifact.id}`,
+        target: `entity:${entity}`,
+        kind: 'context',
+      }))),
+    ...ARTIFACTS.flatMap((artifact) =>
+      artifact.slots.map((slot) => ({
+        source: `artifact:${artifact.id}`,
+        target: `issue:${artifact.id}:${slot.id}`,
+        kind: 'issue',
+        cls: slot.cls,
+      }))),
+  ];
 
   const graph = svg.append('g');
   const link = graph.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke', '#d3cbbd').attr('stroke-opacity', 0.55).attr('stroke-width', 0.9);
+    .attr('stroke', (d) => (d.kind === 'issue' ? CLASS_COLORS[d.cls] : '#d3cbbd'))
+    .attr('stroke-opacity', (d) => (d.kind === 'issue' ? 0.72 : 0.35))
+    .attr('stroke-width', (d) => (d.kind === 'issue' ? 1.4 : 0.8));
 
   const node = graph.append('g').selectAll('g').data(nodes).join('g')
-    .attr('cursor', (d) => (d.kind === 'artifact' ? 'pointer' : 'default'))
+    .attr('cursor', (d) => (d.kind === 'artifact' || d.kind === 'issue' ? 'pointer' : 'grab'))
     .on('click', (event, d) => {
+      if (event.defaultPrevented) return;
       if (d.kind === 'artifact') emit('select-artifact', d.artifact.id);
+      if (d.kind === 'issue') {
+        emit('select-artifact', d.artifact.id);
+        emit('select-slot', d.slot.id);
+      }
+    })
+    .on('dblclick', (event, d) => {
+      if (d.kind === 'artifact') emit('pin-artifact', d.artifact.id);
     });
 
   node.filter((d) => d.kind === 'entity')
@@ -86,11 +131,29 @@ function renderGlobal(container, width, height) {
     .attr('fill', '#b4b2a9')
     .attr('fill-opacity', 0.85);
 
-  node.filter((d) => d.kind === 'entity')
-    .append('text').text((d) => d.label)
-    .attr('x', 9).attr('y', 4)
-    .attr('fill', '#7c7466').attr('font-size', 10.5)
-    .attr('paint-order', 'stroke').attr('stroke', '#ffffff').attr('stroke-width', 3);
+  node.filter((d) => d.kind === 'issue')
+    .append('rect')
+    .attr('class', 'issue-mark')
+    .attr('x', -7)
+    .attr('y', -7)
+    .attr('width', 14)
+    .attr('height', 14)
+    .attr('rx', 3)
+    .attr('fill', (d) => CLASS_COLORS[d.slot.cls])
+    .attr('stroke', (d) => (d.artifact.id === props.selectedArtifactId && d.slot.id === props.selectedSlotId ? '#4a4438' : '#ffffff'))
+    .attr('stroke-width', (d) => (d.artifact.id === props.selectedArtifactId && d.slot.id === props.selectedSlotId ? 2.2 : 1.1));
+
+  node.filter((d) => d.kind === 'issue')
+    .append('text')
+    .text((d) => d.label)
+    .attr('x', 11)
+    .attr('y', 4)
+    .attr('fill', '#4a4438')
+    .attr('font-size', 10.5)
+    .attr('font-weight', 650)
+    .attr('paint-order', 'stroke')
+    .attr('stroke', '#ffffff')
+    .attr('stroke-width', 3);
 
   node.filter((d) => d.kind === 'artifact').each(function drawEach(d) {
     drawContentionGlyph(d3.select(this), d.artifact, d.r);
@@ -108,25 +171,46 @@ function renderGlobal(container, width, height) {
     .attr('r', (d) => d.r + 9)
     .attr('fill', 'none')
     .attr('stroke', '#6e5335')
-    .attr('stroke-width', (d) => (d.id === props.selectedArtifactId ? 1.6 : 0))
+    .attr('stroke-width', (d) => (d.artifact.id === props.selectedArtifactId ? 1.6 : 0))
     .attr('stroke-dasharray', '2 3');
 
   const simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id((d) => d.id).distance(95))
-    .force('charge', d3.forceManyBody().strength(-300))
+    .force('link', d3.forceLink(links).id((d) => d.id).distance((d) => (d.kind === 'issue' ? 54 : 92)))
+    .force('charge', d3.forceManyBody().strength((d) => (d.kind === 'artifact' ? -360 : -150)))
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('x', d3.forceX(width / 2).strength(0.05))
+    .force('x', d3.forceX((d) => {
+      if (d.kind === 'issue') return width * 0.3;
+      if (d.kind === 'entity') return width * 0.72;
+      return width * 0.48;
+    }).strength(0.12))
     .force('y', d3.forceY(height / 2).strength(0.07))
-    .force('collision', d3.forceCollide().radius((d) => (d.kind === 'artifact' ? 58 : d.r + 18)));
+    .force('collision', d3.forceCollide().radius((d) => (d.kind === 'artifact' ? 58 : d.r + 22)));
+
+  node.call(
+    d3.drag()
+      .on('start', (event, d) => {
+        simulation.alphaTarget(0.12).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      })
+      .on('drag', (event, d) => {
+        d.fx = event.x;
+        d.fy = event.y;
+      })
+      .on('end', (event, d) => {
+        simulation.alphaTarget(0);
+      }),
+  );
 
   simulation.on('tick', () => {
+    nodes.forEach((d) => {
+      const rightPad = d.kind === 'artifact' || d.kind === 'issue' ? 112 : 24;
+      d.x = Math.max(26, Math.min(width - rightPad, d.x));
+      d.y = Math.max(26, Math.min(height - 26, d.y));
+    });
     link.attr('x1', (d) => d.source.x).attr('y1', (d) => d.source.y)
       .attr('x2', (d) => d.target.x).attr('y2', (d) => d.target.y);
-    node.attr('transform', (d) => {
-      d.x = Math.max(26, Math.min(width - 96, d.x));
-      d.y = Math.max(26, Math.min(height - 26, d.y));
-      return `translate(${d.x},${d.y})`;
-    });
+    node.attr('transform', (d) => `translate(${d.x},${d.y})`);
   });
   setTimeout(() => simulation.stop(), 1800);
 }
@@ -140,7 +224,7 @@ function renderComparison(container, width, height) {
   const artifact = ARTIFACTS.find((a) => a.id === props.selectedArtifactId);
   if (!artifact) {
     svg.append('text')
-      .text('Click an artifact glyph in the global view to compare its sources.')
+      .text('Select artifact')
       .attr('x', width / 2).attr('y', height / 2)
       .attr('text-anchor', 'middle').attr('fill', '#9a9284').attr('font-size', 12.5);
     return;
@@ -221,18 +305,22 @@ onMounted(async () => {
   resizeObserver.observe(rootEl.value);
 });
 
-function updateSelectionRing() {
+function updateGlobalSelection() {
   if (!rootEl.value) return;
   d3.select(rootEl.value)
     .selectAll('.sel-ring')
-    .attr('stroke-width', (d) => (d.id === props.selectedArtifactId ? 1.6 : 0));
+    .attr('stroke-width', (d) => (d.artifact?.id === props.selectedArtifactId ? 1.6 : 0));
+  d3.select(rootEl.value)
+    .selectAll('.issue-mark')
+    .attr('stroke', (d) => (d.artifact.id === props.selectedArtifactId && d.slot.id === props.selectedSlotId ? '#4a4438' : '#ffffff'))
+    .attr('stroke-width', (d) => (d.artifact.id === props.selectedArtifactId && d.slot.id === props.selectedSlotId ? 2.2 : 1.1));
 }
 
 watch(() => props.variant, render);
 watch(
   () => [props.selectedArtifactId, props.selectedSlotId],
   () => {
-    if (props.variant === 'global') updateSelectionRing();
+    if (props.variant === 'global') updateGlobalSelection();
     else render();
   },
 );

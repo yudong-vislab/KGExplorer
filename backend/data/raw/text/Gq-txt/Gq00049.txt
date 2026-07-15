@@ -1,0 +1,30 @@
+<details>
+<summary>text_image</summary>
+靡
+雷
+</details>
+琴名
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden comb with tassels and a curved handle (no text or symbols visible)
+</details>
+琴头
+<details>
+<summary>natural_image</summary>
+Close-up of a black guitar head with white stringed strings attached to the blade (no text or symbols visible)
+</details>
+琴尾
+<details>
+<summary>text_image</summary>
+共緒十三年春二月中旬
+主修安至梁干渭記
+</details>
+琴底铭文（一）
+<details>
+<summary>text_image</summary>
+山洞悲煙
+風雲我色
+接我座雷
+古鬼神易
+</details>
+琴底铭文（二）

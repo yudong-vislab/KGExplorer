@@ -1,0 +1,81 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Total Length | 1095 |
+| Total Width | 178 |
+| Total Height | 1191 |
+| Total Thickness | 107 |
+| Total Width | 193 |
+| Total Height | 235 |
+| Total Width | 186 |
+| Total Height | 446 |
+| Total Thickness | 160 |
+| Total Width | 144 |
+| Total Height | 136 |
+| Total Width | 31 |
+| Total Height | 82 |
+| Total Thickness | 8 |
+| Total Width | 35 |
+| Total Height | 133 |
+| Total Width | 4 |
+| Total Height | 1103 |
+| Total Thickness | 4 |
+</details>
+头
+<details>
+<summary>text_image</summary>
+1191
+1180
+24
+17
+17
+20
+21
+18
+43
+17
+22
+23
+20
+21
+25
+17
+48
+24
+31
+22
+17
+84
+174
+8
+</details>
+面值
+<details>
+<summary>text_image</summary>
+65
+20
+60
+133
+29
+24
+102
+99
+24
+178
+140
+1180
+11
+406
+214
+242
+68
+102
+148
+</details>
+背面背
+鄖尾
+<details>
+<summary>natural_image</summary>
+Top-down schematic of a traditional Chinese wooden musical instrument with visible internal components and no text or symbols
+</details>

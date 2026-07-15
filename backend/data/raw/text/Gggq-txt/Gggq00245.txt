@@ -1,0 +1,30 @@
+<details>
+<summary>natural_image</summary>
+Traditional East Asian ink painting depicting a seascape with flying birds and clouds, no text or symbols present
+</details>
+天衢远举图
+<details>
+<summary>text_image</summary>
+天衢速舉
+籠轟芍簪辛尾勻西弩
+籠勻籠茖弩茖茖弩
+籠茖茖茖茖茖茖茖
+芍笙易二笙勻茖茖茖
+芍筮尾茖茖茖茖
+三筮茖茖六自上八又
+势三
+寸方蓀蘿蘿蔭中已
+芍屈
+勻尾勻可尾
+</details>
+天衢远举谱
+<details>
+<summary>natural_image</summary>
+Traditional Chinese ink painting of a mountain waterfall with misty valleys (no text or symbols)
+</details>
+声断楚云图
+<details>
+<summary>natural_image</summary>
+Plain beige textured surface with no visible text, symbols, or markings
+</details>
+声断楚云谱

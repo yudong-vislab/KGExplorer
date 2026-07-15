@@ -1,0 +1,265 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Length    | 1079  |
+| Width     | 1067  |
+| Height    | 81    |
+| Top Margin | 1079  |
+| Bottom Margin | 1067 |
+| Inner Diameter | 1079 |
+| Outer Diameter | 1067 |
+| Total Width | 1079 |
+| Total Height | 1079 |
+| Total Length | 1079 |
+| Total Width | 1067 |
+| Total Height | 1079 |
+| Total Length | 1079 |
+| Total Width | 1067 |
+| Total Height | 1079 |
+| Total Length | 1079 |
+| Total Width | 1067 |
+| Total Height | 1079 |
+| Total Length | 1079 |
+| Total Width | 1067 |
+| Total Height | 1078 |
+| Total Length | 1079 |
+| Total Width | 1067 |
+| Total Height | 1078 |
+| Total Length | 1079 |
+| Total Width | 1067 |
+| Total Height | 1078 |
+| Total Length | 1079 |
+| Total Width | 1067 |
+| Total Height | 1078 |
+| Total Length | 1078 |
+| Total Width | 1067 |
+| Total Height | 1078 |
+| Total Length | 1078 |
+| Total Width | 1067 |
+| Total Height | 1078 |
+| Total Length | 1078 |
+| Total Width | 1067 |
+| Total Height | 1078 |
+| Total Length | 1078 |
+| Total Width | 1063 |
+| Total Height | 1078 |
+| Total Length | 1078 |
+| Total Width | 1063 |
+| Total Height | 1078 |
+| Total Length | 1078 |
+| Total Width | 1063 |
+| Total Height | 1078 |
+| Total Length | 1078 |
+| Total Width | 1063 |
+| Total Height | 1073 |
+| Total Length | 1078 |
+| Total Width | 1063 |
+| Total Height | 1073 |
+| Total Length | 1078 |
+| Total Width | 1063 |
+| Total Height | 1073 |
+| Total Length | 1078 |
+| Total Width | 1063 |
+| Total Height | 1073 |
+| Total Length | 1073 |
+| Total Width | 1063 |
+| Total Height | 1073 |
+| Total Length | 1073 |
+| Total Width | 1063 |
+| Total Height | 1073 |
+| Total Length | 1073 |
+| Total Width | 1063 |
+| Total Height | 1073 |
+| Total Length | 1073 |
+| Total Width | 1062 |
+| Total Height | 1073 |
+| Total Length | 1073 |
+| Total Width | 1062 |
+| Total Height | 1073 |
+| Total Length | 1073 |
+| Total Width | 1062 |
+| Total Height | 1073 |
+| Total Length | 1073 |
+| Total Width | 1062 |
+| Total Height | 1072 |
+| Total Length | 1073 |
+| Total Width | 1062 |
+| Total Height | 1072 |
+| Total Length | 1073 |
+| Total Width | 1062 |
+| Total Height | 1072 |
+| Total Length | 1073 |
+| Total Width | 1062 |
+| Total Height | 1072 |
+| Total Length | 1072 |
+| Total Width | 1062 |
+| Total Height | 1072 |
+| Total Length | 1072 |
+| Total Width | 1062 |
+| Total Height | 1072 |
+| Total Length | 1072 |
+| Total Width | 1062 |
+| Total Height | 1072 |
+| Total Length | 1072 |
+| Total Width | 106        |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106        |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106        |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106        |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106         |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106         |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106         |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106         |
+| Total Height | 107         |
+| Total Length | 107         |
+| Total Width | 106         |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106         |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106         |
+| Total Height | 107        |
+| Total Length | 107       |
+| Total Width | 106         |
+| Total Height | 107        |
+| Total Length | 107         |
+| Total Width | 106         |
+| Φ3.5      | -     |
+| Φ3.5      (Top)   | -     |
+| Φ3.5      (Bottom)   | -     |
+| Intersection Point (e.g., '4' or 'R')   The 'φ' and 'W' labels are not explicitly provided in the image. The 'Φ' label is not present in the chart.
+</details>
+<details>
+<summary>text_image</summary>
+14
+164
+117
+37
+196
+</details>
+头
+<details>
+<summary>text_image</summary>
+1157
+1152
+48
+14
+24
+34
+21
+16
+75
+248
+58
+18
+14
+17
+19
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+25
+28
+29
+31
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+5
+136
+28
+31
+76
+105
+22
+24
+25
+42
+101
+42
+131
+1132
+375
+37
+5
+18
+125
+164
+</details>
+<details>
+<summary>text_image</summary>
+18
+30
+136
+35
+196
+44
+</details>
+部尾
+<details>
+<summary>natural_image</summary>
+Top-down view of a wooden elongated object with internal holes and rectangular cutouts (no visible text or symbols)
+</details>

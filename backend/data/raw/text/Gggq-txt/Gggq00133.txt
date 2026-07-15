@@ -1,0 +1,59 @@
+<details>
+<summary>text_image</summary>
+1246
+128
+307
+241
+266
+116
+128
+164
+17
+7
+307
+23
+25
+16
+23
+17
+22
+13
+25
+16
+23
+128
+31
+88 28
+</details>
+尾部
+背面背
+<details>
+<summary>natural_image</summary>
+Cross-sectional illustration of a cylindrical object with embedded circular features and structural details (no visible text or symbols)
+</details>
+琴头顶点位置
+119.5毫米
+距头顶点
+329毫米
+329毫米
+首头顶点
+518.5毫米
+距头顶点
+364毫米距
+翠尾面
+216.5毫米
+距尾顶点
+100 距
+毫 粤
+米 尾
+顶
+点
+47.5毫米
+距
+尾
+顶
+点
+<details>
+<summary>natural_image</summary>
+Five grayscale images showing a curved object with internal structures, arranged in two rows (no text or symbols)
+</details>

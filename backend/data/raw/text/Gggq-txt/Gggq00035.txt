@@ -1,0 +1,138 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Length    | 1103  |
+| Width     | 84    |
+| Height    | 26    |
+| Base      | 1203  |
+| Outer Diameter | 121  |
+| Inner Diameter | 1203 |
+| Outer Diameter | 174  |
+| Inner Diameter | 175  |
+| Inner Diameter | 169  |
+| Inner Diameter | 164  |
+| Inner Diameter | 161  |
+| Inner Diameter | 159  |
+| Inner Diameter | 155  |
+| Inner Diameter | 150  |
+| Inner Diameter | 202  |
+| Outer Diameter | 141   |
+| Outer Diameter | 147   |
+| Outer Diameter | 305   |
+| Outer Diameter | 305   |
+| Outer Diameter | 419   |
+| Outer Diameter | 419   |
+| Outer Diameter | 133   |
+| Outer Diameter | 133   |
+| Outer Diameter | 28    |
+| Outer Diameter | 28    |
+| Outer Diameter | 35    |
+| Outer Diameter | 35    |
+| Outer Diameter | 135   |
+| Outer Diameter | 135   |
+| Outer Diameter | 28    |
+| Outer Diameter | 6     |
+| Outer Diameter | 7     |
+| Outer Diameter | 8     |
+| Outer Diameter | 9     |
+| Outer Diameter | 103   |
+| Outer Diameter | 103   |
+| Outer Diameter | 110   |
+| Outer Diameter | 110   |
+| Outer Diameter | 121   |
+| Outer Diameter | 121   |
+| Outer Diameter | 174   |
+| Outer Diameter | 174   |
+| Outer Diameter | 25    |
+| Outer Diameter | 25    |
+| Outer Diameter | 35    |
+| Outer Diameter | 419   |
+| Outer Diameter | 419   |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+| Outer Diameter | Φ4    |
+</details>
+<details>
+<summary>text_image</summary>
+17
+192
+112
+60
+171
+202
+</details>
+郭头
+<details>
+<summary>text_image</summary>
+1203
+1190
+13
+29
+25
+18
+27
+18
+17
+52
+28
+47
+0
+0
+0
+0
+0
+34
+23
+14
+87
+160
+79
+29
+21
+17
+21
+31
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+64
+19
+75
+75
+135
+137
+135
+26
+128
+21
+32
+135
+190
+119
+453
+76
+319
+72
+121
+124
+13
+</details>
+部尾
+大圣遺書圖
+登线图
+单位毫米
+<details>
+<summary>natural_image</summary>
+Top-down schematic of a traditional Chinese wooden musical instrument with visible keyway and decorative patterns (no text or symbols)
+</details>

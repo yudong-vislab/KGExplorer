@@ -1,0 +1,19 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a rusted metal surface with two circular holes, featuring a blue rope and a small label (no legible text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Rusty metal object with vertical slots and a small circular feature, no visible text or symbols
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Ancient rusted metal object with curved and straight ends, no visible text or symbols
+</details>
+侧面
+<details>
+<summary>text_image</summary>
+渡宝三破强奏奏
+</details>
+正面

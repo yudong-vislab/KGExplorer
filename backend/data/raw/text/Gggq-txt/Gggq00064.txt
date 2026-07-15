@@ -1,0 +1,55 @@
+<details>
+<summary>text_image</summary>
+24
+193
+35
+43
+29
+133
+60
+65
+20
+8
+178
+11
+1180
+406
+214
+242
+68
+102
+148
+102
+29
+24
+26
+133
+29
+11
+</details>
+部尾
+<details>
+<summary>natural_image</summary>
+Cross-sectional view of a traditional wooden musical instrument with visible structural details and holes (no text or symbols)
+</details>
+琴头顶点位置
+112.5毫米
+距头顶点
+305.50毫米
+距头顶点
+482毫米
+距头顶点
+323.5毫米
+323 距尾点
+216.5毫米
+距尾点
+88 距
+55 琴尾
+毫米顶点
+24 距
+毫
+笔
+米
+尾
+顶
+点

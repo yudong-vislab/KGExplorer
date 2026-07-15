@@ -1,0 +1,25 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, curved object with a glossy surface and a white handle, against a plain background (no text or symbols visible)
+</details>
+<details>
+<summary>text_image</summary>
+間違張恩加出谷衡牙
+之鳴和以蕭親嘉深湯
+轟陵轢嘆果在北海坑
+濬兮葆由之冀
+乾隆御製
+韓隆
+胡伯
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Ancient Chinese guqin with carved wooden handle and ornate golden trim (no visible text or symbols)
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Traditional Chinese guqin with long silk and gold decorative trim, no visible text or symbols
+</details>
+正面

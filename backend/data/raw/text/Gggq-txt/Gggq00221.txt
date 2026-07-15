@@ -1,0 +1,26 @@
+<details>
+<summary>natural_image</summary>
+Traditional East Asian ink painting of a flying bird over clouds, no text or symbols present
+</details>
+一举万里图
+<details>
+<summary>text_image</summary>
+一舉萬里
+色縈最最最最最鬱鬱鬱
+最最最最最最最最
+刁蔓匀可蔓筍尋勺
+楚筍势三筍勺楚筍
+匈鶏甸蹇筠楚筠楚
+筠查尽楚五勺焚正
+</details>
+一举万里谱
+<details>
+<summary>natural_image</summary>
+Traditional ink painting of three geese among tall reeds and reeds, no text or symbols present
+</details>
+街芦图
+<details>
+<summary>natural_image</summary>
+Plain beige textured surface with no visible text, symbols, or markings
+</details>
+衔芦谱

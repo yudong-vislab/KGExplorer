@@ -1,0 +1,29 @@
+<details>
+<summary>natural_image</summary>
+Long, weathered wooden object with visible wear and a small mark on the side (no text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Ancient wooden double-headed artifact with carved tassels and patina, displayed against white background (no text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+明溪
+梅
+白作七
+在泛経
+天齊
+風鳴
+清寒月
+聞未
+道思
+大潮
+古場
+春
+歎
+漢
+舜
+聲
+1793-三十二年六月
+(四) 三十二年六月
+</details>

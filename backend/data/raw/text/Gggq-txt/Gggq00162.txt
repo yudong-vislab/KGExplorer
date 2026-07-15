@@ -1,0 +1,15 @@
+<details>
+<summary>text_image</summary>
+古漢伯王
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, ornate wooden cutting tool with carved details and a small red object on the handle (no visible text or symbols)
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, elongated wooden object with engraved markings and a small label (no readable text or symbols)
+</details>
+正面

@@ -1,0 +1,26 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a wooden comb with black tassels and gold string, no visible text or symbols
+</details>
+<details>
+<summary>text_image</summary>
+龍門風雨蛇腹斷琴
+薦漆
+二等
+</details>
+<details>
+<summary>text_image</summary>
+銘門風動地點
+二零年
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Ancient wooden artifact with carved patterns and a small metallic object attached (no visible text or symbols)
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Ancient Chinese guqin instrument with long vertical rods and gold accents (no visible text or symbols)
+</details>
+正面

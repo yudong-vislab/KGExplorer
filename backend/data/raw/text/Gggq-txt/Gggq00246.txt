@@ -1,0 +1,28 @@
+<details>
+<summary>natural_image</summary>
+Traditional East Asian ink painting of clouds and flying birds against a cloudy sky (no text or symbols)
+</details>
+天衢遠舉
+籠韆芍簪辛尾勻五簪
+箋勻籠茖簪茖茖
+籠簪簪簪簪簪簪
+芍箋昌二箋勻籠簪簪
+苃箋尾簪簪簪簪手巾
+六自上又也刀三
+<details>
+<summary>natural_image</summary>
+Traditional Chinese ink painting depicting a mountainous landscape with flying birds and clouds, no text or symbols present.
+</details>
+声断楚云图
+<details>
+<summary>text_image</summary>
+聲斷楚雲
+人筠麓筍麓筍可麓
+籲畢百乍勻可麓查省
+五至車乍
+苛麓邁筍麓
+正
+詳訂秋鴻三十六段
+終
+</details>
+声断楚云谱

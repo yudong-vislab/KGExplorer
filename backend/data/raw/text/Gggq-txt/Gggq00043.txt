@@ -1,0 +1,117 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Total Length | 190 |
+| Top Diameter | 1220 |
+| Top Height | 129 |
+| Top Width | 118 |
+| Top Thickness | 125 |
+| Top Spacing | 127 |
+| Top Spacing | 125 |
+| Top Spacing | 1220 |
+| Top Spacing | 425 |
+| Top Spacing | 32 |
+| Top Spacing | 26 |
+| Top Spacing | 130 |
+| Top Spacing | 139 |
+| Top Spacing | 148 |
+| Top Spacing | 150 |
+| Top Spacing | 26 |
+| Top Spacing | 70 |
+| Top Spacing | 8 |
+| Top Spacing | 3 |
+| Bottom Length | 118 |
+| Bottom Spacing | 110 |
+| Bottom Spacing | 70 |
+| Bottom Spacing | 26 |
+| Bottom Spacing | 130 |
+| Bottom Spacing | 148 |
+| Bottom Spacing | 168 |
+| Bottom Spacing | 160 |
+| Bottom Spacing | 140 |
+| Bottom Spacing | 168 |
+| Bottom Spacing | 196 |
+| Bottom Spacing | 149 |
+| Bottom Spacing | 168 |
+Φ4 (Top) | 3.0 |
+| Φ4 (Bottom) | 8.0 |
+</details>
+郭头
+<details>
+<summary>other</summary>
+| Section | Width (m) |
+| ------- | --------- |
+| Top Left | 1208      |
+| Top Right | 1220      |
+| Bottom Left | 57 |
+| Bottom Right | 63 |
+| Bottom Right | 99 |
+| Middle Left | 27 |
+| Middle Right | 19 |
+| Middle Right | 17 |
+| Middle Right | 27 |
+| Middle Right | 20 |
+| Middle Right | 25 |
+| Middle Right | 16 |
+| Middle Right | 16 |
+| Middle Right | 48 |
+| Middle Right | 23 |
+| Middle Right | 22 |
+| Middle Right | 32 |
+| Middle Right | 24 |
+| Middle Right | 21 |
+| Middle Right | 17 |
+| Middle Right | 180 |
+| Bottom Right | 25 |
+| Bottom Right | 32 |
+| Bottom Right | 34 |
+| Bottom Right | 24 |
+| Bottom Right | 30 |
+| Bottom Right | 25 |
+| Bottom Right | 34 |
+The chart displays a single data series with 'Width' and 'Height' labels for the top section. The 'Length' values are explicitly labeled on the left side.
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+478
+78
+332
+1208
+12
+72
+109
+139
+478
+78
+332
+1208
+12
+136
+29
+22
+103
+62
+150
+139
+60
+77
+21
+</details>
+背面背
+<details>
+<summary>text_image</summary>
+27
+136
+27
+32
+196
+57
+</details>
+鄖尾
+玉玲珑琴线图单位毫米
+<details>
+<summary>natural_image</summary>
+Cross-sectional view of a long, weathered wooden object with circular holes and internal features (no visible text or symbols)
+</details>

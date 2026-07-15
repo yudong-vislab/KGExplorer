@@ -1,0 +1,42 @@
+<details>
+<summary>natural_image</summary>
+Traditional Chinese guqin instrument with long, evenly spaced musical notes (no visible text or symbols)
+</details>
+琴面
+<details>
+<summary>natural_image</summary>
+Ancient bronze sword with patina and handle, no visible inscriptions or symbols
+</details>
+琴侧
+<details>
+<summary>natural_image</summary>
+Ancient wooden musical instrument with carved patterns and a central rectangular cutout (no visible text or symbols)
+</details>
+琴底
+<details>
+<summary>text_image</summary>
+Ancient Chinese inscribed seal with stylized characters and grid lines, likely from a stele or inscription.
+</details>
+琴名
+<details>
+<summary>text_image</summary>
+京人清唐琴水松辭春刊重而記室在京
+即見雪琴外教青在山以癸元任會有案存於
+藏空回舍秋茶共春晴未明其已不來座重至
+雅靖廣山白日天皇座二千陽月子京漢
+</details>
+琴底铭文
+<details>
+<summary>natural_image</summary>
+Close-up of a wooden comb with braided tassels and a central oval object (no text or symbols visible)
+</details>
+琴头
+<details>
+<summary>natural_image</summary>
+Traditional Chinese guqin instrument with six strings and a circular blue gemstone (no text or symbols visible)
+</details>
+<details>
+<summary>natural_image</summary>
+Ancient carved wooden object with black and white markings, resembling a stylized boat or vessel (no visible text or symbols)
+</details>
+琴尾

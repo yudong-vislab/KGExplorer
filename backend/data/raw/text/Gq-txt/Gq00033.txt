@@ -1,0 +1,19 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a corroded metal pipe with visible wear and corrosion, no text or symbols present
+</details>
+<details>
+<summary>text_image</summary>
+Ancient stone inscription on a carved wooden shell, showing carved characters in traditional script
+</details>
+龙池内款识
+<details>
+<summary>text_image</summary>
+Ancient Chinese stone artifact with two wooden handles and a red seal bearing inscriptions
+</details>
+玉雁足
+<details>
+<summary>natural_image</summary>
+Close-up of a guitar fretboard with white horizontal lines and scattered dots (no text or symbols)
+</details>
+琴面断纹与八宝灰胎

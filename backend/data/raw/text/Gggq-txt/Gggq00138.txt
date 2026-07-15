@@ -1,0 +1,12 @@
+<details>
+<summary>natural_image</summary>
+Close-up of an ancient wooden double-headed tool with patina and small holes, no visible text or symbols
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden cylindrical object with a flanged end and small protrusions, showing surface wear and corrosion (no text or symbols visible)
+</details>
+<details>
+<summary>text_image</summary>
+Ancient Chinese bronze artifact with inscribed characters and a circular seal, likely a ceremonial or historical artifact.
+</details>

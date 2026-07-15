@@ -1,0 +1,89 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Length    | 126   |
+| Width     | 202   |
+| Height    | 458   |
+| Base      | 231   |
+| Total     | 1261  |
+| Top Margin | 25    |
+| Bottom Margin | 182  |
+| Left Margin | 38    |
+| Right Margin | 30    |
+| Left Segment | 149   |
+| Middle Segment | 157   |
+| Right Segment | 171   |
+| Bottom Segment | 93   |
+| Top Segment | 1150  |
+| Bottom Segment | 1161  |
+</details>
+<details>
+<summary>text_image</summary>
+20
+182
+115
+61
+201
+</details>
+郭头
+<details>
+<summary>text_image</summary>
+1261
+1238
+31
+26
+24
+26
+23
+20
+51
+21
+51
+27
+31
+17
+23
+26
+23
+96
+210
+13
+81
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+406
+211
+268
+98
+113
+120
+1238
+23
+124
+116
+70
+19
+224
+146
+182
+44
+20
+</details>
+背面背
+<details>
+<summary>text_image</summary>
+31
+146
+22
+51
+38
+201
+</details>
+鄂尾
+<details>
+<summary>natural_image</summary>
+Close-up of an ancient bronze sword with inscribed metal bands and holes (no visible text or symbols)
+</details>

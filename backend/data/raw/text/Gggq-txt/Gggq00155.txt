@@ -1,0 +1,125 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Total Length | 1205 |
+| Total Height | 196 |
+| Total Width | 32 |
+| Total Height (Top) | 145 |
+| Total Height (Bottom) | 36 |
+| Total Height (Bottom Left) | 10 |
+| Total Height (Bottom Right) | 1117 |
+| Total Height (Top) | 20 |
+| Total Height (Top Left) | 32 |
+| Total Height (Top Right) | 456 |
+| Total Height (Top Bottom) | 169 |
+| Total Height (Top Bottom Left) | 145 |
+| Total Height (Top Bottom Right) | 164 |
+| Total Height (Top Top) | 196 |
+| Total Height (Top Top Left) | 36 |
+| Total Height (Top Top Right) | 10.5 |
+| Total Height (Top Bottom) | 169 |
+| Total Height (Top Bottom Left) | 141 |
+| Total Height (Top Bottom Right) | 169 |
+| Total Height (Top Bottom Top) | 164 |
+| Total Height (Top Bottom Top Left) | 32 |
+| Total Height (Top Bottom Top Right) | 169 |
+| Total Height (Top Bottom Bottom) | 10.5 |
+| Total Height (Top Bottom Bottom Left) | 36 |
+| Total Height (Top Bottom Bottom Right) | 10.5 |
+| Total Height (Top Bottom Top) | 169 |
+| Total Height (Top Bottom Top Left) | 32 |
+| Total Height (Top Bottom Top Right) | 169 |
+| Total Height (Top Bottom Top Bottom) | 145 |
+| Total Height (Top Bottom Top Bottom Left) | 32 |
+| Total Height (Top Bottom Top Bottom Right) | 169 |
+| Total Height (Top Bottom Top) | 141 |
+| Total Height (Top Bottom Top Left) | 36 |
+| Total Height (Top Bottom Top Right) | 10.5 |
+| Total Height (Top Bottom Top Bottom) | 36 |
+| Total Height (Top Bottom Top Bottom Left) | 32 |
+| Total Height (Top Bottom Top Bottom Right) | 169 |
+| Total Height (Top Bottom Top Bottom Top) | 145 |
+| Total Height (Top Bottom Top Bottom Top Left) | 32 |
+| Total Height (Top Bottom Top Bottom Top Right) | 169 |
+| Total Height (Top Bottom Top Bottom Top Bottom Top) | 141 |
+| Total Height (Top Bottom Top Bottom Top Bottom Top Top) | 36 |
+| Total Height (Top Bottom Top Bottom Top Bottom Top Top) | 32 |
+| Total Height (Top Bottom Top Bottom Top Bottom Top Bottom Top Top) | 36 |
+| Total Height (Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom Top Bottom
+</details>
+<details>
+<summary>text_image</summary>
+20
+170
+124
+164
+196
+55
+</details>
+头
+<details>
+<summary>other</summary>
+| Section | Dimension |
+| ------- | --------- |
+| Top Section | 1205 |
+| Middle Section | 19 |
+| Bottom Section | 30 |
+| Left Section | 24 |
+| Right Section | 24 |
+| Center Section | 19 |
+| Left Side | 19 |
+| Middle Side | 23 |
+| Right Side | 27 |
+| Center Side | 32 |
+| Left Side | 27 |
+| Middle Side | 31 |
+| Right Side | 38 |
+| Center Side | 59 |
+| Left Side | 20 |
+| Middle Side | 32 |
+| Right Side | 44 |
+| Center Side | 22 |
+| Left Side | 19 |
+| Middle Side | 176 |
+| Right Side | 78 |
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+61
+20
+22
+19
+140
+29
+20
+104
+121
+137
+170
+396
+238
+240
+71
+113
+126
+20
+1204
+1
+</details>
+背面
+<details>
+<summary>text_image</summary>
+24
+196
+29
+32
+140
+50
+</details>
+影尾
+<details>
+<summary>natural_image</summary>
+Ancient bronze artifact with patina and inscriptions, showing a long rectangular body with embedded patterns and no visible text or symbols.
+</details>

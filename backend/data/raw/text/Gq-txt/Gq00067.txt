@@ -1,0 +1,34 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden instrument with copper wire loops and two white metal pins (no visible text or symbols)
+</details>
+琴底
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden comb with multiple braided tassels and decorative crown-like elements (no text or symbols visible)
+</details>
+琴头
+<details>
+<summary>natural_image</summary>
+Close-up of a black mechanical component with yellow wire wrapped around it, no visible text or symbols
+</details>
+琴尾
+<details>
+<summary>text_image</summary>
+所於非水情食
+可主車所於非水
+四川重慶特中華書
+</details>
+龙池内右侧墨书款
+<details>
+<summary>text_image</summary>
+癸巳亥休春月
+辛未歲吹下
+癸巳庚戌國三十二
+</details>
+龙池内左侧墨书款
+<details>
+<summary>text_image</summary>
+丁寧
+</details>
+凤沼纳音墨书款

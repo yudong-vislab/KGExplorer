@@ -1,0 +1,19 @@
+<details>
+<summary>natural_image</summary>
+Abstract black-and-white textured surface with red and orange vertical streaks (no text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Ancient Chinese zhuang guqin with dark wood and orange string (no visible text or symbols)
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Ancient black wooden instrument with attached string and metal components (no visible text or symbols)
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Ancient Chinese guqin with long silk and gold string, no visible text or symbols
+</details>
+正面

@@ -1,0 +1,32 @@
+<details>
+<summary>text_image</summary>
+一天秋
+</details>
+琴名
+<details>
+<summary>natural_image</summary>
+Close-up of a damaged metal structure with visible wear and debris, framed by parallel lines (no text or symbols)
+</details>
+琴面补灰
+<details>
+<summary>natural_image</summary>
+Close-up of a weathered wooden pillar with visible cracks and texture, adjacent to a vertical white stripe (no text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+Ancient carved stone inscription with carved characters, likely from a stele or tablet
+</details>
+龙池内右侧款识
+<details>
+<summary>natural_image</summary>
+Close-up of a carved wooden tree trunk with carved patterns, no visible text or symbols
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a textured wooden pillar with visible cracks and knots (no text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+Close-up of a carved wooden post with Chinese characters, likely from a historical or literary work.
+</details>
+龙池内左侧款识

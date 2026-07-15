@@ -1,0 +1,31 @@
+<details>
+<summary>natural_image</summary>
+Traditional East Asian ink painting of geese swimming near reeds and water, no text or symbols present
+</details>
+争芦图
+<details>
+<summary>text_image</summary>
+爭蘆
+藝慈尚梧。藝云枝香。蘭
+百乍墨醬。白
+枝渣。竹墨。初
+墨。初
+勺墨屋。童。三尸。鑿。初
+鑿。初
+六碧。四葛。十碧。匀墨。三
+匈。
+下五。書。
+書。初
+莫勻。蜀。
+</details>
+争芦谱
+<details>
+<summary>natural_image</summary>
+Traditional ink painting of a riverside landscape with reeds, rocks, and distant hills (no text or symbols)
+</details>
+出诸图
+<details>
+<summary>natural_image</summary>
+Plain beige textured surface with no visible text, symbols, or markings
+</details>
+出渚谱

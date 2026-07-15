@@ -1,0 +1,28 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, curved wooden object with a rough surface and visible wear (no text or symbols)
+</details>
+<details>
+<summary>text_image</summary>
+直和歌
+靈書
+</details>
+<details>
+<summary>text_image</summary>
+金鐘
+明邪納正
+導惠宣讀
+宣永辰
+聖書
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Close-up of a dark, weathered metal object with a small protrusion and a small knob (no visible text or symbols)
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Dark, elongated object with a flat top and flared sides, possibly a traditional musical instrument or tool (no visible text or symbols)
+</details>
+正面

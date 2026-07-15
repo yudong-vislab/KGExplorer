@@ -1,0 +1,12 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a traditional Chinese guqin with golden string and small holes, no visible text or symbols
+</details>
+<details>
+<summary>natural_image</summary>
+Side view of a traditional Chinese guqin with wooden string and rope (no visible text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Ancient bronze artifact with coiled gold wires and inscriptions, no visible text or symbols
+</details>

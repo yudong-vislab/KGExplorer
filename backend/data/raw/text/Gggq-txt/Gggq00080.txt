@@ -1,0 +1,48 @@
+<details>
+<summary>text_image</summary>
+15
+1237
+420
+220
+234
+83
+110
+170
+136
+31
+29
+23
+103
+25
+28
+136
+178
+24
+69
+</details>
+鄖尾
+<details>
+<summary>natural_image</summary>
+Cross-sectional view of a mechanical component with internal holes and rectangular cutouts (no text or symbols)
+</details>
+琴头顶点位置
+96 距米
+翠头顶点
+297毫米
+距
+落
+点
+顶
+512.5毫米
+距头顶点
+377.5毫米
+距尾顶点
+223.5毫米
+距离点
+103 距
+毫
+尾
+顶
+点
+51.5毫米
+5 章尾顶点

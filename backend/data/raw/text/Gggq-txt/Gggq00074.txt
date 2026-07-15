@@ -1,0 +1,17 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden comb with braided pins and a curved handle (no visible text or symbols)
+</details>
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden object with visible grain and a small hole, no text or symbols present.
+</details>
+<details>
+<summary>natural_image</summary>
+Dark textured surface with faint vertical lines and scattered golden dots, no visible text or symbols
+</details>
+<details>
+<summary>text_image</summary>
+唐貞觀二年淳化寺古相華山道人製
+明崇禎六年海泉道人重修
+</details>

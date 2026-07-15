@@ -1,0 +1,19 @@
+<details>
+<summary>natural_image</summary>
+Dark, grainy image with a vertical brown line on the left edge (no text or symbols visible)
+</details>
+<details>
+<summary>natural_image</summary>
+Ancient Chinese guqin with intricate silk and silk embroidery, featuring a central vertical beam and two flower-like decorative elements (no visible text or symbols)
+</details>
+反面
+<details>
+<summary>natural_image</summary>
+Ancient black wooden instrument with multiple holes and a small metallic object attached (no visible text or symbols)
+</details>
+侧面
+<details>
+<summary>natural_image</summary>
+Traditional Chinese guqin with golden string and gold dots, no visible text or symbols
+</details>
+正面

@@ -1,0 +1,46 @@
+<details>
+<summary>text_image</summary>
+風金來像鳴子高
+蘭冬華弹立亭
+墨秋光
+品尔诺元手，青白海高高登
+人歌
+</details>
+琴底
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden comb with yellow tassels and green beads, no visible text or symbols
+</details>
+琴头
+<details>
+<summary>natural_image</summary>
+Close-up of a dark brown, textured object with white wire wrapped around it, resembling a stylized object (no text or symbols visible)
+</details>
+琴尾
+<details>
+<summary>text_image</summary>
+鳳雲儀鳴子高
+蘭久寧
+鐘子至丞
+星光忠
+景祐元年春月清月至
+人頤
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+五〇〇二〇
+</details>
+琴底铭文
+<details>
+<summary>natural_image</summary>
+Close-up of a guitar fretboard with five parallel strings and a dotted line (no text or symbols)
+</details>
+琴面断纹

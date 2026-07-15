@@ -1,0 +1,202 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Total Length | 218 |
+| Top Diameter | 175 |
+| Top Height | 184 |
+| Top Width | 10 |
+| Top Height (Bottom) | 1132 |
+| Top Height (Top) | 10 |
+| Top Height (Bottom) | 79 |
+| Bottom Diameter | 29 |
+| Bottom Height | 165 |
+| Bottom Width | 141 |
+| Bottom Height (Top) | 127 |
+| Bottom Height (Top) | 125 |
+| Bottom Height (Bottom) | 186 |
+| Top Diameter (Top) | 35 |
+| Top Height (Top) | 434 |
+| Top Height (Top) | 1240 |
+| Top Height (Bottom) | 3 |
+| Top Height (Bottom) | 154 |
+| Top Height (Bottom) | 36 |
+| Top Height (Bottom) | 218 |
+| Top Height (Bottom) | 1142 |
+Φ4 (Top) | 10 |
+| Top Height (Bottom) | 36 |
+</details>
+<details>
+<summary>text_image</summary>
+218
+122
+69
+175
+</details>
+央
+<details>
+<summary>other</summary>
+| Section | Height |
+| ------- | ------ |
+| Top Section | 1240 |
+| Middle Section | 19 |
+| Bottom Section | 95 |
+| Vertical Segment | 163 |
+| Horizontal Segment | 3 |
+| Vertical Segment | 19 |
+| Vertical Segment | 58 |
+| Vertical Segment | 37 |
+| Vertical Segment | 36 |
+| Vertical Segment | 22 |
+| Vertical Segment | 30 |
+| Vertical Segment | 21 |
+| Vertical Segment | 34 |
+| Vertical Segment | 21 |
+| Vertical Segment | 30 |
+| Vertical Segment | 23 |
+| Vertical Segment | 19 |
+| Vertical Segment | 124 |
+| Vertical Segment | 19 |
+| Vertical Segment | 124 |
+| Vertical Segment | 19 |
+| Vertical Segment | 124 |
+| Vertical Segment | 19 |
+| Vertical Segment | 124 |
+| Vertical Segment | 19 |
+| Vertical Segment | 124 |
+| Vertical Segment | 19 |
+| Vertical Segment | 124 |
+| Vertical Segment | 19 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Segment | 95 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1240 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1244 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1246 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1248 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1250 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1254 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1256 |
+| Vertical Component | 1258 |
+| Vertical Component | 1258 |
+| Vertical Component | 1258 |
+| Vertical Component | 1258 |
+| Vertical Component | 1258 |
+| Vertical Component | 1258 |
+| Vertical Component | 1258 |
+| Vertical Component | 1258 |
+| Vertical Component | 1260
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+63
+68
+20
+152
+35
+29
+111
+26
+154
+157
+218
+19
+1224
+424
+221
+249
+72
+111
+147
+</details>
+背面背
+<details>
+<summary>text_image</summary>
+23
+35
+152
+40
+154
+218
+53
+</details>
+鄖尾
+九霄环佩琴线图单位毫米
+<details>
+<summary>natural_image</summary>
+Cross-sectional diagram of a cylindrical object with internal structural details (no visible text or symbols)
+</details>

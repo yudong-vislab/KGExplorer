@@ -1,0 +1,86 @@
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Length    | 1252  |
+| Width     | 113   |
+| Height    | 178   |
+| Top Margin | 1163  |
+| Bottom Margin | 1153  |
+| Top Diameter | 10    |
+| Top Width | 3     |
+| Bottom Width | 77    |
+| Bottom Height | 192   |
+| Bottom Total | 472   |
+| Middle Height | 195   |
+| Middle Width | 163   |
+| Middle Height | 153   |
+| Middle Height | 142   |
+| Middle Height | 149   |
+| Middle Height | 212   |
+| Middle Height | 237   |
+| Middle Height | 26    |
+| Middle Height | 34    |
+| Middle Height | 34    |
+| Middle Height | 136   |
+</details>
+正面
+<details>
+<summary>text_image</summary>
+86
+16
+185
+24
+35
+88
+28
+53
+18
+17
+21
+20
+16
+16
+25
+48
+1237
+15
+1252
+</details>
+侧面
+<details>
+<summary>text_image</summary>
+24
+178
+139
+28
+420
+220
+1237
+69
+103
+25
+23
+31
+29
+136
+170
+15
+83
+234
+</details>
+背面
+<details>
+<summary>text_image</summary>
+L9
+195
+103
+178
+8
+</details>
+头部
+尾部
+<details>
+<summary>natural_image</summary>
+Top-down view of a mechanical component with internal cavities and mounting holes (no text or symbols visible)
+</details>

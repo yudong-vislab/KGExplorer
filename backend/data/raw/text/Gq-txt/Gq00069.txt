@@ -1,0 +1,27 @@
+<details>
+<summary>natural_image</summary>
+Close-up of a traditional Chinese guqin with white string and decorative knot (no text or symbols visible)
+</details>
+<details>
+<summary>text_image</summary>
+半民國三十六年
+</details>
+<details>
+<summary>text_image</summary>
+歲次丁亥申春月
+</details>
+龙池内纳音左侧墨书款
+<details>
+<summary>text_image</summary>
+四川重慶陽少色雨
+</details>
+<details>
+<summary>text_image</summary>
+重修於天風琴社
+</details>
+龙池内纳音右侧墨书款
+<details>
+<summary>text_image</summary>
+黃鐘
+</details>
+凤沼纳音上墨书款

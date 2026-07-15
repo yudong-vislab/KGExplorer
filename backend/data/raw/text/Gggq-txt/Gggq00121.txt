@@ -1,0 +1,65 @@
+<details>
+<summary>text_image</summary>
+68
+56 21
+172
+137
+27
+25
+41
+9
+25
+28
+129
+395
+1188
+16
+137
+112
+47
+47
+255
+395
+213
+</details>
+<details>
+<summary>text_image</summary>
+23
+188
+33
+45
+25
+137
+</details>
+鄧尾
+<details>
+<summary>natural_image</summary>
+Cross-sectional illustration of an ancient sword or weapon (no visible text or symbols)
+</details>
+琴头顶点位置
+69 距
+毫 琴
+米 头
+287毫米
+距
+萃
+头
+顶
+点
+476.5毫米
+距离顶点
+338.5毫米距
+尾点
+338
+217.5毫米
+距
+尾
+顶
+点
+78.5毫米
+距
+尾
+顶
+点
+45.5毫米
+尾顶点

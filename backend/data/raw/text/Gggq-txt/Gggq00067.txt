@@ -1,0 +1,114 @@
+<details>
+<summary>text_image</summary>
+1107
+1094
+13
+3
+79
+190
+142
+142
+159
+147
+139
+131
+31
+130
+40
+476
+208
+211
+1184
+26
+108
+155
+108
+</details>
+<details>
+<summary>text_image</summary>
+24
+174
+117
+68
+190
+郭兴
+</details>
+<details>
+<summary>other</summary>
+| Dimension | Value |
+| --------- | ----- |
+| Total Length | 1184 |
+| Height | 1167 |
+| Top Diameter | 24 |
+| Top Width | 17 |
+| Bottom Diameter | 43 |
+| Top Width | 20 |
+| Top Width | 25 |
+| Top Width | 23 |
+| Top Width | 26 |
+| Top Width | 23 |
+| Top Width | 21 |
+| Top Width | 25 |
+| Top Width | 24 |
+| Top Width | 39 |
+| Top Width | 57 |
+| Top Width | 37 |
+| Top Width | 31 |
+| Top Width | 17 |
+| Top Width | 16 |
+| Top Width | 17 |
+| Bottom Width | 19 |
+| Bottom Width | 22 |
+| Bottom Width | 22 |
+| Bottom Width | 20 |
+| Bottom Width | 25 |
+| Bottom Width | 31 |
+| Bottom Width | 17 |
+| Bottom Width | 16 |
+| Bottom Width | 17 |
+| Bottom Width | 74 |
+| Bottom Width | 149 |
+</details>
+面侧
+<details>
+<summary>text_image</summary>
+17
+1167
+213
+215
+81
+117
+112
+23
+406
+406
+137
+174
+130
+27
+30
+29
+12
+31
+90
+36
+38
+16
+67
+18
+</details>
+<details>
+<summary>text_image</summary>
+24
+130
+27
+31
+190
+43
+</details>
+背面背
+<details>
+<summary>natural_image</summary>
+Cross-sectional diagram of a cylindrical object with internal features and no visible text or symbols
+</details>
+邵尾

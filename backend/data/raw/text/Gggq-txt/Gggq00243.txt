@@ -1,0 +1,47 @@
+<details>
+<summary>natural_image</summary>
+Traditional East Asian ink painting of birds flying over water with reeds in the foreground (no text or symbols)
+</details>
+引阵图
+<details>
+<summary>text_image</summary>
+引陣
+蔓叢茖
+七幼 蔓叢茖
+上八上
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+蔓叢茖
+七幼
+</details>
+引阵谱
+<details>
+<summary>natural_image</summary>
+Traditional East Asian ink painting of a swan swimming in water with reeds and distant trees (no text or symbols)
+</details>
+入塞图
+<details>
+<summary>natural_image</summary>
+Plain beige textured surface with no visible text, symbols, or markings
+</details>
+入塞谱

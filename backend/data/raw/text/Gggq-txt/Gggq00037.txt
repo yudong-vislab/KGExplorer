@@ -1,0 +1,8 @@
+<details>
+<summary>text_image</summary>
+大王悲喜
+</details>
+<details>
+<summary>natural_image</summary>
+Decorative image of a translucent rose with a long stem, set against a dark textured background (no text or symbols)
+</details>

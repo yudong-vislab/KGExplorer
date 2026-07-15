@@ -1,0 +1,36 @@
+<details>
+<summary>text_image</summary>
+霜
+鐘
+山陽
+南陽
+</details>
+琴底
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden comb with multiple handles and orange tassels, no visible text or symbols.
+</details>
+琴头
+<details>
+<summary>natural_image</summary>
+Close-up of a dark wooden object with two small protrusions and a coiled wire, no visible text or symbols.
+</details>
+琴尾
+琴名
+<details>
+<summary>text_image</summary>
+霜
+鐘
+</details>
+<details>
+<summary>text_image</summary>
+山東
+雲海
+</details>
+琴底印款
+<details>
+<summary>text_image</summary>
+金兵
+國
+</details>
+琴底款识
