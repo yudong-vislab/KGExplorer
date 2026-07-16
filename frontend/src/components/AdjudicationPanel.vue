@@ -1,6 +1,8 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
-import { ARTIFACTS, SOURCES, CLASS_COLORS, CLASS_LABELS } from '../data/guqinSeed.js';
+import { store, CLASS_COLORS, CLASS_LABELS } from '../data/store.js';
+const ARTIFACTS = store.artifacts;
+const SOURCES = store.sources;
 
 const props = defineProps({
   selectedArtifactId: { type: String, default: null },
@@ -32,7 +34,7 @@ function decide(action) {
     <template v-else>
       <div class="adj-artifact">
         <strong>{{ artifact.name }}</strong>
-        <span>{{ artifact.slots.length }} contested slot(s)</span>
+        <span>{{ artifact.sources.length }} source(s) · {{ artifact.slots.filter((s) => s.cls !== 'consensus').length }} candidate(s)</span>
       </div>
 
       <ul class="adj-slot-list">

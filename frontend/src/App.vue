@@ -1,32 +1,47 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import KnowledgeGraphView from './components/KnowledgeGraphView.vue';
 import AdjudicationPanel from './components/AdjudicationPanel.vue';
-import { ARTIFACTS, SOURCES, CLASS_COLORS } from './data/guqinSeed.js';
+import { store, loadStore, CLASS_COLORS } from './data/store.js';
 
+const selectedCase = ref('guqin');
+onMounted(() => loadStore(selectedCase.value));
+
+const SOURCES = computed(() => store.sources);
 const CLS_ORDER = { A: 0, C: 1, B: 2 };
-const worklist = ARTIFACTS.flatMap((a) =>
-  a.slots.map((s) => ({ artifact: a, slot: s })),
-).sort((x, y) => CLS_ORDER[x.slot.cls] - CLS_ORDER[y.slot.cls]);
+const worklist = computed(() =>
+  store.artifacts
+    .flatMap((a) => a.slots.map((s) => ({ artifact: a, slot: s })))
+    .filter((x) => x.slot.cls !== 'consensus')
+    .sort((x, y) => CLS_ORDER[x.slot.cls] - CLS_ORDER[y.slot.cls]),
+);
 
-const attrFacets = (() => {
+const attrFacets = computed(() => {
   const map = new Map();
-  worklist.forEach((w) => {
+  worklist.value.forEach((w) => {
     const e = map.get(w.slot.label) || { label: w.slot.label, count: 0 };
     e.count += 1;
     map.set(w.slot.label, e);
   });
   return [...map.values()].sort((a, b) => b.count - a.count);
-})();
+});
 
-const entityGroups = (() => {
-  const all = [...new Set(ARTIFACTS.flatMap((a) => a.entities))];
+const entityGroups = computed(() => {
+  const all = [...new Set(store.artifacts.flatMap((a) => a.entities))];
+  if (store.caseId === 'quercus') {
+    return [
+      { name: 'Plant concepts', items: all.filter((e) => e !== 'Quercus').map((item) => ({ name: item, artifacts: store.artifacts.filter((a) => a.entities.includes(item)) })) },
+      { name: 'Taxonomic group', items: [{ name: 'Quercus', artifacts: store.artifacts.filter((a) => a.entities.includes('Quercus')) }] },
+    ];
+  }
   const groupOf = (e) =>
-    e.endsWith('式') ? '形制' : /博物馆|博物院/.test(e) ? '馆藏' : '年代';
+    /式$/.test(e) ? '形制'
+    : /博物馆|博物院/.test(e) ? '馆藏'
+    : '年代';
   const groups = { 形制: [], 年代: [], 馆藏: [] };
   all.forEach((e) => groups[groupOf(e)].push(e));
   return Object.entries(groups).map(([name, items]) => ({ name, items }));
-})();
+});
 
 const checkedAttrs = ref([]);
 const checkedEntities = ref([]);
@@ -38,7 +53,7 @@ function toggleIn(listRef, value) {
 }
 
 const filteredWorklist = computed(() =>
-  worklist.filter(
+  worklist.value.filter(
     (w) => !checkedAttrs.value.length || checkedAttrs.value.includes(w.slot.label),
   ),
 );
@@ -50,13 +65,6 @@ const paneRatio = ref(0.5);
 const dockH = ref(190);
 const workbenchEl = ref(null);
 const activeStage = ref('overview');
-
-const workflowStages = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'focus', label: 'Focus' },
-  { id: 'evidence', label: 'Evidence' },
-  { id: 'decision', label: 'Decision' },
-];
 
 let dragKind = null;
 let dragStart = 0;
@@ -95,41 +103,48 @@ function endDrag() {
   window.removeEventListener('mouseup', endDrag);
 }
 
-const corpusStats = {
-  sources: Object.keys(SOURCES).length,
-  artifacts: ARTIFACTS.length,
-  contested: worklist.length,
-  unresolved: worklist.length,
-};
-
-const sourceHierarchy = Object.values(SOURCES).map((source) => ({
-  ...source,
-  artifacts: ARTIFACTS.filter((artifact) => artifact.sources.includes(source.id)),
+const corpusStats = computed(() => ({
+  sources: store.stats.records ? Object.keys(store.sources).length : 0,
+  artifacts: store.stats.artifacts || 0,
+  contested: (store.stats.differ || 0) + (store.stats.overlap || 0),
+  unresolved: (store.stats.differ || 0) + (store.stats.overlap || 0),
 }));
 
-const artifactHierarchy = entityGroups.map((group) => ({
-  name: group.name,
-  items: group.items.map((item) => ({
-    name: item,
-    artifacts: ARTIFACTS.filter((artifact) => artifact.entities.includes(item)),
+const sourceHierarchy = computed(() =>
+  Object.values(store.sources).map((source) => ({
+    ...source,
+    artifacts: store.artifacts.filter((artifact) => artifact.sources.includes(source.id)),
   })),
-}));
+);
 
-const conflictHierarchy = [
-  { cls: 'A', name: '实质分歧', desc: '年代、尺寸、事实判断冲突' },
-  { cls: 'B', name: '表述差异', desc: '同一事实的口径或转写差异' },
-  { cls: 'C', name: '疑似讹误', desc: '排印、OCR、外部知识触发' },
-].map((group) => ({
-  ...group,
-  slots: worklist.filter((w) => w.slot.cls === group.cls),
-}));
+const artifactHierarchy = computed(() =>
+  entityGroups.value.map((group) => ({
+    name: group.name,
+    items: group.items.map((item) => ({
+      name: item,
+      artifacts: store.artifacts.filter((artifact) => artifact.entities.includes(item)),
+    })),
+  })),
+);
+
+const conflictHierarchy = computed(() =>
+  [
+    { cls: 'A', name: store.caseId === 'quercus' ? 'Name disagreement' : '记载不一致', desc: '各来源取值不同,待考订' },
+    { cls: 'B', name: store.caseId === 'quercus' ? 'Partial overlap' : '部分重叠', desc: '取值有交集,疑详略差异' },
+    { cls: 'C', name: store.caseId === 'quercus' ? 'Suspected error' : '疑似讹误', desc: '规则触发(待接入)' },
+  ].map((group) => ({
+    ...group,
+    slots: worklist.value.filter((w) => w.slot.cls === group.cls),
+  })),
+);
 
 const selectedArtifactId = ref(null);
 const selectedSlotId = ref(null);
 
 function onSelectArtifact(id) {
   selectedArtifactId.value = id;
-  selectedSlotId.value = null;
+  const artifact = store.artifacts.find((x) => x.id === id);
+  selectedSlotId.value = artifact?.slots[0]?.id || null;
   activeStage.value = 'focus';
 }
 
@@ -156,14 +171,47 @@ const derivedTabs = ref([
 ]);
 
 const dockSlot = computed(() => {
-  const a = ARTIFACTS.find((x) => x.id === selectedArtifactId.value);
+  const a = store.artifacts.find((x) => x.id === selectedArtifactId.value);
   const s = a?.slots.find((x) => x.id === selectedSlotId.value);
   if (!a || !s) return null;
   return { artifact: a, slot: s };
 });
 
+const PART_PREFS = {
+  duanwen: ['qimian', 'qindi', 'qincemian'],
+  lacquer: ['qimian', 'qindi'],
+  ash: ['qindi', 'qimian'],
+  inscriber: ['mingwen'],
+  dating: ['mingwen', 'qintou'],
+  form: ['qintou', 'qimian', 'qinwei'],
+  material: ['qindi', 'qimian'],
+  collection: ['mingwen'],
+  craft: ['qimian', 'qintou'],
+};
+
+function dockImage(assertion) {
+  if (assertion.imagePath) return assertion.imagePath;
+  if (!dockSlot.value || !assertion.recordId) return null;
+  const files = dockSlot.value.artifact.imagesByBook[assertion.source] || [];
+  if (!files.length) return null;
+  const prefs = PART_PREFS[dockSlot.value.slot.id] || [];
+  for (const pref of prefs) {
+    const hit = files.find((f) => f.startsWith(pref));
+    if (hit) return `/api/image/${assertion.recordId}/${hit}`;
+  }
+  return `/api/image/${assertion.recordId}/${files[0]}`;
+}
+
 
 const uploadedName = ref('');
+
+async function switchCase() {
+  selectedArtifactId.value = null;
+  selectedSlotId.value = null;
+  pinned.value = [];
+  ledger.value = [];
+  await loadStore(selectedCase.value);
+}
 
 async function handleUpload(event) {
   const file = event.target.files?.[0];
@@ -216,13 +264,13 @@ function activeTabId(tabs) {
 const pinned = ref([]);
 
 function pinArtifact(id) {
-  const a = ARTIFACTS.find((x) => x.id === id);
+  const a = store.artifacts.find((x) => x.id === id);
   if (!a || pinned.value.some((p) => p.key === `a:${id}`)) return;
   pinned.value.push({ key: `a:${id}`, kind: 'artifact', label: a.name, artifactId: id });
 }
 
 function pinSlot(artifactId, slotId) {
-  const a = ARTIFACTS.find((x) => x.id === artifactId);
+  const a = store.artifacts.find((x) => x.id === artifactId);
   const s = a?.slots.find((x) => x.id === slotId);
   if (!s || pinned.value.some((p) => p.key === `s:${artifactId}:${slotId}`)) return;
   pinned.value.push({
@@ -248,7 +296,7 @@ function recallPin(p) {
 const ledger = ref([]);
 
 function onAdjudicated(payload) {
-  const a = ARTIFACTS.find((x) => x.id === selectedArtifactId.value);
+  const a = store.artifacts.find((x) => x.id === selectedArtifactId.value);
   const s = a?.slots.find((x) => x.id === payload.slotId);
   ledger.value.unshift({
     id: `adj-${ledger.value.length + 1}`,
@@ -270,6 +318,13 @@ function onAdjudicated(payload) {
   <main class="app-shell">
     <header class="topbar">
       <h1>KGExplorer: Knowledge Graph Visual Analytics System</h1>
+      <label class="case-switcher">
+        <span>Case</span>
+        <select v-model="selectedCase" @change="switchCase">
+          <option value="guqin">Guqin</option>
+          <option value="quercus">Quercus</option>
+        </select>
+      </label>
     </header>
 
     <section class="workspace" aria-label="Main workspace">
@@ -288,6 +343,7 @@ function onAdjudicated(payload) {
 
           <section class="control-card stats-card" aria-label="Corpus statistics">
             <h2>Corpus</h2>
+            <p v-if="store.title" class="case-caption">{{ store.title }}</p>
             <div class="stat-grid">
               <div><b>{{ corpusStats.sources }}</b><span>sources</span></div>
               <div><b>{{ corpusStats.artifacts }}</b><span>artifacts</span></div>
@@ -378,6 +434,12 @@ function onAdjudicated(payload) {
         <header class="panel-toolbar">
           <h2>Global KG Explorer</h2>
           <div class="graph-legend" aria-label="Graph legend">
+            <span title="Primary plant or instrument object"><i class="legend-object"></i>object</span>
+            <span title="Associated taxonomic or historical concept"><i style="background:#7c9aae"></i>concept</span>
+            <span title="Aligned across multiple sources"><i style="background:#5d8c82"></i>confirmed</span>
+            <span title="Potential cross-source match"><i style="background:#b29a62"></i>candidate</span>
+            <span title="Present in one source only"><i style="background:#aab4ba"></i>source-local</span>
+            <span title="No source or alignment information"><i style="background:#b86f3d"></i>unresolved</span>
             <span><i :style="{ background: CLASS_COLORS.A }"></i>A</span>
             <span><i :style="{ background: CLASS_COLORS.C }"></i>C</span>
             <span><i :style="{ background: CLASS_COLORS.B }"></i>B</span>
@@ -385,17 +447,6 @@ function onAdjudicated(payload) {
           </div>
           <button class="save-button" type="button">Save</button>
         </header>
-        <div class="workflow-strip" aria-label="Analysis workflow">
-          <button
-            v-for="(stage, index) in workflowStages"
-            :key="stage.id"
-            :class="{ active: activeStage === stage.id }"
-            type="button"
-            @click="activeStage = stage.id"
-          >
-            <b>{{ index + 1 }}</b>{{ stage.label }}
-          </button>
-        </div>
         <div class="graph-workbench">
           <section class="graph-pane" aria-label="Global knowledge graph">
             <div class="browser-tabs">
@@ -487,13 +538,16 @@ function onAdjudicated(payload) {
               class="dock-card"
               :class="{ silent: !a.raw }"
             >
-              <header :style="{ color: SOURCES[a.source]?.color }">《{{ SOURCES[a.source]?.title }}》</header>
-              <div class="dock-thumb" :data-kind="a.raw ? 'scan' : 'none'">
-                <span v-if="a.raw">scan page · {{ dockSlot.slot.label }}</span>
-                <span v-else>—</span>
-              </div>
-              <div class="dock-thumb part" :data-kind="a.raw ? 'part' : 'none'">
-                <span v-if="a.raw">part photo · texture detail</span>
+              <header :style="{ color: SOURCES[a.source]?.color }">{{ SOURCES[a.source]?.title }}</header>
+              <img
+                v-if="a.raw && dockImage(a)"
+                class="dock-photo"
+                :src="dockImage(a)"
+                :alt="`${SOURCES[a.source]?.title} · ${dockSlot.slot.label}`"
+                loading="lazy"
+              />
+              <div v-else class="dock-thumb part" :data-kind="a.raw ? 'part' : 'none'">
+                <span v-if="a.raw">no image evidence for this record</span>
                 <span v-else>not recorded</span>
               </div>
               <p class="dock-raw">{{ a.raw || '该书未记载' }}</p>
