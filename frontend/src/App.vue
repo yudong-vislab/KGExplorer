@@ -4,15 +4,24 @@ import KnowledgeGraphView from './components/KnowledgeGraphView.vue';
 import AdjudicationPanel from './components/AdjudicationPanel.vue';
 import { store, loadStore, CLASS_COLORS } from './data/store.js';
 
-const selectedCase = ref('guqin');
-onMounted(() => loadStore(selectedCase.value));
+const requestedCase = new URLSearchParams(window.location.search).get('case');
+const selectedCase = ref(['guqin', 'quercus', 'birds'].includes(requestedCase) ? requestedCase : 'guqin');
+
+async function loadCaseIntoView() {
+  await loadStore(selectedCase.value);
+  const first = store.artifacts[0];
+  selectedArtifactId.value = first?.id || null;
+  selectedSlotId.value = first?.slots[0]?.id || null;
+}
+
+onMounted(loadCaseIntoView);
 
 const SOURCES = computed(() => store.sources);
 const CLS_ORDER = { A: 0, C: 1, B: 2 };
 const worklist = computed(() =>
   store.artifacts
     .flatMap((a) => a.slots.map((s) => ({ artifact: a, slot: s })))
-    .filter((x) => x.slot.cls !== 'consensus')
+    .filter((x) => ['A', 'B', 'C'].includes(x.slot.cls))
     .sort((x, y) => CLS_ORDER[x.slot.cls] - CLS_ORDER[y.slot.cls]),
 );
 
@@ -32,6 +41,12 @@ const entityGroups = computed(() => {
     return [
       { name: 'Plant concepts', items: all.filter((e) => e !== 'Quercus').map((item) => ({ name: item, artifacts: store.artifacts.filter((a) => a.entities.includes(item)) })) },
       { name: 'Taxonomic group', items: [{ name: 'Quercus', artifacts: store.artifacts.filter((a) => a.entities.includes('Quercus')) }] },
+    ];
+  }
+  if (store.caseId === 'birds') {
+    return [
+      { name: 'Bird concepts', items: all.filter((e) => e !== 'Birds').map((item) => ({ name: item, artifacts: store.artifacts.filter((a) => a.entities.includes(item)) })) },
+      { name: 'Corpus domain', items: [{ name: 'Birds', artifacts: store.artifacts.filter((a) => a.entities.includes('Birds')) }] },
     ];
   }
   const groupOf = (e) =>
@@ -105,6 +120,7 @@ function endDrag() {
 
 const corpusStats = computed(() => ({
   sources: store.stats.records ? Object.keys(store.sources).length : 0,
+  sourceLabel: store.caseId === 'quercus' ? 'collections' : 'books',
   artifacts: store.stats.artifacts || 0,
   contested: (store.stats.differ || 0) + (store.stats.overlap || 0),
   unresolved: (store.stats.differ || 0) + (store.stats.overlap || 0),
@@ -129,9 +145,9 @@ const artifactHierarchy = computed(() =>
 
 const conflictHierarchy = computed(() =>
   [
-    { cls: 'A', name: store.caseId === 'quercus' ? 'Name disagreement' : '记载不一致', desc: '各来源取值不同,待考订' },
-    { cls: 'B', name: store.caseId === 'quercus' ? 'Partial overlap' : '部分重叠', desc: '取值有交集,疑详略差异' },
-    { cls: 'C', name: store.caseId === 'quercus' ? 'Suspected error' : '疑似讹误', desc: '规则触发(待接入)' },
+    { cls: 'A', name: ['quercus', 'birds'].includes(store.caseId) ? 'Name disagreement' : '记载不一致', desc: '各来源取值不同,待考订' },
+    { cls: 'B', name: ['quercus', 'birds'].includes(store.caseId) ? 'Partial overlap' : '部分重叠', desc: '取值有交集,疑详略差异' },
+    { cls: 'C', name: ['quercus', 'birds'].includes(store.caseId) ? 'Suspected error' : '疑似讹误', desc: '规则触发(待接入)' },
   ].map((group) => ({
     ...group,
     slots: worklist.value.filter((w) => w.slot.cls === group.cls),
@@ -165,7 +181,7 @@ const globalTabs = ref([
 ]);
 
 const derivedTabs = ref([
-  { id: 'compare', title: 'Comparison', active: true },
+  { id: 'compare', title: 'Attribute Matrix', active: true },
   { id: 'edit', title: 'Editing', active: false },
   { id: 'ledger', title: 'Ledger', active: false },
 ]);
@@ -202,15 +218,35 @@ function dockImage(assertion) {
   return `/api/image/${assertion.recordId}/${files[0]}`;
 }
 
+function imageEvidenceLabel(assertion) {
+  const stored = assertion.metadata?.image_match || assertion.metadata?.imageMatch;
+  if (stored === 'attribute-linked') return 'attribute-linked image';
+  if (stored === 'record-level-fallback') return 'record-level fallback image';
+  if (stored === 'missing') return 'no image evidence';
+  const files = assertion.metadata?.image_files || assertion.metadata?.imageFiles || [];
+  if (!files.length) return 'no image evidence';
+  const prefs = PART_PREFS[dockSlot.value?.slot.id] || [];
+  const matched = files.some((file) => prefs.some((pref) => file.toLowerCase().startsWith(pref)));
+  return matched ? 'attribute-linked image' : 'record-level fallback image';
+}
+
 
 const uploadedName = ref('');
+const viewerImage = ref(null);
+
+function openEvidenceImage(src, title) {
+  if (!src) return;
+  viewerImage.value = { src, title };
+}
+
+function closeEvidenceImage() {
+  viewerImage.value = null;
+}
 
 async function switchCase() {
-  selectedArtifactId.value = null;
-  selectedSlotId.value = null;
   pinned.value = [];
   ledger.value = [];
-  await loadStore(selectedCase.value);
+  await loadCaseIntoView();
 }
 
 async function handleUpload(event) {
@@ -321,8 +357,9 @@ function onAdjudicated(payload) {
       <label class="case-switcher">
         <span>Case</span>
         <select v-model="selectedCase" @change="switchCase">
-          <option value="guqin">Guqin</option>
-          <option value="quercus">Quercus</option>
+          <option value="guqin">Case 1 · Guqin</option>
+          <option value="quercus">Case 2 · Quercus</option>
+          <option value="birds">Case 3 · Historical Birds</option>
         </select>
       </label>
     </header>
@@ -343,9 +380,10 @@ function onAdjudicated(payload) {
 
           <section class="control-card stats-card" aria-label="Corpus statistics">
             <h2>Corpus</h2>
+            <p v-if="store.caseLabel" class="case-label">{{ store.caseLabel }}</p>
             <p v-if="store.title" class="case-caption">{{ store.title }}</p>
             <div class="stat-grid">
-              <div><b>{{ corpusStats.sources }}</b><span>sources</span></div>
+              <div><b>{{ corpusStats.sources }}</b><span>{{ corpusStats.sourceLabel }}</span></div>
               <div><b>{{ corpusStats.artifacts }}</b><span>artifacts</span></div>
               <div><b>{{ corpusStats.contested }}</b><span>contested</span></div>
               <div><b>{{ corpusStats.unresolved - ledger.length >= 0 ? corpusStats.unresolved - ledger.length : 0 }}</b><span>open</span></div>
@@ -434,12 +472,14 @@ function onAdjudicated(payload) {
         <header class="panel-toolbar">
           <h2>Global KG Explorer</h2>
           <div class="graph-legend" aria-label="Graph legend">
-            <span title="Primary plant or instrument object"><i class="legend-object"></i>object</span>
-            <span title="Associated taxonomic or historical concept"><i style="background:#7c9aae"></i>concept</span>
+            <span title="One individual artifact record from the corpus"><i class="legend-object"></i>artifact record</span>
+            <span title="Normalized attribute value shared by at least two artifact records"><i style="background:#7c9aae"></i>attribute value</span>
+            <span title="Outer ring sectors encode which books contain this record; books are not graph nodes"><i style="background:#b29a62"></i>source coverage ring</span>
+            <span v-for="source in Object.values(SOURCES)" :key="source.id" :title="source.title"><i :style="{ background: source.color }"></i>{{ source.id }}</span>
             <span title="Aligned across multiple sources"><i style="background:#5d8c82"></i>confirmed</span>
             <span title="Potential cross-source match"><i style="background:#b29a62"></i>candidate</span>
-            <span title="Present in one source only"><i style="background:#aab4ba"></i>source-local</span>
-            <span title="No source or alignment information"><i style="background:#b86f3d"></i>unresolved</span>
+            <span title="Present in one source only"><i style="background:#aab4ba"></i>single-source</span>
+            <span title="Unresolved or conflicting evidence"><i style="background:#b86f3d"></i>unresolved</span>
             <span><i :style="{ background: CLASS_COLORS.A }"></i>A</span>
             <span><i :style="{ background: CLASS_COLORS.C }"></i>C</span>
             <span><i :style="{ background: CLASS_COLORS.B }"></i>B</span>
@@ -534,22 +574,25 @@ function onAdjudicated(payload) {
           <div v-if="dockSlot" class="dock-body">
             <article
               v-for="a in dockSlot.slot.assertions"
-              :key="a.source"
+              :key="`${a.source}:${a.recordId}`"
               class="dock-card"
               :class="{ silent: !a.raw }"
             >
               <header :style="{ color: SOURCES[a.source]?.color }">{{ SOURCES[a.source]?.title }}</header>
               <img
-                v-if="a.raw && dockImage(a)"
+                v-if="dockImage(a)"
                 class="dock-photo"
                 :src="dockImage(a)"
                 :alt="`${SOURCES[a.source]?.title} · ${dockSlot.slot.label}`"
                 loading="lazy"
+                title="Open full-size evidence image"
+                @click="openEvidenceImage(dockImage(a), `${SOURCES[a.source]?.title} · ${dockSlot.slot.label}`)"
               />
               <div v-else class="dock-thumb part" :data-kind="a.raw ? 'part' : 'none'">
                 <span v-if="a.raw">no image evidence for this record</span>
                 <span v-else>not recorded</span>
               </div>
+              <small v-if="a.raw" class="dock-image-status" :data-kind="imageEvidenceLabel(a)">{{ imageEvidenceLabel(a) }}</small>
               <p class="dock-raw">{{ a.raw || '该书未记载' }}</p>
               <button v-if="a.raw" type="button" class="dock-pin" @click="pinSlot(dockSlot.artifact.id, dockSlot.slot.id)">add to evidence tray</button>
             </article>
@@ -569,5 +612,20 @@ function onAdjudicated(payload) {
         />
       </aside>
     </section>
+
+    <Teleport to="body">
+      <div v-if="viewerImage" class="evidence-lightbox" role="dialog" aria-modal="true" @click.self="closeEvidenceImage">
+        <div class="lightbox-panel">
+          <header>
+            <strong>{{ viewerImage.title }}</strong>
+            <button type="button" aria-label="Close image viewer" @click="closeEvidenceImage">×</button>
+          </header>
+          <div class="lightbox-stage">
+            <img :src="viewerImage.src" :alt="viewerImage.title" />
+          </div>
+          <p>Click outside the image or close the viewer to return to the evidence tray.</p>
+        </div>
+      </div>
+    </Teleport>
   </main>
 </template>

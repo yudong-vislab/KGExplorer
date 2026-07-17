@@ -5,6 +5,7 @@ export const CLASS_COLORS = {
   B: '#8f6b2f',
   C: '#435d73',
   consensus: '#2f7268',
+  single: '#8a979d',
   missing: '#b7c1c5',
 };
 
@@ -13,14 +14,19 @@ export const CLASS_LABELS = {
   B: 'overlap · 部分重叠',
   C: 'suspected · 疑似讹误',
   consensus: '一致',
+  single: 'single-source · 仅一源',
   missing: '缺失',
 };
 
 const BOOK_COLORS = {
-  Gq: '#294e6b',
-  Yjzq: '#48677d',
-  QNQY: '#667f8d',
-  CQL: '#3f6268',
+  Gq: '#1f5a7a',
+  Yjzq: '#a45c1d',
+  QNQY: '#6b4e9b',
+  CQL: '#2d7a6b',
+  wilson_1808: '#294e6b',
+  cassin_1862: '#7a5b45',
+  baird_1905: '#536b78',
+  studer_1895: '#8a6f36',
 };
 
 export const store = reactive({
@@ -28,6 +34,8 @@ export const store = reactive({
   error: null,
   title: '',
   caseNote: '',
+  caseLabel: '',
+  caseId: '',
   sources: {},
   artifacts: [],
   stats: {},
@@ -41,10 +49,16 @@ export function worstClass(artifact) {
   return 'consensus';
 }
 
-const STATUS_TO_CLS = { differ: 'A', overlap: 'B', evidence: 'consensus' };
+const STATUS_TO_CLS = {
+  differ: 'A',
+  overlap: 'B',
+  evidence: 'consensus',
+  consensus: 'consensus',
+  single_source: 'single',
+};
 
 function beliefFrom(assertions) {
-  const present = assertions.filter((a) => a.values.length);
+  const present = assertions.filter((a) => (a.values || []).length);
   if (!present.length) return [];
   const counts = new Map();
   present.forEach((a) => {
@@ -57,49 +71,59 @@ function beliefFrom(assertions) {
 }
 
 function adaptArtifact(raw) {
-  const contested = raw.caus.filter((c) => STATUS_TO_CLS[c.status]);
-  const consensusSlots = raw.caus.filter((c) => c.status === 'consensus');
+  const sourceAssertions = (a) => ({
+    source: a.source ?? a.book,
+    recordId: a.record_id ?? a.recordId,
+    values: a.values || [],
+    normalizedValues: a.normalized_values || a.normalizedValues || a.values || [],
+    valueDetails: a.value_details || a.valueDetails || [],
+    raw: (a.values || []).length ? a.values.join('、') : null,
+    imagePath: a.image_path || a.imagePath || null,
+    metadata: a.metadata || {},
+  });
+  const caus = raw.caus || raw.slots || [];
+  const consensusSlots = caus.filter((c) => c.status === 'consensus');
   const entities = [];
   ['form', 'dating'].forEach((slotId) => {
-    const cau = raw.caus.find((c) => c.slot === slotId);
-    const firstPresent = cau?.assertions.find((a) => a.values.length);
+    const cau = caus.find((c) => c.slot === slotId);
+    const firstPresent = cau?.assertions.find((a) => (a.values || []).length);
     if (firstPresent) entities.push(firstPresent.values[0]);
   });
   return {
     id: raw.artifact_id,
     name: raw.name,
     aligned: raw.aligned,
-    alignmentStatus: raw.aligned && raw.books?.length > 1
+    alignmentStatus: raw.alignment_status || (raw.aligned && raw.books?.length > 1
       ? 'confirmed'
       : raw.books?.length > 1
         ? 'candidate'
         : raw.books?.length === 1
           ? 'source-local'
-          : 'unresolved',
+          : 'unresolved'),
     sources: raw.books,
     records: raw.records,
     imagesByBook: raw.images || {},
     entities: raw.entities?.length ? raw.entities : entities,
     consensusCount: consensusSlots.length,
-    slots: contested.map((c) => ({
+    alignmentCandidates: raw.alignment_candidates || [],
+    slots: caus.map((c) => ({
       id: c.slot,
       label: c.label,
       status: c.status,
+      conflictType: c.conflict_type || c.conflictType || null,
       cls: STATUS_TO_CLS[c.status],
-      assertions: c.assertions.map((a) => ({
-        source: a.book,
-        recordId: a.record_id,
-        values: a.values,
-        raw: a.values.length ? a.values.join('、') : null,
-        imagePath: a.image_path || null,
-      })),
+      assertions: c.assertions.map(sourceAssertions),
       belief: beliefFrom(c.assertions),
       note:
         c.status === 'differ'
           ? '自动检测:不同标本来源的名称存在差异,进入冲突候选。'
-          : c.status === 'evidence'
-            ? '对象证据:该植物已关联多个标本来源,可逐一查看图像和馆藏元数据。'
-            : '自动检测:取值部分重叠,疑为详略差异,可考虑合并。',
+          : c.status === 'single_source'
+            ? '仅有一个来源记录该属性，不代表跨来源共识。'
+            : c.status === 'consensus'
+              ? '多个来源取值一致，可作为当前共识观察。'
+              : c.status === 'evidence'
+                ? '对象证据:该对象已关联多个来源记录,可逐一查看图像、原文和来源元数据。'
+                : '自动检测:取值部分重叠,疑为详略差异,可考虑合并。',
     })),
   };
 }
@@ -109,6 +133,8 @@ function resetStore() {
   store.error = null;
   store.title = '';
   store.caseNote = '';
+  store.caseLabel = '';
+  store.caseId = '';
   Object.keys(store.sources).forEach((key) => delete store.sources[key]);
   store.artifacts.splice(0, store.artifacts.length);
   store.stats = {};
@@ -128,8 +154,14 @@ export async function loadStore(caseId = 'guqin') {
     // valid source-local knowledge and provide the context around contested
     // objects; alignment is an analytic state, not a visibility filter.
     store.artifacts.splice(0, store.artifacts.length, ...adapted);
-    store.title = data.case?.title || (caseId === 'quercus' ? 'Quercus Historical Flora Corpus' : 'Guqin Heritage Knowledge Revision');
-    store.caseNote = data.case?.note || (caseId === 'quercus' ? 'Scanned plant books with indexed OCR and page evidence' : 'Multisource guqin books with scanned-part evidence');
+    const defaults = caseId === 'quercus'
+      ? { title: 'Quercus Historical Flora Corpus', note: 'Scanned plant books with indexed OCR and page evidence', label: 'Case 2 · Quercus' }
+      : caseId === 'birds'
+        ? { title: 'Historical Bird Atlas Knowledge Revision', note: 'Scanned bird atlases with OCR, names, and page-linked plate evidence', label: 'Case 3 · Historical Birds' }
+        : { title: 'Guqin Heritage Knowledge Revision', note: 'Multisource guqin books with scanned-part evidence', label: 'Case 1 · Guqin' };
+    store.title = data.case?.title || defaults.title;
+    store.caseNote = data.case?.note || defaults.note;
+    store.caseLabel = data.case?.label || defaults.label;
     store.caseId = caseId;
     store.unalignedCount = adapted.filter((artifact) => artifact.alignmentStatus !== 'confirmed').length;
     store.stats = data.stats;

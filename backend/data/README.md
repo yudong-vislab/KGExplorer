@@ -27,3 +27,27 @@ Raw OCR, triplet, and image evidence are stored under `backend/data/raw`.
 The raw files are intentionally kept unchanged. Backend import scripts should build derived indices into `backend/data/processed` instead of editing files in `raw`.
 
 Artifact ids follow the source prefix plus numeric id, such as `CQL009`, `Gq00014`, `QNQY017`, and `Yjzq00011`.
+
+## Guqin Alignment Contract
+
+`processed/case1_guqin.json` is rebuilt by `scripts/rebuild_case1.py`.
+`processed/case1_audit.json` is the machine-checkable audit output. The older
+`contested_kg.json` and `guqin_alignment.json` files are retained as historical
+derivatives and are not the Case 1 API source.
+
+- Physical/API key: `BOOK00016`, which is also the image-folder and `txt-id` stem.
+- Canonical human-readable key: `BOOK-00016`.
+- Unnamed instruments use a traceable display name such as `无名琴 · Gq00016`.
+- `values` remains the verbatim extracted value.
+- `normalized_values` is only used for conservative comparison.
+- `value_details.group` is a broader visual aggregation category and never replaces the evidence value.
+- Every Guqin artifact record is required to have an exact `txt-id` file and image directory. Extra source pages without an artifact row are retained in `raw` but excluded from the artifact graph.
+- `source_catalog` distinguishes four primary multimodal sources from text-only contextual sources.
+- `all_slots` preserves every mapped attribute, while `caus` is the curated analysis projection used by the visual conflict views.
+- Same-name records are confirmed only when independent identity evidence agrees. Ambiguous matches remain separate source-local records with `alignment_candidates`.
+
+Run the audit from `backend/`:
+
+```bash
+python3 scripts/rebuild_case1.py
+```

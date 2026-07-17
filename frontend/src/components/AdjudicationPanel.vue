@@ -12,12 +12,23 @@ const emit = defineEmits(['select-slot', 'adjudicated', 'pin-slot']);
 
 const artifact = computed(() => ARTIFACTS.find((a) => a.id === props.selectedArtifactId) || null);
 const slot = computed(() => artifact.value?.slots.find((s) => s.id === props.selectedSlotId) || null);
+const valueGroups = computed(() => {
+  if (!slot.value) return [];
+  const groups = new Map();
+  slot.value.assertions.forEach((assertion) => {
+    const value = assertion.raw || 'not recorded';
+    const group = groups.get(value) || { value, sources: [] };
+    group.sources.push(SOURCES[assertion.source]?.title || assertion.source);
+    groups.set(value, group);
+  });
+  return [...groups.values()].sort((a, b) => b.sources.length - a.sources.length);
+});
 
 const draft = ref('');
 
 watch(slot, (s) => {
   draft.value = s
-    ? `待专家核验: 该属性在${s.assertions.filter((a) => a.raw).length}个来源中出现可疑差异。初步解释: ${s.note} 可作为修订候选: ${s.belief[0].value}。`
+    ? `待专家核验: 该属性在${s.assertions.filter((a) => a.raw).length}个来源中出现可疑差异。初步解释: ${s.note}${s.belief[0]?.value ? ` 可作为修订候选: ${s.belief[0].value}。` : ''}`
     : '';
 });
 
@@ -34,7 +45,7 @@ function decide(action) {
     <template v-else>
       <div class="adj-artifact">
         <strong>{{ artifact.name }}</strong>
-        <span>{{ artifact.sources.length }} source(s) · {{ artifact.slots.filter((s) => s.cls !== 'consensus').length }} candidate(s)</span>
+        <span>{{ artifact.sources.length }} source(s) · {{ artifact.slots.filter((s) => ['A', 'B', 'C'].includes(s.cls)).length }} candidate(s)</span>
       </div>
 
       <ul class="adj-slot-list">
@@ -51,12 +62,22 @@ function decide(action) {
       </ul>
 
       <template v-if="slot">
-        <h3>Candidate source assertions</h3>
-        <article v-for="a in slot.assertions" :key="a.source" class="adj-assertion">
-          <header :style="{ color: SOURCES[a.source]?.color }">《{{ SOURCES[a.source]?.title }}》</header>
-          <p v-if="a.raw">{{ a.raw }}</p>
-          <p v-else class="adj-missing">— 该书未记载 —</p>
-        </article>
+        <h3>Current attribute</h3>
+        <div class="adj-focus-card">
+          <strong>{{ slot.label }}</strong>
+          <span>{{ slot.assertions.filter((a) => a.raw).length }} recorded · {{ slot.assertions.filter((a) => !a.raw).length }} missing</span>
+          <p>{{ slot.note }}</p>
+        </div>
+
+        <h3>Observed value groups</h3>
+        <ul class="adj-value-groups">
+          <li v-for="group in valueGroups" :key="group.value">
+            <strong>{{ group.value }}</strong>
+            <span>{{ group.sources.length }} source(s): {{ group.sources.join(' · ') }}</span>
+          </li>
+        </ul>
+
+        <p class="adj-evidence-hint">Full source text and image evidence are shown in the Evidence Tray below. The matrix is the comparison overview; this panel is for adjudication.</p>
 
         <h3>Interpretation hypotheses</h3>
         <div class="adj-belief">

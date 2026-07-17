@@ -1,0 +1,917 @@
+{
+  "schema_version": "case1-audit-2",
+  "case": {
+    "id": "guqin",
+    "number": 1,
+    "label": "Case 1 · Guqin",
+    "title": "Multimodal Guqin Knowledge Conflict Corpus",
+    "description": "Source-local guqin records aligned into evidence-bearing attribute assertions."
+  },
+  "source_catalog": {
+    "QNQY": {
+      "id": "QNQY",
+      "title": "千年清音",
+      "triplet_prefix": "QNQY",
+      "text_prefix": "QNQY",
+      "image_prefix": "QNQY",
+      "status": {
+        "triplet": true,
+        "text": true,
+        "image": true
+      },
+      "role": "multimodal_primary",
+      "analysis_scope": "primary"
+    },
+    "Yjzq": {
+      "id": "Yjzq",
+      "title": "一见钟琴",
+      "triplet_prefix": "Yjzq",
+      "text_prefix": "Yjzq",
+      "image_prefix": "Yjzq",
+      "status": {
+        "triplet": true,
+        "text": true,
+        "image": true
+      },
+      "role": "multimodal_primary",
+      "analysis_scope": "primary"
+    },
+    "CQL": {
+      "id": "CQL",
+      "title": "藏琴录",
+      "triplet_prefix": "CQL",
+      "text_prefix": "CQL",
+      "image_prefix": "CQL",
+      "status": {
+        "triplet": true,
+        "text": true,
+        "image": true
+      },
+      "role": "multimodal_primary",
+      "analysis_scope": "primary"
+    },
+    "Gq": {
+      "id": "Gq",
+      "title": "古琴",
+      "triplet_prefix": "Gq",
+      "text_prefix": "Gq",
+      "image_prefix": "Gq",
+      "status": {
+        "triplet": true,
+        "text": true,
+        "image": true
+      },
+      "role": "multimodal_primary",
+      "analysis_scope": "primary"
+    },
+    "Gggq": {
+      "id": "Gggq",
+      "title": "故宫古琴图典",
+      "triplet_prefix": null,
+      "text_prefix": "Gggq",
+      "image_prefix": null,
+      "status": {
+        "triplet": false,
+        "text": true,
+        "image": false
+      },
+      "role": "textual_context",
+      "analysis_scope": "context_only"
+    },
+    "GCGQ": {
+      "id": "GCGQ",
+      "title": "馆藏古琴整理与研究",
+      "triplet_prefix": null,
+      "text_prefix": "GCGQ",
+      "image_prefix": null,
+      "status": {
+        "triplet": false,
+        "text": true,
+        "image": false
+      },
+      "role": "textual_context",
+      "analysis_scope": "context_only"
+    },
+    "WXAC": {
+      "id": "WXAC",
+      "title": "吾心安处",
+      "triplet_prefix": null,
+      "text_prefix": "WXAC",
+      "image_prefix": null,
+      "status": {
+        "triplet": false,
+        "text": true,
+        "image": false
+      },
+      "role": "textual_context",
+      "analysis_scope": "context_only"
+    },
+    "Zggq": {
+      "id": "Zggq",
+      "title": "中国古琴珍萃",
+      "triplet_prefix": null,
+      "text_prefix": null,
+      "image_prefix": null,
+      "status": {
+        "triplet": false,
+        "text": false,
+        "image": false
+      },
+      "role": "unavailable_context",
+      "analysis_scope": "context_only"
+    }
+  },
+  "stats": {
+    "records": 154,
+    "artifacts": 140,
+    "aligned_artifacts": 13,
+    "candidate_artifacts": 48,
+    "source_local_artifacts": 79,
+    "assertions": 1795,
+    "conflicts": 74,
+    "consensus_slots": 29,
+    "single_source_slots": 1036,
+    "conflict_types": {
+      "substantive_conflict": 51,
+      "partial_overlap": 19,
+      "lexical_variant": 4
+    },
+    "differ": 51,
+    "overlap": 23,
+    "consensus": 29,
+    "single_source": 1036,
+    "primary_sources": 4,
+    "context_sources": 4,
+    "records_with_text": 154,
+    "records_with_images": 154,
+    "analysis_slots": [
+      "ash",
+      "ash_repair",
+      "component_material",
+      "current_holder",
+      "dating",
+      "dating_assessment",
+      "duanwen",
+      "duanwen_repair",
+      "form",
+      "inscriber",
+      "inscription",
+      "inscription_color",
+      "inscription_script",
+      "lacquer",
+      "lacquer_repair",
+      "material",
+      "provenance",
+      "restoration"
+    ]
+  },
+  "alignment_candidates": [
+    {
+      "left_record": "Gq00014",
+      "right_record": "Yjzq00008",
+      "normalized_name": "襄",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00016",
+      "right_record": "Yjzq00011",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00016",
+      "right_record": "Yjzq00024",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00016",
+      "right_record": "Yjzq00087",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00016",
+      "right_record": "Yjzq00092",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00019",
+      "right_record": "Yjzq00024",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared lacquer evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00041",
+      "right_record": "Yjzq00040",
+      "normalized_name": "无名琴",
+      "score": 0.96,
+      "status": "confirmed",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor inscriber",
+        "shared identity anchor provenance",
+        "shared duanwen evidence",
+        "shared duanwen evidence",
+        "shared lacquer evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00041",
+      "right_record": "Yjzq00089",
+      "normalized_name": "无名琴",
+      "score": 0.36,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor provenance"
+      ]
+    },
+    {
+      "left_record": "Gq00052",
+      "right_record": "Yjzq00052",
+      "normalized_name": "无名琴",
+      "score": 0.8,
+      "status": "confirmed",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor provenance",
+        "shared identity anchor provenance",
+        "shared lacquer evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00057",
+      "right_record": "Yjzq00063",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared ash evidence",
+        "shared dating evidence",
+        "shared duanwen evidence",
+        "shared form evidence",
+        "shared lacquer evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00057",
+      "right_record": "Yjzq00078",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared lacquer evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00059",
+      "right_record": "Yjzq00065",
+      "normalized_name": "无名琴",
+      "score": 0.44,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor inscriber",
+        "shared lacquer evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00070",
+      "right_record": "Yjzq00078",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared lacquer evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00070",
+      "right_record": "Yjzq00082",
+      "normalized_name": "无名琴",
+      "score": 0.6,
+      "status": "confirmed",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor naming_origin",
+        "shared ash evidence",
+        "shared lacquer evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00073",
+      "right_record": "Yjzq00078",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared ash evidence",
+        "shared dating evidence",
+        "shared lacquer evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00075",
+      "right_record": "Yjzq00024",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared lacquer evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00075",
+      "right_record": "Yjzq00090",
+      "normalized_name": "无名琴",
+      "score": 0.36,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor naming_origin"
+      ]
+    },
+    {
+      "left_record": "Gq00077",
+      "right_record": "Yjzq00024",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00077",
+      "right_record": "Yjzq00087",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00077",
+      "right_record": "Yjzq00092",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00079",
+      "right_record": "Yjzq00040",
+      "normalized_name": "无名琴",
+      "score": 0.44,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor provenance",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00079",
+      "right_record": "Yjzq00089",
+      "normalized_name": "无名琴",
+      "score": 0.44,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared identity anchor provenance",
+        "shared lacquer evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00079",
+      "right_record": "Yjzq00093",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared duanwen evidence",
+        "shared form evidence",
+        "shared lacquer evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00082",
+      "right_record": "Yjzq00024",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00082",
+      "right_record": "Yjzq00078",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared lacquer evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00082",
+      "right_record": "Yjzq00087",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00082",
+      "right_record": "Yjzq00092",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared form evidence",
+        "shared material evidence",
+        "shared material evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00083",
+      "right_record": "Yjzq00078",
+      "normalized_name": "无名琴",
+      "score": 0.4,
+      "status": "candidate",
+      "reasons": [
+        "both records are unnamed",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared lacquer evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00017",
+      "right_record": "Yjzq00013",
+      "normalized_name": "凤鸣",
+      "score": 0.61,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence",
+        "shared provenance evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00017",
+      "right_record": "QNQY059",
+      "normalized_name": "凤鸣",
+      "score": 0.73,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared material evidence",
+        "shared provenance evidence"
+      ]
+    },
+    {
+      "left_record": "Yjzq00013",
+      "right_record": "QNQY059",
+      "normalized_name": "凤鸣",
+      "score": 0.73,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence",
+        "shared provenance evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00020",
+      "right_record": "Yjzq00019",
+      "normalized_name": "松石间意",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00020",
+      "right_record": "QNQY053",
+      "normalized_name": "松石间意",
+      "score": 0.9,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared material evidence",
+        "shared provenance evidence"
+      ]
+    },
+    {
+      "left_record": "Yjzq00019",
+      "right_record": "QNQY053",
+      "normalized_name": "松石间意",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00026",
+      "right_record": "Yjzq00025",
+      "normalized_name": "霜天月",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00029",
+      "right_record": "Yjzq00029",
+      "normalized_name": "霜钟",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00031",
+      "right_record": "Yjzq00031",
+      "normalized_name": "中和",
+      "score": 0.61,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00034",
+      "right_record": "Yjzq00033",
+      "normalized_name": "韵磬",
+      "score": 0.65,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared inscription evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00036",
+      "right_record": "Yjzq00035",
+      "normalized_name": "一天秋",
+      "score": 0.25,
+      "status": "ambiguous",
+      "reasons": [
+        "exact normalized name"
+      ]
+    },
+    {
+      "left_record": "Gq00044",
+      "right_record": "Yjzq00043",
+      "normalized_name": "雪声",
+      "score": 0.25,
+      "status": "ambiguous",
+      "reasons": [
+        "exact normalized name"
+      ]
+    },
+    {
+      "left_record": "Gq00048",
+      "right_record": "Yjzq00048",
+      "normalized_name": "靡雷",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00054",
+      "right_record": "Yjzq00058",
+      "normalized_name": "金声玉振",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00056",
+      "right_record": "Yjzq00061",
+      "normalized_name": "瀑飞",
+      "score": 0.86,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared inscription evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00064",
+      "right_record": "Yjzq00053",
+      "normalized_name": "松风",
+      "score": 0.49,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared provenance evidence"
+      ]
+    },
+    {
+      "left_record": "Gq00064",
+      "right_record": "Yjzq00070",
+      "normalized_name": "松风",
+      "score": 0.25,
+      "status": "ambiguous",
+      "reasons": [
+        "exact normalized name"
+      ]
+    },
+    {
+      "left_record": "Gq00076",
+      "right_record": "Yjzq00086",
+      "normalized_name": "写韵",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY029",
+      "right_record": "CQL009",
+      "normalized_name": "彩凤鸣岐",
+      "score": 0.69,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY033",
+      "right_record": "CQL021",
+      "normalized_name": "谷应",
+      "score": 0.86,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared inscription evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY037",
+      "right_record": "CQL026",
+      "normalized_name": "春雷秋籁",
+      "score": 0.49,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY039",
+      "right_record": "CQL034",
+      "normalized_name": "秋鸿",
+      "score": 0.9,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared material evidence",
+        "shared provenance evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY041",
+      "right_record": "CQL016",
+      "normalized_name": "来凰",
+      "score": 0.57,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared form evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY045",
+      "right_record": "CQL030",
+      "normalized_name": "疏影",
+      "score": 0.69,
+      "status": "confirmed",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence",
+        "shared form evidence",
+        "shared material evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY074",
+      "right_record": "CQL060",
+      "normalized_name": "飞龙",
+      "score": 0.25,
+      "status": "ambiguous",
+      "reasons": [
+        "exact normalized name"
+      ]
+    },
+    {
+      "left_record": "QNQY076",
+      "right_record": "CQL044",
+      "normalized_name": "韵雪",
+      "score": 0.37,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared dating evidence"
+      ]
+    },
+    {
+      "left_record": "QNQY084",
+      "right_record": "CQL042",
+      "normalized_name": "号钟",
+      "score": 0.49,
+      "status": "candidate",
+      "reasons": [
+        "exact normalized name",
+        "shared form evidence"
+      ]
+    }
+  ],
+  "asset_issues": [],
+  "unmapped_relations": {
+    "提及人物": 260,
+    "籍贯为": 48,
+    "作有": 1,
+    "曾移交于": 1,
+    "名为": 2,
+    "活动区域为": 1,
+    "参加者包括": 6,
+    "提及地点": 7,
+    "地点为": 1,
+    "活跃时期为": 1,
+    "父为": 2,
+    "提及机构": 2,
+    "提及事件": 4,
+    "发起者为": 2,
+    "曾教授": 1,
+    "排列于": 1,
+    "提及时间": 2,
+    "师承": 7,
+    "收录琴为": 4,
+    "出自": 2,
+    "著作为": 1,
+    "撰文者为": 2,
+    "摄影者为": 1,
+    "定为": 1,
+    "作者为": 1,
+    "撰文": 1,
+    "摄影": 1,
+    "著有": 3,
+    "擅长": 3,
+    "提及琴": 2,
+    "姓为": 1,
+    "曾官职为": 1,
+    "曾为": 1,
+    "擅长为": 4,
+    "曾任职于": 3,
+    "职业为": 6,
+    "荣誉为": 1,
+    "贡献为": 1,
+    "所属流派为": 1,
+    "被誉为": 1,
+    "自号为": 1,
+    "晚号为": 2,
+    "制作依据为": 2,
+    "与杭州西湖名园汪庄关系为": 1,
+    "爱好为": 2,
+    "创建者为": 1,
+    "祭祀人物为": 1,
+    "配享人物为": 9
+  },
+  "duplicate_images": []
+}

@@ -1,0 +1,619 @@
+{
+ "schema_version": "guqin-audit-1",
+ "policy": {
+  "raw_files_immutable": true,
+  "canonical_record_key": "{book}-{zero_padded_source_number}",
+  "physical_folder_key": "{book}{zero_padded_source_number}",
+  "text_alignment": "txt-id/<physical_folder_key>.txt",
+  "image_alignment": "image/<physical_folder_key>[/images]/*",
+  "values": "raw values remain available; normalized values are comparison keys only"
+ },
+ "books": {
+  "Gq": {
+   "triplet_artifact_ids": [
+    "Gq00014",
+    "Gq00016",
+    "Gq00017",
+    "Gq00019",
+    "Gq00020",
+    "Gq00023",
+    "Gq00024",
+    "Gq00026",
+    "Gq00028",
+    "Gq00029",
+    "Gq00031",
+    "Gq00034",
+    "Gq00036",
+    "Gq00040",
+    "Gq00041",
+    "Gq00043",
+    "Gq00044",
+    "Gq00046",
+    "Gq00048",
+    "Gq00052",
+    "Gq00053",
+    "Gq00054",
+    "Gq00056",
+    "Gq00057",
+    "Gq00059",
+    "Gq00060",
+    "Gq00063",
+    "Gq00064",
+    "Gq00066",
+    "Gq00068",
+    "Gq00070",
+    "Gq00071",
+    "Gq00073",
+    "Gq00075",
+    "Gq00076",
+    "Gq00077",
+    "Gq00078",
+    "Gq00079",
+    "Gq00080",
+    "Gq00081",
+    "Gq00082",
+    "Gq00083"
+   ],
+   "triplet_artifact_count": 42,
+   "text_id_count": 44,
+   "text_clean_count": 84,
+   "image_directory_count": 44,
+   "missing_image_directories": [],
+   "extra_image_directories": [
+    "Gq00050",
+    "Gq00062"
+   ],
+   "missing_text_id_files": [],
+   "extra_text_id_files": [
+    "Gq00050",
+    "Gq00062"
+   ],
+   "missing_text_clean_files": [],
+   "workbook_image_id_mismatches": [],
+   "duplicate_image_groups": [],
+   "record_alignment_status": {
+    "exact": 42
+   },
+   "unnamed_records": [
+    {
+     "record_id": "Gq00016",
+     "source_record_id": "Gq-00016",
+     "display_name": "无名琴 · Gq00016"
+    },
+    {
+     "record_id": "Gq00019",
+     "source_record_id": "Gq-00019",
+     "display_name": "无名琴 · Gq00019"
+    },
+    {
+     "record_id": "Gq00023",
+     "source_record_id": "Gq-00023",
+     "display_name": "无名琴 · Gq00023"
+    },
+    {
+     "record_id": "Gq00024",
+     "source_record_id": "Gq-00024",
+     "display_name": "无名琴 · Gq00024"
+    },
+    {
+     "record_id": "Gq00028",
+     "source_record_id": "Gq-00028",
+     "display_name": "无名琴 · Gq00028"
+    },
+    {
+     "record_id": "Gq00040",
+     "source_record_id": "Gq-00040",
+     "display_name": "无名琴 · Gq00040"
+    },
+    {
+     "record_id": "Gq00041",
+     "source_record_id": "Gq-00041",
+     "display_name": "无名琴 · Gq00041"
+    },
+    {
+     "record_id": "Gq00043",
+     "source_record_id": "Gq-00043",
+     "display_name": "无名琴 · Gq00043"
+    },
+    {
+     "record_id": "Gq00046",
+     "source_record_id": "Gq-00046",
+     "display_name": "无名琴 · Gq00046"
+    },
+    {
+     "record_id": "Gq00052",
+     "source_record_id": "Gq-00052",
+     "display_name": "无名琴 · Gq00052"
+    },
+    {
+     "record_id": "Gq00053",
+     "source_record_id": "Gq-00053",
+     "display_name": "无名琴 · Gq00053"
+    },
+    {
+     "record_id": "Gq00057",
+     "source_record_id": "Gq-00057",
+     "display_name": "无名琴 · Gq00057"
+    },
+    {
+     "record_id": "Gq00059",
+     "source_record_id": "Gq-00059",
+     "display_name": "无名琴 · Gq00059"
+    },
+    {
+     "record_id": "Gq00063",
+     "source_record_id": "Gq-00063",
+     "display_name": "无名琴 · Gq00063"
+    },
+    {
+     "record_id": "Gq00066",
+     "source_record_id": "Gq-00066",
+     "display_name": "无名琴 · Gq00066"
+    },
+    {
+     "record_id": "Gq00068",
+     "source_record_id": "Gq-00068",
+     "display_name": "无名琴 · Gq00068"
+    },
+    {
+     "record_id": "Gq00070",
+     "source_record_id": "Gq-00070",
+     "display_name": "无名琴 · Gq00070"
+    },
+    {
+     "record_id": "Gq00073",
+     "source_record_id": "Gq-00073",
+     "display_name": "无名琴 · Gq00073"
+    },
+    {
+     "record_id": "Gq00075",
+     "source_record_id": "Gq-00075",
+     "display_name": "无名琴 · Gq00075"
+    },
+    {
+     "record_id": "Gq00077",
+     "source_record_id": "Gq-00077",
+     "display_name": "无名琴 · Gq00077"
+    },
+    {
+     "record_id": "Gq00078",
+     "source_record_id": "Gq-00078",
+     "display_name": "无名琴 · Gq00078"
+    },
+    {
+     "record_id": "Gq00079",
+     "source_record_id": "Gq-00079",
+     "display_name": "无名琴 · Gq00079"
+    },
+    {
+     "record_id": "Gq00080",
+     "source_record_id": "Gq-00080",
+     "display_name": "无名琴 · Gq00080"
+    },
+    {
+     "record_id": "Gq00081",
+     "source_record_id": "Gq-00081",
+     "display_name": "无名琴 · Gq00081"
+    },
+    {
+     "record_id": "Gq00082",
+     "source_record_id": "Gq-00082",
+     "display_name": "无名琴 · Gq00082"
+    },
+    {
+     "record_id": "Gq00083",
+     "source_record_id": "Gq-00083",
+     "display_name": "无名琴 · Gq00083"
+    }
+   ]
+  },
+  "Yjzq": {
+   "triplet_artifact_ids": [
+    "Yjzq00008",
+    "Yjzq00011",
+    "Yjzq00013",
+    "Yjzq00017",
+    "Yjzq00019",
+    "Yjzq00023",
+    "Yjzq00024",
+    "Yjzq00025",
+    "Yjzq00028",
+    "Yjzq00029",
+    "Yjzq00031",
+    "Yjzq00033",
+    "Yjzq00035",
+    "Yjzq00037",
+    "Yjzq00039",
+    "Yjzq00040",
+    "Yjzq00042",
+    "Yjzq00043",
+    "Yjzq00047",
+    "Yjzq00048",
+    "Yjzq00050",
+    "Yjzq00052",
+    "Yjzq00053",
+    "Yjzq00058",
+    "Yjzq00060",
+    "Yjzq00061",
+    "Yjzq00063",
+    "Yjzq00065",
+    "Yjzq00066",
+    "Yjzq00068",
+    "Yjzq00069",
+    "Yjzq00070",
+    "Yjzq00074",
+    "Yjzq00076",
+    "Yjzq00078",
+    "Yjzq00079",
+    "Yjzq00081",
+    "Yjzq00082",
+    "Yjzq00083",
+    "Yjzq00085",
+    "Yjzq00086",
+    "Yjzq00087",
+    "Yjzq00088",
+    "Yjzq00089",
+    "Yjzq00090",
+    "Yjzq00091",
+    "Yjzq00092",
+    "Yjzq00093",
+    "Yjzq00095",
+    "Yjzq00097",
+    "Yjzq00099"
+   ],
+   "triplet_artifact_count": 51,
+   "text_id_count": 51,
+   "text_clean_count": 113,
+   "image_directory_count": 104,
+   "missing_image_directories": [],
+   "extra_image_directories": [
+    "Yjzq00001",
+    "Yjzq00002",
+    "Yjzq00007",
+    "Yjzq00009",
+    "Yjzq00012",
+    "Yjzq00014",
+    "Yjzq00015",
+    "Yjzq00016",
+    "Yjzq00018",
+    "Yjzq00020",
+    "Yjzq00021",
+    "Yjzq00022",
+    "Yjzq00026",
+    "Yjzq00027",
+    "Yjzq00030",
+    "Yjzq00032",
+    "Yjzq00034",
+    "Yjzq00036",
+    "Yjzq00038",
+    "Yjzq00041",
+    "Yjzq00044",
+    "Yjzq00045",
+    "Yjzq00046",
+    "Yjzq00049",
+    "Yjzq00051",
+    "Yjzq00054",
+    "Yjzq00055",
+    "Yjzq00056",
+    "Yjzq00057",
+    "Yjzq00059",
+    "Yjzq00062",
+    "Yjzq00064",
+    "Yjzq00067",
+    "Yjzq00071",
+    "Yjzq00072",
+    "Yjzq00073",
+    "Yjzq00075",
+    "Yjzq00077",
+    "Yjzq00080",
+    "Yjzq00084",
+    "Yjzq00094",
+    "Yjzq00096",
+    "Yjzq00098",
+    "Yjzq00100",
+    "Yjzq00101",
+    "Yjzq00103",
+    "Yjzq00104",
+    "Yjzq00105",
+    "Yjzq00106",
+    "Yjzq00107",
+    "Yjzq00108",
+    "Yjzq00110",
+    "Yjzq00113"
+   ],
+   "missing_text_id_files": [],
+   "extra_text_id_files": [],
+   "missing_text_clean_files": [],
+   "workbook_image_id_mismatches": [],
+   "duplicate_image_groups": [],
+   "record_alignment_status": {
+    "exact": 51
+   },
+   "unnamed_records": [
+    {
+     "record_id": "Yjzq00011",
+     "source_record_id": "Yjzq-00011",
+     "display_name": "无名琴 · Yjzq00011"
+    },
+    {
+     "record_id": "Yjzq00017",
+     "source_record_id": "Yjzq-00017",
+     "display_name": "无名琴 · Yjzq00017"
+    },
+    {
+     "record_id": "Yjzq00023",
+     "source_record_id": "Yjzq-00023",
+     "display_name": "无名琴 · Yjzq00023"
+    },
+    {
+     "record_id": "Yjzq00024",
+     "source_record_id": "Yjzq-00024",
+     "display_name": "无名琴 · Yjzq00024"
+    },
+    {
+     "record_id": "Yjzq00028",
+     "source_record_id": "Yjzq-00028",
+     "display_name": "无名琴 · Yjzq00028"
+    },
+    {
+     "record_id": "Yjzq00037",
+     "source_record_id": "Yjzq-00037",
+     "display_name": "无名琴 · Yjzq00037"
+    },
+    {
+     "record_id": "Yjzq00039",
+     "source_record_id": "Yjzq-00039",
+     "display_name": "无名琴 · Yjzq00039"
+    },
+    {
+     "record_id": "Yjzq00040",
+     "source_record_id": "Yjzq-00040",
+     "display_name": "无名琴 · Yjzq00040"
+    },
+    {
+     "record_id": "Yjzq00042",
+     "source_record_id": "Yjzq-00042",
+     "display_name": "无名琴 · Yjzq00042"
+    },
+    {
+     "record_id": "Yjzq00047",
+     "source_record_id": "Yjzq-00047",
+     "display_name": "无名琴 · Yjzq00047"
+    },
+    {
+     "record_id": "Yjzq00050",
+     "source_record_id": "Yjzq-00050",
+     "display_name": "无名琴 · Yjzq00050"
+    },
+    {
+     "record_id": "Yjzq00052",
+     "source_record_id": "Yjzq-00052",
+     "display_name": "无名琴 · Yjzq00052"
+    },
+    {
+     "record_id": "Yjzq00060",
+     "source_record_id": "Yjzq-00060",
+     "display_name": "无名琴 · Yjzq00060"
+    },
+    {
+     "record_id": "Yjzq00063",
+     "source_record_id": "Yjzq-00063",
+     "display_name": "无名琴 · Yjzq00063"
+    },
+    {
+     "record_id": "Yjzq00065",
+     "source_record_id": "Yjzq-00065",
+     "display_name": "无名琴 · Yjzq00065"
+    },
+    {
+     "record_id": "Yjzq00068",
+     "source_record_id": "Yjzq-00068",
+     "display_name": "无名琴 · Yjzq00068"
+    },
+    {
+     "record_id": "Yjzq00069",
+     "source_record_id": "Yjzq-00069",
+     "display_name": "无名琴 · Yjzq00069"
+    },
+    {
+     "record_id": "Yjzq00074",
+     "source_record_id": "Yjzq-00074",
+     "display_name": "无名琴 · Yjzq00074"
+    },
+    {
+     "record_id": "Yjzq00076",
+     "source_record_id": "Yjzq-00076",
+     "display_name": "无名琴 · Yjzq00076"
+    },
+    {
+     "record_id": "Yjzq00078",
+     "source_record_id": "Yjzq-00078",
+     "display_name": "无名琴 · Yjzq00078"
+    },
+    {
+     "record_id": "Yjzq00081",
+     "source_record_id": "Yjzq-00081",
+     "display_name": "无名琴 · Yjzq00081"
+    },
+    {
+     "record_id": "Yjzq00082",
+     "source_record_id": "Yjzq-00082",
+     "display_name": "无名琴 · Yjzq00082"
+    },
+    {
+     "record_id": "Yjzq00085",
+     "source_record_id": "Yjzq-00085",
+     "display_name": "无名琴 · Yjzq00085"
+    },
+    {
+     "record_id": "Yjzq00087",
+     "source_record_id": "Yjzq-00087",
+     "display_name": "无名琴 · Yjzq00087"
+    },
+    {
+     "record_id": "Yjzq00088",
+     "source_record_id": "Yjzq-00088",
+     "display_name": "无名琴 · Yjzq00088"
+    },
+    {
+     "record_id": "Yjzq00089",
+     "source_record_id": "Yjzq-00089",
+     "display_name": "无名琴 · Yjzq00089"
+    },
+    {
+     "record_id": "Yjzq00090",
+     "source_record_id": "Yjzq-00090",
+     "display_name": "无名琴 · Yjzq00090"
+    },
+    {
+     "record_id": "Yjzq00091",
+     "source_record_id": "Yjzq-00091",
+     "display_name": "无名琴 · Yjzq00091"
+    },
+    {
+     "record_id": "Yjzq00092",
+     "source_record_id": "Yjzq-00092",
+     "display_name": "无名琴 · Yjzq00092"
+    },
+    {
+     "record_id": "Yjzq00093",
+     "source_record_id": "Yjzq-00093",
+     "display_name": "无名琴 · Yjzq00093"
+    }
+   ]
+  },
+  "QNQY": {
+   "triplet_artifact_ids": [
+    "QNQY017",
+    "QNQY019",
+    "QNQY020",
+    "QNQY021",
+    "QNQY022",
+    "QNQY023",
+    "QNQY024",
+    "QNQY025",
+    "QNQY026",
+    "QNQY027",
+    "QNQY029",
+    "QNQY033",
+    "QNQY035",
+    "QNQY036",
+    "QNQY037",
+    "QNQY039",
+    "QNQY041",
+    "QNQY043",
+    "QNQY045",
+    "QNQY047",
+    "QNQY048",
+    "QNQY051",
+    "QNQY052",
+    "QNQY053",
+    "QNQY054",
+    "QNQY056",
+    "QNQY059",
+    "QNQY061",
+    "QNQY062",
+    "QNQY065",
+    "QNQY069",
+    "QNQY071",
+    "QNQY072",
+    "QNQY073",
+    "QNQY074",
+    "QNQY076",
+    "QNQY080",
+    "QNQY081",
+    "QNQY082",
+    "QNQY084"
+   ],
+   "triplet_artifact_count": 40,
+   "text_id_count": 46,
+   "text_clean_count": 95,
+   "image_directory_count": 46,
+   "missing_image_directories": [],
+   "extra_image_directories": [
+    "QNQY055",
+    "QNQY057",
+    "QNQY075",
+    "QNQY078",
+    "QNQY079",
+    "QNQY083"
+   ],
+   "missing_text_id_files": [],
+   "extra_text_id_files": [
+    "QNQY055",
+    "QNQY057",
+    "QNQY075",
+    "QNQY078",
+    "QNQY079",
+    "QNQY083"
+   ],
+   "missing_text_clean_files": [],
+   "workbook_image_id_mismatches": [],
+   "duplicate_image_groups": [],
+   "record_alignment_status": {
+    "exact": 40
+   },
+   "unnamed_records": []
+  },
+  "CQL": {
+   "triplet_artifact_ids": [
+    "CQL009",
+    "CQL016",
+    "CQL021",
+    "CQL026",
+    "CQL030",
+    "CQL034",
+    "CQL040",
+    "CQL042",
+    "CQL044",
+    "CQL051",
+    "CQL054",
+    "CQL057",
+    "CQL060",
+    "CQL063",
+    "CQL067",
+    "CQL070",
+    "CQL072",
+    "CQL078",
+    "CQL081",
+    "CQL083",
+    "CQL085"
+   ],
+   "triplet_artifact_count": 21,
+   "text_id_count": 22,
+   "text_clean_count": 140,
+   "image_directory_count": 22,
+   "missing_image_directories": [],
+   "extra_image_directories": [
+    "CQL090"
+   ],
+   "missing_text_id_files": [],
+   "extra_text_id_files": [
+    "CQL090"
+   ],
+   "missing_text_clean_files": [],
+   "workbook_image_id_mismatches": [],
+   "duplicate_image_groups": [],
+   "record_alignment_status": {
+    "exact": 21
+   },
+   "unnamed_records": [
+    {
+     "record_id": "CQL040",
+     "source_record_id": "CQL-040",
+     "display_name": "无名琴 · CQL040"
+    },
+    {
+     "record_id": "CQL063",
+     "source_record_id": "CQL-063",
+     "display_name": "无名琴 · CQL063"
+    },
+    {
+     "record_id": "CQL072",
+     "source_record_id": "CQL-072",
+     "display_name": "无名琴 · CQL072"
+    }
+   ]
+  }
+ }
+}

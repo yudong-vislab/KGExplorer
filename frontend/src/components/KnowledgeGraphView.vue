@@ -28,8 +28,9 @@ function ringArc(radius, startFrac, endFrac, pad = 0.03) {
 
 function drawContentionGlyph(g, artifact, r) {
   const cls = worstClass(artifact);
-  // A fixed source axis makes glyphs comparable across objects. Missing
-  // sources occupy their stable sector instead of shrinking the circle.
+  // The outer ring is a fixed provenance axis. The center encodes the
+  // record's current evidence state; no unexplained source/count number is
+  // placed inside the node.
   const sourceIds = Object.keys(SOURCES).length
     ? Object.keys(SOURCES)
     : (artifact.sources.length ? artifact.sources : ['unknown']);
@@ -48,34 +49,38 @@ function drawContentionGlyph(g, artifact, r) {
       .attr('d', ringArc(r + 5, i / n, (i + 1) / n))
       .attr('fill', sid === 'unknown' || !present ? CLASS_COLORS.missing : involved ? (SOURCES[sid]?.color || alignmentColor) : '#d3dadd')
       .append('title')
-      .text(SOURCES[sid]?.title || sid);
+      .text(`${present ? 'source present' : 'source absent'} · ${SOURCES[sid]?.title || sid}`);
   });
-  const slots = artifact.slots.length ? artifact.slots : [{ label: 'no indexed attributes', cls: 'missing' }];
-  slots.forEach((slot, i) => {
-    const arc = d3.arc()
-      .innerRadius(Math.max(3, r - 6))
-      .outerRadius(Math.max(5, r - 3))
-      .startAngle((i / slots.length + 0.025) * 2 * Math.PI)
-      .endAngle(((i + 1) / slots.length - 0.025) * 2 * Math.PI);
-    g.append('path')
-      .attr('d', arc())
-      .attr('fill', CLASS_COLORS[slot.cls] || CLASS_COLORS.missing)
-      .attr('fill-opacity', 0.9)
-      .append('title').text(`attribute · ${slot.label}`);
-  });
+  const stateColor = CLASS_COLORS[cls] || CLASS_COLORS.missing;
   g.append('circle')
     .attr('r', r)
-    .attr('fill', '#faf7f1')
-    .attr('stroke', alignmentColor)
-    .attr('stroke-width', 1.4)
-    .attr('stroke-dasharray', cls === 'A' ? '4 2.5' : artifact.alignmentStatus === 'candidate' ? '2 2' : null);
+    .attr('fill', '#ffffff')
+    .attr('stroke', stateColor)
+    .attr('stroke-width', 1.8)
+    .attr('stroke-dasharray', cls === 'A' ? '4 2.5' : null)
+    .append('title')
+    .text(`${artifact.name} · ${artifact.sources.length} source(s) · ${cls}`);
+  g.append('circle')
+    .attr('r', Math.max(6, r * 0.32))
+    .attr('fill', stateColor)
+    .attr('stroke', '#ffffff')
+    .attr('stroke-width', 1);
   g.append('text')
-    .text(artifact.sources.length)
+    .attr('class', 'source-count')
     .attr('text-anchor', 'middle')
-    .attr('dy', 4)
-    .attr('font-size', 11)
+    .attr('dy', 3.5)
+    .attr('fill', '#ffffff')
+    .attr('font-size', Math.max(8, r * 0.54))
+    .attr('font-weight', 800)
+    .text(artifact.sources.length);
+  g.append('text')
+    .attr('class', 'source-count-label')
+    .attr('x', r + 7)
+    .attr('y', -r - 5)
+    .attr('fill', '#5d6871')
+    .attr('font-size', 8.5)
     .attr('font-weight', 700)
-    .attr('fill', alignmentColor);
+    .text(`${artifact.sources.length} src`);
 }
 
 function renderGlobal(container, width, height) {
@@ -84,14 +89,25 @@ function renderGlobal(container, width, height) {
     .attr('role', 'img')
     .attr('aria-label', 'Global contested knowledge graph');
 
-  // Overview projection: one glyph per record-level object, plus shared
-  // concept nodes. Attribute values remain in the glyph and in the detail
-  // lens, so the complete corpus is visible without creating a node for
-  // every extracted sentence.
+  // Keep the full corpus in the matrix and hierarchy. The graph starts with
+  // objects that participate in cross-source matching or conflict analysis.
+  const graphArtifacts = ARTIFACTS.filter((artifact) =>
+    artifact.sources.length > 1
+    || artifact.alignmentCandidates?.some((candidate) => candidate.score >= 0.45)
+    || artifact.slots.some((slot) => ['A', 'B', 'C'].includes(slot.cls)),
+  );
+  svg.append('text')
+    .attr('x', 16)
+    .attr('y', 20)
+    .attr('fill', '#56636d')
+    .attr('font-size', 10)
+    .attr('font-weight', 700)
+    .text(`cross-source view · ${graphArtifacts.length} of ${ARTIFACTS.length} records`)
+    .append('title')
+    .text('The matrix and source folders retain the complete corpus; the global view foregrounds linked or contested records.');
   const nodes = [];
   const nodeById = new Map();
   const links = [];
-  const normalize = (value) => String(value || '').replace(/\s+/g, ' ').trim();
   const short = (value, max = 24) => {
     const text = String(value || '');
     return text.length > max ? `${text.slice(0, max - 1)}…` : text;
@@ -103,32 +119,83 @@ function renderGlobal(container, width, height) {
     }
     return nodeById.get(nodeData.id);
   };
-  ARTIFACTS.forEach((artifact) => {
-    const object = addNode({
-      id: `object:${artifact.id}`,
-      kind: 'object',
-      artifact,
-      label: artifact.name,
-      r: 15 + Math.min(5, artifact.slots.length),
+  const sourceIds = Object.keys(SOURCES);
+
+  graphArtifacts.forEach((artifact) => addNode({
+    id: `object:${artifact.id}`,
+    kind: 'object',
+    artifact,
+    label: artifact.name,
+    r: 14 + Math.min(6, artifact.slots.filter((slot) => slot.cls === 'A' || slot.cls === 'B').length),
+  }));
+
+  // A value node is a normalized attribute value shared by at least two
+  // artifact records. Singletons remain in the evidence matrix but do not
+  // create noise in the global relational backbone.
+  const sharedValues = new Map();
+  graphArtifacts.forEach((artifact) => {
+    artifact.slots.forEach((slot) => {
+      slot.assertions.forEach((assertion) => {
+        const values = assertion.normalizedValues?.length ? assertion.normalizedValues : assertion.values;
+        values.forEach((value, valueIndex) => {
+          const canonical = String(value || '').replace(/\s+/g, ' ').trim();
+          if (!canonical || canonical.length > 120) return;
+          const key = `${slot.id}:${canonical.toLowerCase()}`;
+          const group = sharedValues.get(key) || {
+            key,
+            slot,
+            label: canonical,
+            artifacts: new Set(),
+            recordsByArtifact: new Map(),
+            rawLabels: new Set(),
+          };
+          group.artifacts.add(artifact.id);
+          const sources = group.recordsByArtifact.get(artifact.id) || new Set();
+          sources.add(assertion.source);
+          group.recordsByArtifact.set(artifact.id, sources);
+          const detail = assertion.valueDetails?.find((item) => item.canonical === value);
+          if (detail?.raw) group.rawLabels.add(detail.raw);
+          else if (assertion.values?.[valueIndex]) group.rawLabels.add(assertion.values[valueIndex]);
+          sharedValues.set(key, group);
+        });
+      });
     });
-    artifact.entities.forEach((entity) => {
-      const concept = addNode({ id: `concept:${normalize(entity)}`, kind: 'concept', label: entity, r: 11 });
-      links.push({ source: object.id, target: concept.id, kind: 'associated concept' });
+  });
+  sharedValues.forEach((group) => {
+    if (group.artifacts.size < 2) return;
+    const value = addNode({
+      id: `value:${group.key}`,
+      kind: 'value',
+      label: group.label,
+      slotLabel: group.slot.label,
+      rawLabels: [...group.rawLabels],
+      support: group.artifacts.size,
+      r: 5 + Math.min(3, Math.sqrt(group.artifacts.size)),
+    });
+    group.recordsByArtifact.forEach((sourceSet, artifactId) => {
+      const artifact = graphArtifacts.find((item) => item.id === artifactId);
+      const slot = artifact?.slots.find((item) => item.id === group.slot.id);
+      links.push({
+        source: `object:${artifactId}`,
+        target: value.id,
+        kind: 'asserts value',
+        slotLabel: group.slot.label,
+        sources: [...sourceSet],
+        status: slot?.cls || 'single',
+      });
     });
   });
 
-  const cx = width / 2;
-  const cy = height / 2;
   nodes.forEach((n, i) => {
-    const cached = posCache.get(`semantic-v3:${n.id}`);
+    const cached = posCache.get(`clean-kg-v1:${n.id}`);
     if (cached) {
       n.x = cached.x;
       n.y = cached.y;
-      return;
+    } else {
+      const seed = (i * 9301 + 49297) % 233280;
+      n.x = width * (0.24 + 0.52 * (seed / 233280));
+      n.y = height * (0.24 + 0.52 * (((seed * 17) % 233280) / 233280));
     }
-    const seed = (i * 9301 + 49297) % 233280;
-    n.x = width * (-0.7 + 2.4 * (seed / 233280));
-    n.y = height * (-0.7 + 2.4 * (((seed * 17) % 233280) / 233280));
   });
 
   const graph = svg.append('g');
@@ -137,10 +204,10 @@ function renderGlobal(container, width, height) {
     .on('zoom', (event) => graph.attr('transform', event.transform));
   svg.call(zoom).on('dblclick.zoom', null);
   const link = graph.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke', '#7c9aae')
-    .attr('stroke-opacity', 0.28)
-    .attr('stroke-width', 1);
-  link.append('title').text('associated concept');
+    .attr('stroke', (d) => d.status === 'A' ? CLASS_COLORS.A : d.status === 'B' ? CLASS_COLORS.B : '#aab8bf')
+    .attr('stroke-opacity', (d) => d.status === 'A' || d.status === 'B' ? 0.48 : 0.28)
+    .attr('stroke-width', (d) => d.status === 'A' ? 1.25 : 0.9);
+  link.append('title').text((d) => `${d.kind} · ${d.slotLabel} · ${d.sources.map((source) => SOURCES[source]?.title || source).join(', ')}`);
 
   const node = graph.append('g').selectAll('g').data(nodes).join('g')
     .attr('cursor', (d) => (d.kind === 'object' ? 'pointer' : 'grab'))
@@ -155,32 +222,29 @@ function renderGlobal(container, width, height) {
       d3.select(this).select('.semantic-label').attr('opacity', 1);
     })
     .on('mouseleave', function (event, d) {
-      if (d.kind !== 'object' || d.artifact?.id !== props.selectedArtifactId) {
-        d3.select(this).select('.semantic-label').attr('opacity', 0);
-      }
+      if ((d.kind === 'object' && d.artifact?.id === props.selectedArtifactId)) return;
+      d3.select(this).select('.semantic-label').attr('opacity', 0);
     });
 
   node.filter((d) => d.kind === 'object').each(function drawEach(d) {
     drawContentionGlyph(d3.select(this), d.artifact, d.r);
   });
-
   node.filter((d) => d.kind === 'object')
     .append('text').text((d) => short(d.label, 28))
     .attr('class', 'semantic-label artifact-label')
-    .attr('x', 25).attr('y', 4)
+    .attr('x', (d) => d.r + 8).attr('y', 4)
     .attr('fill', '#4a4438').attr('font-size', 11).attr('font-weight', 600)
     .attr('paint-order', 'stroke').attr('stroke', '#ffffff').attr('stroke-width', 3)
     .attr('opacity', (d) => d.artifact.id === props.selectedArtifactId ? 1 : 0);
-
-  node.filter((d) => d.kind === 'concept')
+  node.filter((d) => d.kind === 'value')
     .append('circle').attr('r', (d) => d.r)
-    .attr('fill', '#eaf0f3').attr('stroke', '#7c9aae').attr('stroke-width', 1.2)
-    .append('title').text((d) => `concept · ${d.label}`);
-  node.filter((d) => d.kind !== 'object')
-    .append('text').text((d) => short(d.label, d.kind === 'value' ? 20 : 18))
+    .attr('fill', '#ffffff').attr('stroke', '#7f9aa7').attr('stroke-width', 1.2)
+    .append('title').text((d) => `attribute value · ${d.slotLabel} · ${d.label} · ${d.support} artifact records`);
+  node.filter((d) => d.kind === 'value')
+    .append('text').text((d) => short(d.label, 20))
     .attr('class', 'semantic-label')
-    .attr('x', 12)
-    .attr('y', 4).attr('fill', '#5e6870').attr('font-size', 9).attr('font-weight', 600)
+    .attr('x', (d) => d.r + 7)
+    .attr('y', 4).attr('fill', '#8f6b2f').attr('font-size', 8.5).attr('font-weight', 600)
     .attr('paint-order', 'stroke').attr('stroke', '#ffffff').attr('stroke-width', 3)
     .attr('opacity', 0);
 
@@ -195,10 +259,13 @@ function renderGlobal(container, width, height) {
 
   const simulation = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id((d) => d.id)
-      .distance(145).strength(0.62))
-    .force('charge', d3.forceManyBody().strength((d) => d.kind === 'object' ? -430 : -150).distanceMax(Math.max(width, height) * 3))
-    .force('center', d3.forceCenter(cx, cy))
-    .force('collision', d3.forceCollide().radius((d) => d.kind === 'object' ? 31 : d.r + 9));
+      .distance(145)
+      .strength(0.42))
+    .force('charge', d3.forceManyBody()
+      .strength((d) => d.kind === 'object' ? -460 : -150)
+      .distanceMax(Math.max(width, height) * 3))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collision', d3.forceCollide().radius((d) => d.kind === 'object' ? d.r + 14 : d.r + 7));
 
   function positionAll() {
     // Intentionally leave nodes outside the viewport; zoom and pan reveal them.
@@ -208,21 +275,27 @@ function renderGlobal(container, width, height) {
   }
 
   simulation.stop();
-  simulation.tick(300);
+  simulation.tick(420);
   positionAll();
-  nodes.forEach((n) => posCache.set(`semantic-v3:${n.id}`, { x: n.x, y: n.y }));
+  nodes.forEach((n) => posCache.set(`clean-kg-v1:${n.id}`, { x: n.x, y: n.y }));
 
   node.call(
     d3.drag()
+      .filter((event) => event.button === 0)
+      .on('start', (event) => {
+        event.sourceEvent?.stopPropagation();
+      })
       .on('drag', (event, d) => {
+        event.sourceEvent?.stopPropagation();
         d.fx = event.x;
         d.fy = event.y;
         positionAll();
       })
       .on('end', (event, d) => {
+        event.sourceEvent?.stopPropagation();
         d.fx = null;
         d.fy = null;
-        posCache.set(`semantic-v3:${d.id}`, { x: d.x, y: d.y });
+        posCache.set(`clean-kg-v1:${d.id}`, { x: d.x, y: d.y });
       }),
   );
 }
@@ -236,7 +309,7 @@ function renderComparison(container, width, height) {
   const artifact = ARTIFACTS.find((a) => a.id === props.selectedArtifactId);
   if (!artifact) {
     svg.append('text')
-      .text('Select a plant or instrument object')
+      .text('Select an object')
       .attr('x', width / 2).attr('y', height / 2)
       .attr('text-anchor', 'middle').attr('fill', '#9a9284').attr('font-size', 12.5);
     return;
