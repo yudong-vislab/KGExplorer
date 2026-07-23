@@ -23,10 +23,6 @@ const BOOK_COLORS = {
   Yjzq: '#a45c1d',
   QNQY: '#6b4e9b',
   CQL: '#2d7a6b',
-  wilson_1808: '#294e6b',
-  cassin_1862: '#7a5b45',
-  baird_1905: '#536b78',
-  studer_1895: '#8a6f36',
 };
 
 export const store = reactive({
@@ -39,6 +35,8 @@ export const store = reactive({
   sources: {},
   artifacts: [],
   stats: {},
+  evidenceAudit: {},
+  qualityIssues: [],
 });
 
 export function worstClass(artifact) {
@@ -71,16 +69,26 @@ function beliefFrom(assertions) {
 }
 
 function adaptArtifact(raw) {
-  const sourceAssertions = (a) => ({
-    source: a.source ?? a.book,
-    recordId: a.record_id ?? a.recordId,
-    values: a.values || [],
-    normalizedValues: a.normalized_values || a.normalizedValues || a.values || [],
-    valueDetails: a.value_details || a.valueDetails || [],
-    raw: (a.values || []).length ? a.values.join('、') : null,
-    imagePath: a.image_path || a.imagePath || null,
-    metadata: a.metadata || {},
-  });
+  const sourceAssertions = (a) => {
+    const scopedValues = a.scope
+      ? a.scope.object_values || []
+      : a.audit?.object_values
+        ? a.audit.object_values
+        : null;
+    const values = scopedValues === null ? a.values || [] : scopedValues;
+    return {
+      source: a.source ?? a.book,
+      recordId: a.record_id ?? a.recordId,
+      recordName: a.record_name ?? a.recordName,
+      values,
+      normalizedValues: scopedValues || a.normalized_values || a.normalizedValues || values,
+      valueDetails: a.value_details || a.valueDetails || [],
+      raw: values.length ? values.join('、') : null,
+      imagePath: a.image_path || a.imagePath || null,
+      metadata: a.metadata || {},
+      audit: a.audit || null,
+    };
+  };
   const caus = raw.caus || raw.slots || [];
   const consensusSlots = caus.filter((c) => c.status === 'consensus');
   const entities = [];
@@ -106,6 +114,8 @@ function adaptArtifact(raw) {
     entities: raw.entities?.length ? raw.entities : entities,
     consensusCount: consensusSlots.length,
     alignmentCandidates: raw.alignment_candidates || [],
+    auditIdentityGrade: raw.audit_identity_grade || 'source_local',
+    auditReadinessCounts: raw.audit_readiness_counts || {},
     slots: caus.map((c) => ({
       id: c.slot,
       label: c.label,
@@ -113,9 +123,14 @@ function adaptArtifact(raw) {
       conflictType: c.conflict_type || c.conflictType || null,
       cls: STATUS_TO_CLS[c.status],
       assertions: c.assertions.map(sourceAssertions),
+      audit: c.audit || null,
+      reviewReadiness: c.audit?.review_readiness || null,
+      auditFlags: c.audit?.audit_flags || [],
       belief: beliefFrom(c.assertions),
       note:
-        c.status === 'differ'
+        c.audit?.machine_audit_note
+          ? c.audit.machine_audit_note
+          : c.status === 'differ'
           ? '自动检测:不同标本来源的名称存在差异,进入冲突候选。'
           : c.status === 'single_source'
             ? '仅有一个来源记录该属性，不代表跨来源共识。'
@@ -138,12 +153,14 @@ function resetStore() {
   Object.keys(store.sources).forEach((key) => delete store.sources[key]);
   store.artifacts.splice(0, store.artifacts.length);
   store.stats = {};
+  store.evidenceAudit = {};
+  store.qualityIssues = [];
 }
 
-export async function loadStore(caseId = 'guqin') {
+export async function loadStore() {
   resetStore();
   try {
-    const res = await fetch(`/api/case-data/${caseId}`);
+    const res = await fetch('/api/case-data/guqin');
     if (!res.ok) throw new Error(`API ${res.status}`);
     const data = await res.json();
     Object.entries(data.books).forEach(([id, title]) => {
@@ -154,17 +171,19 @@ export async function loadStore(caseId = 'guqin') {
     // valid source-local knowledge and provide the context around contested
     // objects; alignment is an analytic state, not a visibility filter.
     store.artifacts.splice(0, store.artifacts.length, ...adapted);
-    const defaults = caseId === 'quercus'
-      ? { title: 'Quercus Historical Flora Corpus', note: 'Scanned plant books with indexed OCR and page evidence', label: 'Case 2 · Quercus' }
-      : caseId === 'birds'
-        ? { title: 'Historical Bird Atlas Knowledge Revision', note: 'Scanned bird atlases with OCR, names, and page-linked plate evidence', label: 'Case 3 · Historical Birds' }
-        : { title: 'Guqin Heritage Knowledge Revision', note: 'Multisource guqin books with scanned-part evidence', label: 'Case 1 · Guqin' };
+    const defaults = {
+      title: 'Guqin Heritage Knowledge Revision',
+      note: 'Multisource guqin books with scanned-part evidence',
+      label: 'Case 1 · Guqin',
+    };
     store.title = data.case?.title || defaults.title;
     store.caseNote = data.case?.note || defaults.note;
     store.caseLabel = data.case?.label || defaults.label;
-    store.caseId = caseId;
+    store.caseId = 'guqin';
     store.unalignedCount = adapted.filter((artifact) => artifact.alignmentStatus !== 'confirmed').length;
     store.stats = data.stats;
+    store.evidenceAudit = data.evidence_audit || {};
+    store.qualityIssues = data.quality_issues || [];
     store.loaded = true;
   } catch (err) {
     store.error = String(err);

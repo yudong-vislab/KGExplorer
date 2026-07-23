@@ -1,0 +1,46 @@
+{
+  "scope": "Four primary multimodal Guqin books; automated consistency audit, not historical adjudication",
+  "generated_from": "/Users/yudong/Desktop/KGExplorer/backend/data/processed/case1_guqin.json",
+  "source_books": 4,
+  "records": 154,
+  "records_with_text": 154,
+  "records_with_images": 154,
+  "raw_image_files": 1344,
+  "linked_image_files": 985,
+  "unlinked_or_extra_image_files": 359,
+  "artifacts": 140,
+  "aligned_artifacts": 13,
+  "candidate_artifacts": 48,
+  "source_local_artifacts": 79,
+  "assertions": 1795,
+  "conflict_candidates": 74,
+  "source_assertions_in_candidates": 153,
+  "readiness_counts": {
+    "P2_data_cleanup": 46,
+    "P1_expert_review": 23,
+    "Exclude_lexical_variant": 3,
+    "P3_alignment_review": 2
+  },
+  "identity_counts": {
+    "A_strong": 68,
+    "C_name_only": 6
+  },
+  "text_support_counts": {
+    "supported": 120,
+    "partial": 17,
+    "structural_problem": 10,
+    "not_found": 6
+  },
+  "known_ocr_anomalies": [
+    "韵磬: shoulder width 19.1 cm (Gq00034) vs 9.1 cm (Yjzq00033)",
+    "瀑飞: length 121.2 cm (Gq00056) vs 1212 cm (Yjzq00061)",
+    "Yjzq00023: length/shoulder width appear swapped (20.4/119.8 cm)",
+    "霜天月: length 124.1 cm (Gq00026) vs 154.1 cm (Yjzq00025)"
+  ],
+  "limitations": [
+    "Automated audit verifies lineage and internal consistency, not historical truth.",
+    "The current case builder omits entity-attribute dimensions from the canonical graph.",
+    "Some current conflicts are inflated by mixing whole-instrument and component subjects.",
+    "Visual evidence availability does not prove that a crop is diagnostic for the disputed attribute."
+  ]
+}

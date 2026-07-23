@@ -10,6 +10,7 @@ const props = defineProps({
   variant: { type: String, default: 'global' },
   selectedArtifactId: { type: String, default: null },
   selectedSlotId: { type: String, default: null },
+  visibleArtifactIds: { type: Array, default: () => [] },
 });
 
 const emit = defineEmits(['select-artifact', 'select-slot', 'pin-artifact']);
@@ -91,11 +92,15 @@ function renderGlobal(container, width, height) {
 
   // Keep the full corpus in the matrix and hierarchy. The graph starts with
   // objects that participate in cross-source matching or conflict analysis.
-  const graphArtifacts = ARTIFACTS.filter((artifact) =>
-    artifact.sources.length > 1
-    || artifact.alignmentCandidates?.some((candidate) => candidate.score >= 0.45)
-    || artifact.slots.some((slot) => ['A', 'B', 'C'].includes(slot.cls)),
-  );
+  const visibleIds = new Set(props.visibleArtifactIds);
+  const hasActiveFilter = visibleIds.size > 0 && visibleIds.size < ARTIFACTS.length;
+  const graphArtifacts = ARTIFACTS.filter((artifact) => {
+    if (visibleIds.size && !visibleIds.has(artifact.id)) return false;
+    return hasActiveFilter
+      || artifact.sources.length > 1
+      || artifact.alignmentCandidates?.some((candidate) => candidate.score >= 0.45)
+      || artifact.slots.some((slot) => ['A', 'B', 'C'].includes(slot.cls));
+  });
   svg.append('text')
     .attr('x', 16)
     .attr('y', 20)
@@ -382,9 +387,11 @@ function render() {
 
 onMounted(async () => {
   await nextTick();
+  const element = rootEl.value;
+  if (!element) return;
   render();
   resizeObserver = new ResizeObserver(render);
-  resizeObserver.observe(rootEl.value);
+  resizeObserver.observe(element);
 });
 
 function updateGlobalSelection() {
@@ -403,6 +410,7 @@ function updateGlobalSelection() {
 
 watch(() => props.variant, render);
 watch(() => store.artifacts.length, render);
+watch(() => props.visibleArtifactIds.join('|'), render);
 watch(
   () => [props.selectedArtifactId, props.selectedSlotId],
   () => {

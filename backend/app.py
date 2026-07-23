@@ -10,12 +10,9 @@ CORS(app)
 
 DATA = Path(__file__).resolve().parent / "data"
 PROCESSED = DATA / "processed" / "case1_guqin.json"
+GUQIN_CURATED = DATA / "curated" / "guqin" / "explorer.json"
 IMAGE_ROOT = DATA / "raw" / "image"
 TEXT_ROOT = DATA / "raw" / "text"
-QUERCUS_ROOT = DATA / "case2_quercus"
-QUERCUS_MANIFEST = QUERCUS_ROOT / "source_manifest.json"
-BIRD_ROOT = DATA / "case3_birds"
-BIRD_PROCESSED = DATA / "processed" / "birds_kg.json"
 
 
 @app.get("/api/health")
@@ -23,10 +20,82 @@ def health():
     return jsonify({"status": "ok", "service": "KGExplorer Flask API"})
 
 
+def assertion_scope(record, slot):
+    """Recover whole-object values separately from component-level values."""
+    names = {
+        re.sub(r"\s+", "", str(record.get(key, "")).split("·")[0])
+        for key in ("raw_name", "normalized_name", "display_name")
+    }
+    names.discard("")
+    object_values = []
+    component_values = {}
+    for relation in record.get("relations", []):
+        if relation.get("slot") != slot:
+            continue
+        subject = re.sub(r"^\d+[_-]", "", str(relation.get("subject", "")))
+        subject = re.sub(r"\s+", "", subject)
+        value = relation.get("object", "")
+        if subject in names:
+            if value not in object_values:
+                object_values.append(value)
+        else:
+            component_values.setdefault(relation.get("subject", ""), [])
+            if value not in component_values[relation.get("subject", "")]:
+                component_values[relation.get("subject", "")].append(value)
+    return {
+        "object_values": object_values,
+        "component_values": [
+            {"subject": subject, "values": values}
+            for subject, values in component_values.items()
+        ],
+    }
+
+
 def guqin_data():
     if not PROCESSED.exists():
         abort(404)
     data = json.loads(PROCESSED.read_text(encoding="utf-8"))
+    record_index = {record["record_id"]: record for record in data["records"]}
+    for artifact in data["artifacts"]:
+        for slot in artifact.get("caus", []):
+            for assertion in slot.get("assertions", []):
+                record = record_index.get(assertion.get("record_id"))
+                if record:
+                    assertion["scope"] = assertion_scope(record, slot["slot"])
+    if GUQIN_CURATED.exists():
+        curated = json.loads(GUQIN_CURATED.read_text(encoding="utf-8"))
+        artifact_audit = {
+            artifact["artifact_id"]: artifact for artifact in curated["artifacts"]
+        }
+        conflict_audit = {
+            (conflict["artifact_id"], conflict["slot"]): conflict
+            for conflict in curated["conflicts"]
+        }
+        for artifact in data["artifacts"]:
+            audit_artifact = artifact_audit.get(artifact["artifact_id"], {})
+            artifact["audit_identity_grade"] = audit_artifact.get("identity_grade", "source_local")
+            artifact["audit_readiness_counts"] = audit_artifact.get("readiness_counts", {})
+            for slot in artifact.get("caus", []):
+                audit = conflict_audit.get((artifact["artifact_id"], slot["slot"]))
+                if not audit:
+                    continue
+                slot["audit"] = {
+                    key: audit[key] for key in (
+                        "case_row_id", "conflict_id", "identity_grade",
+                        "review_readiness", "text_support", "image_support",
+                        "audit_flags", "machine_audit_note",
+                    )
+                }
+                source_audit = {
+                    (assertion["source_id"], assertion["record_id"]): assertion
+                    for assertion in audit["assertions"]
+                }
+                for assertion in slot.get("assertions", []):
+                    key = (assertion.get("source"), assertion.get("record_id"))
+                    if key in source_audit:
+                        assertion["audit"] = source_audit[key]
+        data["evidence_audit"] = curated["summary"]
+        data["quality_issues"] = curated["quality_issues"]
     data["case"] = {
         "id": "guqin",
         "number": 1,
@@ -37,95 +106,10 @@ def guqin_data():
     return data
 
 
-def normalize_quercus_cluster(value):
-    """Return a transparent candidate cluster, not a taxonomic verdict."""
-    text = re.sub(r"\s+", " ", str(value or "Quercus")).strip()
-    text = text.replace("×", " x ").replace("_", " x ")
-    parts = text.split()
-    return " ".join(parts[:2]) if len(parts) >= 2 else text
-
-
-def quercus_data():
-    manifest = json.loads(QUERCUS_MANIFEST.read_text(encoding="utf-8"))
-    specimens_path = QUERCUS_ROOT / "raw" / "specimens" / "quercus_specimens.json"
-    specimens = json.loads(specimens_path.read_text(encoding="utf-8"))["records"] if specimens_path.exists() else []
-    books, grouped = {}, {}
-    for row in specimens:
-        institution = row.get("institution") or "unknown collection"
-        source_id = f"specimen:{institution}"
-        books[source_id] = f"{institution.upper()} herbarium specimens"
-        scientific = row.get("scientific_name") or row.get("canonical_name") or "Quercus"
-        concept = normalize_quercus_cluster(scientific)
-        grouped.setdefault(concept, []).append((source_id, row))
-
-    artifacts = []
-    for concept, entries in sorted(grouped.items()):
-        assertions, sources, images = [], [], {}
-        for source_id, row in entries:
-            if source_id not in sources:
-                sources.append(source_id)
-            image_name = Path(row["local_image"]).name if row.get("local_image") else ""
-            image_path = f"/api/case2/quercus/specimens/{row['record_uuid']}/{image_name}" if image_name else None
-            values = [row.get("scientific_name") or concept]
-            assertions.append({
-                "book": source_id,
-                "record_id": row["record_uuid"],
-                "values": values,
-                "image_path": image_path,
-                "metadata": {
-                    "catalog_number": row.get("catalog_number", ""),
-                    "state": row.get("state", ""),
-                    "taxon_rank": row.get("taxon_rank", ""),
-                    "collector": row.get("collector", ""),
-                    "event_date": row.get("event_date", ""),
-                    "source_url": row.get("image_url", ""),
-                    "license": row.get("license", ""),
-                },
-            })
-            if image_name:
-                images.setdefault(source_id, []).append(image_name)
-        names = {a["values"][0].strip().lower() for a in assertions if a["values"]}
-        status = "differ" if len(names) > 1 else ("evidence" if len(assertions) > 1 else "single_source")
-        ranks = {a["metadata"].get("taxon_rank") for a in assertions if a["metadata"].get("taxon_rank")}
-        cluster_status = (
-            "confirmed" if len(assertions) > 1 and len(names) == 1
-            else "candidate" if len(assertions) > 1
-            else "source-local"
-        )
-        artifacts.append({
-            "artifact_id": f"q-species-{concept.lower().replace(' ', '-')}",
-            "name": concept.title(), "aligned": cluster_status == "confirmed", "alignment_status": cluster_status,
-            "cluster_basis": "shared genus + epithet; verify rank/hybrid markers in evidence",
-            "books": sources,
-            "records": [a["record_id"] for a in assertions], "entities": ["Quercus", concept],
-            "images": images,
-            "caus": [{
-                "slot": "taxon_name",
-                "label": "Taxon name",
-                "status": status,
-                "assertions": assertions,
-                "cluster_status": cluster_status,
-                "rank_values": sorted(ranks),
-            }],
-        })
-    return {"books": books, "artifacts": artifacts, "stats": {
-        "records": len(specimens), "artifacts": len(artifacts),
-        "aligned_artifacts": sum(1 for a in artifacts if a["alignment_status"] == "confirmed"),
-        "candidate_clusters": sum(1 for a in artifacts if a["alignment_status"] == "candidate"),
-        "source_local_artifacts": sum(1 for a in artifacts if a["alignment_status"] == "source-local"),
-        "differ": sum(1 for a in artifacts if any(c["status"] == "differ" for c in a["caus"])), "overlap": 0,
-        "case_status": "evidence_indexed",
-    }, "case": {
-        "id": "quercus", "number": 2, "label": "Case 2 · Quercus",
-        "title": "Quercus Herbarium Evidence Corpus",
-        "note": f"{len(specimens)} specimen records from {len(books)} collections; candidate clusters preserve record-level names and images.",
-    }}
-
-
-def birds_data():
-    if not BIRD_PROCESSED.exists():
+def curated_guqin_data():
+    if not GUQIN_CURATED.exists():
         abort(404)
-    return json.loads(BIRD_PROCESSED.read_text(encoding="utf-8"))
+    return json.loads(GUQIN_CURATED.read_text(encoding="utf-8"))
 
 
 @app.get("/api/contested-kg")
@@ -137,37 +121,98 @@ def contested_kg():
 def case_data(case_id):
     if case_id == "guqin":
         return jsonify(guqin_data())
-    if case_id == "quercus" and QUERCUS_MANIFEST.exists():
-        return jsonify(quercus_data())
-    if case_id == "birds":
-        return jsonify(birds_data())
     return jsonify({"error": "unknown case"}), 404
 
 
-@app.get("/api/case2/quercus/<source_id>/<path:filename>")
-def quercus_evidence(source_id, filename):
-    manifest = json.loads(QUERCUS_MANIFEST.read_text(encoding="utf-8"))
-    source = next((s for s in manifest["sources"] if s["ia_id"] == source_id), None)
-    if not source:
+@app.get("/api/guqin/explorer")
+def guqin_explorer():
+    """Search the curated Guqin evidence index without changing raw values."""
+    data = curated_guqin_data()
+    query = request.args.get("q", "").strip().lower()
+    source = request.args.get("source", "").strip()
+    slot = request.args.get("slot", "").strip()
+    readiness = request.args.get("readiness", "").strip()
+
+    conflicts = data["conflicts"]
+    if source:
+        conflicts = [
+            row for row in conflicts
+            if source in row["sources"]
+            or any(item["source_id"] == source for item in row["assertions"])
+        ]
+    if slot:
+        conflicts = [row for row in conflicts if row["slot"] == slot]
+    if readiness:
+        allowed = {value.strip() for value in readiness.split(",") if value.strip()}
+        conflicts = [row for row in conflicts if row["review_readiness"] in allowed]
+    if query:
+        def conflict_text(row):
+            assertion_text = " ".join(
+                f"{item['record_id']} {item['raw_values']} {item['text_snippet']}"
+                for item in row["assertions"]
+            )
+            return (
+                f"{row['artifact_name']} {row['slot_label']} "
+                f"{row['machine_audit_note']} {assertion_text}"
+            ).lower()
+
+        conflicts = [row for row in conflicts if query in conflict_text(row)]
+
+    artifact_ids = {row["artifact_id"] for row in conflicts}
+    artifacts = [
+        artifact for artifact in data["artifacts"]
+        if artifact["artifact_id"] in artifact_ids
+    ]
+    record_ids = {
+        assertion["record_id"]
+        for conflict in conflicts
+        for assertion in conflict["assertions"]
+    }
+    records = [record for record in data["records"] if record["record_id"] in record_ids]
+    return jsonify({
+        "schema_version": data["schema_version"],
+        "summary": data["summary"],
+        "sources": data["sources"],
+        "filters": {
+            "q": query,
+            "source": source,
+            "slot": slot,
+            "readiness": readiness,
+        },
+        "result_counts": {
+            "artifacts": len(artifacts),
+            "conflicts": len(conflicts),
+            "records": len(records),
+        },
+        "artifacts": artifacts,
+        "conflicts": conflicts,
+        "records": records,
+        "quality_issues": data["quality_issues"],
+    })
+
+
+@app.get("/api/guqin/conflicts/<path:conflict_id>")
+def guqin_conflict(conflict_id):
+    data = curated_guqin_data()
+    conflict = next(
+        (row for row in data["conflicts"] if row["conflict_id"] == conflict_id),
+        None,
+    )
+    if not conflict:
         abort(404)
-    folder = QUERCUS_ROOT / source["quercus_page_images"]
-    return send_from_directory(folder, filename)
+    return jsonify(conflict)
 
 
-@app.get("/api/case2/quercus/specimens/<record_id>/<path:filename>")
-def quercus_specimen_image(record_id, filename):
-    folder = QUERCUS_ROOT / "raw" / "specimens" / "images" / record_id
-    if not folder.exists():
+@app.get("/api/guqin/records/<record_id>")
+def guqin_record(record_id):
+    data = curated_guqin_data()
+    record = next(
+        (row for row in data["records"] if row["record_id"] == record_id),
+        None,
+    )
+    if not record:
         abort(404)
-    return send_from_directory(folder, filename)
-
-
-@app.get("/api/case3/birds/pages/<source_id>/<path:filename>")
-def bird_page_image(source_id, filename):
-    folder = BIRD_ROOT / "raw" / "pages" / source_id
-    if not folder.exists():
-        abort(404)
-    return send_from_directory(folder, filename)
+    return jsonify(record)
 
 
 @app.get("/api/image/<record_id>/<path:filename>")

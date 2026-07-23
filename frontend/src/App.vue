@@ -4,24 +4,89 @@ import KnowledgeGraphView from './components/KnowledgeGraphView.vue';
 import AdjudicationPanel from './components/AdjudicationPanel.vue';
 import { store, loadStore, CLASS_COLORS } from './data/store.js';
 
-const requestedCase = new URLSearchParams(window.location.search).get('case');
-const selectedCase = ref(['guqin', 'quercus', 'birds'].includes(requestedCase) ? requestedCase : 'guqin');
-
 async function loadCaseIntoView() {
-  await loadStore(selectedCase.value);
-  const first = store.artifacts[0];
+  await loadStore();
+  const preferred = store.artifacts
+    .flatMap((artifact) => artifact.slots.map((slot) => ({ artifact, slot })))
+    .find(({ slot }) => slot.reviewReadiness === 'P1_expert_review')
+    || store.artifacts
+      .flatMap((artifact) => artifact.slots.map((slot) => ({ artifact, slot })))
+      .find(({ slot }) => ['A', 'B', 'C'].includes(slot.cls));
+  const first = preferred?.artifact || store.artifacts[0];
   selectedArtifactId.value = first?.id || null;
-  selectedSlotId.value = first?.slots[0]?.id || null;
+  selectedSlotId.value = preferred?.slot.id || first?.slots[0]?.id || null;
 }
 
 onMounted(loadCaseIntoView);
 
 const SOURCES = computed(() => store.sources);
 const CLS_ORDER = { A: 0, C: 1, B: 2 };
+const READINESS_LABELS = {
+  P1_expert_review: 'Ready for expert review',
+  P2_data_cleanup: 'Data cleanup required',
+  P3_alignment_review: 'Alignment review required',
+  Exclude_lexical_variant: 'Lexical variant',
+};
+
+const searchText = ref('');
+const sourceFilter = ref('all');
+const slotFilter = ref('all');
+const readinessFilter = ref('all');
+
+const availableSlots = computed(() => {
+  const map = new Map();
+  store.artifacts.forEach((artifact) => {
+    artifact.slots.forEach((slot) => map.set(slot.id, slot.label));
+  });
+  return [...map.entries()]
+    .map(([id, label]) => ({ id, label }))
+    .sort((a, b) => a.label.localeCompare(b.label, 'zh-CN'));
+});
+
+const visibleArtifacts = computed(() => {
+  const query = searchText.value.trim().toLowerCase();
+  return store.artifacts.filter((artifact) => {
+    if (sourceFilter.value !== 'all' && !artifact.sources.includes(sourceFilter.value)) return false;
+    if (
+      readinessFilter.value !== 'all'
+      && !artifact.slots.some((slot) => slot.reviewReadiness === readinessFilter.value)
+    ) return false;
+    if (slotFilter.value !== 'all' && !artifact.slots.some((slot) => slot.id === slotFilter.value)) return false;
+    if (!query) return true;
+    const text = [
+      artifact.name,
+      ...artifact.records,
+      ...artifact.slots.flatMap((slot) => [
+        slot.label,
+        ...slot.assertions.flatMap((assertion) => assertion.values),
+      ]),
+    ].join(' ').toLowerCase();
+    return text.includes(query);
+  });
+});
+
+const visibleArtifactIds = computed(() => visibleArtifacts.value.map((artifact) => artifact.id));
+
+function resetExplorerFilters() {
+  searchText.value = '';
+  sourceFilter.value = 'all';
+  slotFilter.value = 'all';
+  readinessFilter.value = 'all';
+}
+
 const worklist = computed(() =>
-  store.artifacts
+  visibleArtifacts.value
     .flatMap((a) => a.slots.map((s) => ({ artifact: a, slot: s })))
     .filter((x) => ['A', 'B', 'C'].includes(x.slot.cls))
+    .filter(
+      (x) => readinessFilter.value === 'all'
+        || x.slot.reviewReadiness === readinessFilter.value,
+    )
+    .filter((x) => slotFilter.value === 'all' || x.slot.id === slotFilter.value)
+    .filter(
+      (x) => sourceFilter.value === 'all'
+        || x.slot.assertions.some((assertion) => assertion.source === sourceFilter.value && assertion.raw),
+    )
     .sort((x, y) => CLS_ORDER[x.slot.cls] - CLS_ORDER[y.slot.cls]),
 );
 
@@ -36,26 +101,49 @@ const attrFacets = computed(() => {
 });
 
 const entityGroups = computed(() => {
-  const all = [...new Set(store.artifacts.flatMap((a) => a.entities))];
-  if (store.caseId === 'quercus') {
-    return [
-      { name: 'Plant concepts', items: all.filter((e) => e !== 'Quercus').map((item) => ({ name: item, artifacts: store.artifacts.filter((a) => a.entities.includes(item)) })) },
-      { name: 'Taxonomic group', items: [{ name: 'Quercus', artifacts: store.artifacts.filter((a) => a.entities.includes('Quercus')) }] },
-    ];
-  }
-  if (store.caseId === 'birds') {
-    return [
-      { name: 'Bird concepts', items: all.filter((e) => e !== 'Birds').map((item) => ({ name: item, artifacts: store.artifacts.filter((a) => a.entities.includes(item)) })) },
-      { name: 'Corpus domain', items: [{ name: 'Birds', artifacts: store.artifacts.filter((a) => a.entities.includes('Birds')) }] },
-    ];
-  }
-  const groupOf = (e) =>
-    /式$/.test(e) ? '形制'
-    : /博物馆|博物院/.test(e) ? '馆藏'
-    : '年代';
-  const groups = { 形制: [], 年代: [], 馆藏: [] };
-  all.forEach((e) => groups[groupOf(e)].push(e));
-  return Object.entries(groups).map(([name, items]) => ({ name, items }));
+  const specs = [
+    {
+      name: '形制',
+      slots: ['form'],
+      accept: (value) => /式(?:变体)?$/.test(value),
+      normalize: (value) => value,
+    },
+    {
+      name: '年代',
+      slots: ['dating', 'dating_assessment'],
+      accept: (value) => /唐|宋|元|明|清|民国|五代|年/.test(value),
+      normalize: (value) => value
+        .replace(/\([^)]*\)/g, '')
+        .replace(/^(唐|宋|元|明|清)$/, '$1代'),
+    },
+    {
+      name: '馆藏',
+      slots: ['current_holder'],
+      accept: (value) => /博物馆|博物院|艺术研究院/.test(value),
+      normalize: (value) => value,
+    },
+  ];
+  return specs.map((spec) => {
+    const values = new Map();
+    visibleArtifacts.value.forEach((artifact) => {
+      artifact.slots
+        .filter((slot) => spec.slots.includes(slot.id))
+        .flatMap((slot) => slot.assertions.flatMap((assertion) => assertion.normalizedValues))
+        .forEach((value) => {
+          if (!value || !spec.accept(value)) return;
+          const normalized = spec.normalize(value);
+          const artifacts = values.get(normalized) || [];
+          if (!artifacts.some((item) => item.id === artifact.id)) artifacts.push(artifact);
+          values.set(normalized, artifacts);
+        });
+    });
+    return {
+      name: spec.name,
+      items: [...values.entries()]
+        .map(([name, artifacts]) => ({ name, artifacts }))
+        .sort((a, b) => b.artifacts.length - a.artifacts.length),
+    };
+  });
 });
 
 const checkedAttrs = ref([]);
@@ -120,7 +208,7 @@ function endDrag() {
 
 const corpusStats = computed(() => ({
   sources: store.stats.records ? Object.keys(store.sources).length : 0,
-  sourceLabel: store.caseId === 'quercus' ? 'collections' : 'books',
+  sourceLabel: 'books',
   artifacts: store.stats.artifacts || 0,
   contested: (store.stats.differ || 0) + (store.stats.overlap || 0),
   unresolved: (store.stats.differ || 0) + (store.stats.overlap || 0),
@@ -129,25 +217,17 @@ const corpusStats = computed(() => ({
 const sourceHierarchy = computed(() =>
   Object.values(store.sources).map((source) => ({
     ...source,
-    artifacts: store.artifacts.filter((artifact) => artifact.sources.includes(source.id)),
+    artifacts: visibleArtifacts.value.filter((artifact) => artifact.sources.includes(source.id)),
   })),
 );
 
-const artifactHierarchy = computed(() =>
-  entityGroups.value.map((group) => ({
-    name: group.name,
-    items: group.items.map((item) => ({
-      name: item,
-      artifacts: store.artifacts.filter((artifact) => artifact.entities.includes(item)),
-    })),
-  })),
-);
+const artifactHierarchy = computed(() => entityGroups.value);
 
 const conflictHierarchy = computed(() =>
   [
-    { cls: 'A', name: ['quercus', 'birds'].includes(store.caseId) ? 'Name disagreement' : '记载不一致', desc: '各来源取值不同,待考订' },
-    { cls: 'B', name: ['quercus', 'birds'].includes(store.caseId) ? 'Partial overlap' : '部分重叠', desc: '取值有交集,疑详略差异' },
-    { cls: 'C', name: ['quercus', 'birds'].includes(store.caseId) ? 'Suspected error' : '疑似讹误', desc: '规则触发(待接入)' },
+    { cls: 'A', name: '记载不一致', desc: '各来源取值不同,待考订' },
+    { cls: 'B', name: '部分重叠', desc: '取值有交集,疑详略差异' },
+    { cls: 'C', name: '疑似讹误', desc: '规则触发(待接入)' },
   ].map((group) => ({
     ...group,
     slots: worklist.value.filter((w) => w.slot.cls === group.cls),
@@ -233,6 +313,7 @@ function imageEvidenceLabel(assertion) {
 
 const uploadedName = ref('');
 const viewerImage = ref(null);
+const viewerText = ref(null);
 
 function openEvidenceImage(src, title) {
   if (!src) return;
@@ -243,10 +324,23 @@ function closeEvidenceImage() {
   viewerImage.value = null;
 }
 
-async function switchCase() {
-  pinned.value = [];
-  ledger.value = [];
-  await loadCaseIntoView();
+async function openEvidenceText(assertion) {
+  if (!assertion.recordId) return;
+  viewerText.value = {
+    title: `${SOURCES.value[assertion.source]?.title || assertion.source} · ${assertion.recordId}`,
+    text: 'Loading OCR text…',
+  };
+  try {
+    const response = await fetch(`/api/text/${assertion.recordId}`);
+    if (!response.ok) throw new Error(`API ${response.status}`);
+    viewerText.value.text = await response.text();
+  } catch (error) {
+    viewerText.value.text = `Unable to load OCR text: ${error}`;
+  }
+}
+
+function closeEvidenceText() {
+  viewerText.value = null;
 }
 
 async function handleUpload(event) {
@@ -354,14 +448,10 @@ function onAdjudicated(payload) {
   <main class="app-shell">
     <header class="topbar">
       <h1>KGExplorer: Knowledge Graph Visual Analytics System</h1>
-      <label class="case-switcher">
+      <div class="case-switcher">
         <span>Case</span>
-        <select v-model="selectedCase" @change="switchCase">
-          <option value="guqin">Case 1 · Guqin</option>
-          <option value="quercus">Case 2 · Quercus</option>
-          <option value="birds">Case 3 · Historical Birds</option>
-        </select>
-      </label>
+        <strong>Case 1 · Guqin</strong>
+      </div>
     </header>
 
     <section class="workspace" aria-label="Main workspace">
@@ -369,13 +459,41 @@ function onAdjudicated(payload) {
         <header class="panel-title">KG Workspace</header>
 
         <div class="left-content">
-          <section class="control-card upload-card" aria-label="Corpus upload">
-            <h2>Corpus Upload</h2>
-            <label class="upload-drop">
-              <input type="file" accept=".zip,.rar,.7z" @change="handleUpload" hidden />
-              <span v-if="!uploadedName">Choose scanned-book archive</span>
-              <span v-else>{{ uploadedName }}</span>
-            </label>
+          <section class="control-card explorer-card" aria-label="Corpus explorer">
+            <div class="explorer-head">
+              <h2>Corpus Explorer</h2>
+              <button type="button" title="Reset filters" @click="resetExplorerFilters">Reset</button>
+            </div>
+            <input
+              v-model="searchText"
+              class="explorer-search"
+              type="search"
+              placeholder="Search object, record, or value"
+            />
+            <div class="explorer-filters">
+              <select v-model="sourceFilter" aria-label="Filter by source">
+                <option value="all">All sources</option>
+                <option v-for="source in Object.values(SOURCES)" :key="source.id" :value="source.id">
+                  {{ source.title }}
+                </option>
+              </select>
+              <select v-model="slotFilter" aria-label="Filter by attribute">
+                <option value="all">All attributes</option>
+                <option v-for="slot in availableSlots" :key="slot.id" :value="slot.id">
+                  {{ slot.label }}
+                </option>
+              </select>
+              <select v-model="readinessFilter" aria-label="Filter by audit readiness">
+                <option value="all">All audit states</option>
+                <option v-for="(label, id) in READINESS_LABELS" :key="id" :value="id">
+                  {{ label }}
+                </option>
+              </select>
+            </div>
+            <div class="explorer-result">
+              <strong>{{ visibleArtifacts.length }}</strong> / {{ store.artifacts.length }} objects
+              <span v-if="store.caseId === 'guqin'">· {{ worklist.length }} conflict candidates</span>
+            </div>
           </section>
 
           <section class="control-card stats-card" aria-label="Corpus statistics">
@@ -387,6 +505,14 @@ function onAdjudicated(payload) {
               <div><b>{{ corpusStats.artifacts }}</b><span>artifacts</span></div>
               <div><b>{{ corpusStats.contested }}</b><span>contested</span></div>
               <div><b>{{ corpusStats.unresolved - ledger.length >= 0 ? corpusStats.unresolved - ledger.length : 0 }}</b><span>open</span></div>
+            </div>
+            <div
+              v-if="store.caseId === 'guqin' && store.evidenceAudit.ready_for_expert_review !== undefined"
+              class="audit-strip"
+            >
+              <span><b>{{ store.evidenceAudit.ready_for_expert_review }}</b> expert-ready</span>
+              <span><b>{{ store.evidenceAudit.requires_data_cleanup }}</b> cleanup</span>
+              <span><b>{{ store.qualityIssues.length }}</b> OCR checks</span>
             </div>
           </section>
 
@@ -461,7 +587,14 @@ function onAdjudicated(payload) {
               >
                 <i class="chip-dot" :data-cls="w.slot.cls"></i>
                 <span class="wl-name">{{ w.artifact.name }} · {{ w.slot.label }}</span>
-                <em>candidate</em>
+                <em
+                  v-if="w.slot.reviewReadiness"
+                  class="readiness-tag"
+                  :data-state="w.slot.reviewReadiness"
+                >
+                  {{ w.slot.reviewReadiness.replace('P1_', '').replace('P2_', '').replace('P3_', '').replace('Exclude_', '') }}
+                </em>
+                <em v-else>candidate</em>
               </li>
             </ul>
           </section>
@@ -507,6 +640,7 @@ function onAdjudicated(payload) {
               variant="global"
               :selected-artifact-id="selectedArtifactId"
               :selected-slot-id="selectedSlotId"
+              :visible-artifact-ids="visibleArtifactIds"
               @select-artifact="onSelectArtifact"
               @select-slot="onSelectSlot"
               @pin-artifact="pinArtifact"
@@ -535,6 +669,7 @@ function onAdjudicated(payload) {
               variant="derived"
               :selected-artifact-id="selectedArtifactId"
               :selected-slot-id="selectedSlotId"
+              :visible-artifact-ids="visibleArtifactIds"
               @select-slot="onSelectSlot"
             />
             <div v-else-if="activeTabId(derivedTabs) === 'ledger'" class="ledger-view">
@@ -593,8 +728,16 @@ function onAdjudicated(payload) {
                 <span v-else>not recorded</span>
               </div>
               <small v-if="a.raw" class="dock-image-status" :data-kind="imageEvidenceLabel(a)">{{ imageEvidenceLabel(a) }}</small>
+              <div v-if="a.audit" class="dock-audit">
+                <span :data-state="a.audit.text_support">{{ a.audit.text_support }}</span>
+                <span :data-state="a.audit.image_support">{{ a.audit.image_support }}</span>
+              </div>
               <p class="dock-raw">{{ a.raw || '该书未记载' }}</p>
-              <button v-if="a.raw" type="button" class="dock-pin" @click="pinSlot(dockSlot.artifact.id, dockSlot.slot.id)">add to evidence tray</button>
+              <p v-if="a.audit?.text_snippet" class="dock-snippet">{{ a.audit.text_snippet }}</p>
+              <div v-if="a.raw" class="dock-card-actions">
+                <button type="button" @click="openEvidenceText(a)">OCR text</button>
+                <button type="button" @click="pinSlot(dockSlot.artifact.id, dockSlot.slot.id)">Pin evidence</button>
+              </div>
             </article>
           </div>
           <div v-else class="dock-empty">No evidence selected.</div>
@@ -624,6 +767,18 @@ function onAdjudicated(payload) {
             <img :src="viewerImage.src" :alt="viewerImage.title" />
           </div>
           <p>Click outside the image or close the viewer to return to the evidence tray.</p>
+        </div>
+      </div>
+    </Teleport>
+
+    <Teleport to="body">
+      <div v-if="viewerText" class="evidence-lightbox" role="dialog" aria-modal="true" @click.self="closeEvidenceText">
+        <div class="lightbox-panel text-viewer">
+          <header>
+            <strong>{{ viewerText.title }}</strong>
+            <button type="button" aria-label="Close OCR viewer" @click="closeEvidenceText">×</button>
+          </header>
+          <pre>{{ viewerText.text }}</pre>
         </div>
       </div>
     </Teleport>

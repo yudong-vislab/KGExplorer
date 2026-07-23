@@ -12,6 +12,15 @@ const emit = defineEmits(['select-slot', 'adjudicated', 'pin-slot']);
 
 const artifact = computed(() => ARTIFACTS.find((a) => a.id === props.selectedArtifactId) || null);
 const slot = computed(() => artifact.value?.slots.find((s) => s.id === props.selectedSlotId) || null);
+const canAdjudicate = computed(
+  () => !slot.value?.reviewReadiness || slot.value.reviewReadiness === 'P1_expert_review',
+);
+const readinessLabel = computed(() => ({
+  P1_expert_review: 'Ready for expert review',
+  P2_data_cleanup: 'Data cleanup required',
+  P3_alignment_review: 'Alignment review required',
+  Exclude_lexical_variant: 'Lexical variant only',
+}[slot.value?.reviewReadiness] || 'Not machine-audited'));
 const valueGroups = computed(() => {
   if (!slot.value) return [];
   const groups = new Map();
@@ -34,6 +43,7 @@ watch(slot, (s) => {
 
 function decide(action) {
   if (!slot.value) return;
+  if (!canAdjudicate.value && action !== 'keep_open') return;
   emit('adjudicated', { slotId: slot.value.id, action, text: draft.value });
 }
 </script>
@@ -57,7 +67,7 @@ function decide(action) {
         >
           <i :style="{ background: CLASS_COLORS[s.cls] }"></i>
           {{ s.label }}
-          <em>{{ CLASS_LABELS[s.cls] }}</em>
+          <em>{{ s.reviewReadiness ? s.reviewReadiness.replace('P1_', '').replace('P2_', '').replace('P3_', '').replace('Exclude_', '') : CLASS_LABELS[s.cls] }}</em>
         </li>
       </ul>
 
@@ -67,6 +77,17 @@ function decide(action) {
           <strong>{{ slot.label }}</strong>
           <span>{{ slot.assertions.filter((a) => a.raw).length }} recorded · {{ slot.assertions.filter((a) => !a.raw).length }} missing</span>
           <p>{{ slot.note }}</p>
+        </div>
+
+        <div v-if="slot.audit" class="adj-audit-card" :data-state="slot.reviewReadiness">
+          <header>
+            <strong>{{ readinessLabel }}</strong>
+            <span>{{ slot.audit.identity_grade }}</span>
+          </header>
+          <p>{{ slot.audit.machine_audit_note }}</p>
+          <div v-if="slot.auditFlags.length">
+            <span v-for="flag in slot.auditFlags" :key="flag">{{ flag }}</span>
+          </div>
         </div>
 
         <h3>Observed value groups</h3>
@@ -96,9 +117,9 @@ function decide(action) {
         <textarea v-model="draft" rows="4"></textarea>
 
         <div class="adj-actions">
-          <button type="button" @click="decide('adopt')">采信修订</button>
-          <button type="button" @click="decide('compatible')">标注兼容</button>
-          <button type="button" @click="decide('flag_error')">标记讹误</button>
+          <button type="button" :disabled="!canAdjudicate" @click="decide('adopt')">采信修订</button>
+          <button type="button" :disabled="!canAdjudicate" @click="decide('compatible')">标注兼容</button>
+          <button type="button" :disabled="!canAdjudicate" @click="decide('flag_error')">标记讹误</button>
           <button type="button" @click="decide('keep_open')">存疑待考</button>
           <button type="button" @click="emit('pin-slot', artifact.id, slot.id)">加入证据托盘</button>
         </div>
